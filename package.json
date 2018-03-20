@@ -1,0 +1,24 @@
+{
+  "name": "npmlist-cli",
+  "version": "1.0.0",
+  "description": "A cli tool to show the downloaded npm packages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "npmlatest": "./index.js"
+  },
+  "keywords": [
+    "npm",
+    "list",
+    "latest",
+    "download"
+  ],
+  "author": "Hank Chan",
+  "license": "ISC",
+  "dependencies": {
+    "columnify": "^1.5.4",
+    "ls": "^0.2.1"
+  }
+}
