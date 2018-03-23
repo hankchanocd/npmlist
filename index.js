@@ -5,7 +5,6 @@ const columnify = require('columnify');
 const program = require('commander');
 const chalk = require('chalk');
 const execChildProcess = require('child_process').exec;
-var read = require('read-file');
 
 // local modules
 const {
@@ -34,10 +33,10 @@ program
 
 // Listing of installed packages are executed through 'child_process'
 let cmd = 'npm list --depth=0 ';
-if (program.global) {
+if (program.global && !process.info){
     cmd += '--global';
     exec(cmd);
-} else if (program.local) {
+} else if (program.local && !process.info) {
     cmd += '--local';
     exec(cmd);
 } else if (program.time) {
@@ -49,10 +48,12 @@ if (program.global) {
         };
     });
     console.log(columnify(result));
-} else if (program.info) {
-    // sync 
-    var buffer = read.sync('lib/npminfo.sh', 'utf8');
-    exec(buffer);
+} else if ((program.info && program.local) || (program.info)) {
+    execInfo('--local');
+
+} else if (program.info && program.global) {
+    execInfo('--global');
+
 } else {
     // If nothing specified...
     cmd += '--local';
@@ -69,4 +70,25 @@ function exec(command) {
         if (stderr) console.log(chalk.red("Error: ") +
             stderr);
     });
+}
+
+function execInfo(option) {
+    const cmd = 'npm ll --depth=0 --long=true ' + option;
+    execChildProcess(cmd, function (error, stdout, stderr) {
+        if (error) console.log(chalk.red.bold.underline("exec error:") +
+            error);
+        if (stdout) {
+            const lines = stdout.split('\n');
+            lines.forEach((i) => {
+                    if (i.includes('@') && !i.includes('//')) {
+                        console.log(chalk.redBright(i));
+                    } else if (i.includes('github')) {
+                        console.log(chalk.grey(i));
+                    }
+                    else console.log(i);
+                });
+            }
+            if (stderr) console.log(chalk.red("Error: ") +
+                stderr);
+        });
 }
