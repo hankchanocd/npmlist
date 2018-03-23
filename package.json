@@ -1,13 +1,13 @@
 {
   "name": "npmlist-cli",
   "version": "1.0.0",
-  "description": "A cli tool to show the downloaded npm packages",
+  "description": "Listing npm packages in cli made easy",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "npmlatest": "./index.js"
+    "npmlist": "./index.js"
   },
   "keywords": [
     "npm",
@@ -18,7 +18,11 @@
   "author": "Hank Chan",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^2.3.2",
+    "child_process": "^1.0.2",
     "columnify": "^1.5.4",
-    "ls": "^0.2.1"
+    "commander": "^2.15.1",
+    "ls": "^0.2.1",
+    "read-file": "^0.2.0"
   }
 }
