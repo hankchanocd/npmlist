@@ -20,16 +20,17 @@ const list = ls('/usr/local/bin/lib/node_modules/*');
 
 program
     .version('1.0.0', '-v, --version')
-    .usage(`[package] [option]`)
+    .usage(`[option] [name]`)
     .description('Listing npm packages in cli made easy')
     .option('-g, --global', 'the command for npm list --global')
     .option('-l, --local', 'the command for npm list --local')
     .option('-i, --info', 'the command for what used to be npmlist --long')
     .option('-t, --time', 'the command for what used to be npmlatest, showing the five last globally installed npm packages')
-    .option('-d, --docs <package>', 'the command for a pretty print of the detailed information from the given package')
+    .option('-d, --docs <args>', 'the command for a pretty print of docs/information from the given package')
     .on('--help', function () {
         console.log();
         console.log('  ' + chalk.blueBright('npmlist -i -l, shows the detailed list of local modules/dependencies'));
+        console.log('  ' + chalk.blueBright("npmlist [args], shows a module's dependencies from npm registry API"));
         console.log();
     })
     .parse(process.argv);
@@ -50,8 +51,7 @@ if (program.global) {
         execInfo('--local');
     }
 
-} else if (program.time) {
-    // Select only the latest 10 download packages
+} else if (program.time) { // Select only the latest 10 download packages
     const result = sortByDate(list).slice(0, 10).map((item) => {
         return {
             'name': item.name,
@@ -63,12 +63,36 @@ if (program.global) {
 } else if (program.info) {
     execInfo('--local');
 
-} else {
-    // If nothing specified...
+} else if (program.docs || program.args) { // If a specific package is given 
+    // both independent args and '--doc args' can be used to retrieve a module's dependencies info
+    const module = program.docs ? program.docs : program.args;
+
+    https.get('https://registry.npmjs.org/' + module, function (res) {
+        if (res.statusCode !== 200) {
+            res.destroy();
+            console.log(chalk.redBright('Registry returned ' + res.statusCode));
+            return;
+        }
+
+        let buffers = [];
+        res.on('data', buffers.push.bind(buffers));
+        res.on('end', function() {
+            let data = Buffer.concat(buffers);
+            const versions = Object.keys(JSON.parse(data).versions);
+            const latestVersion = versions[versions.length - 1];
+            const dependencies = JSON.parse(data).versions[latestVersion].dependencies;
+
+            console.log(chalk.blueBright(`${module}'s dependencies:`));
+            console.log( columnify(dependencies, {columns: ['MODULE', 'VERSION']}) );
+        });
+    });
+
+} else { // If nothing specified...
     exec('--local');
 }
 
 
+// --docs searches npm api for the detailed info of the given package
 
 
 
