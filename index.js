@@ -1,7 +1,6 @@
 #!/usr/bin/env node --harmony
 
 'use strict';
-
 const ls = require('ls');
 const https = require('https');
 const columnify = require('columnify');
@@ -29,8 +28,9 @@ program
     .option('-d, --docs <args>', 'the command for a pretty print of docs/information from the given package')
     .on('--help', function () {
         console.log();
-        console.log('  ' + chalk.blueBright('npmlist -i -l, shows the detailed list of local modules/dependencies'));
-        console.log('  ' + chalk.blueBright("npmlist [args], shows a module's dependencies from npm registry API"));
+        console.log('  Examples:');
+        console.log('    ' + chalk.blueBright(`npmlist -i -l, ${chalk.white('shows a detailed list of local modules/dependencies')}`));
+        console.log('    ' + chalk.blueBright(`npmlist [args], ${chalk.white("shows a module's dependencies from npm registry API")}`));
         console.log();
     })
     .parse(process.argv);
@@ -63,7 +63,7 @@ if (program.global) {
 } else if (program.info) {
     execInfo('--local');
 
-} else if (program.docs || program.args) { // If a specific package is given 
+} else if (program.docs || program.args.length > 0) { // If a specific package is provided
     // both independent args and '--doc args' can be used to retrieve a module's dependencies info
     const module = program.docs ? program.docs : program.args;
 
@@ -76,14 +76,16 @@ if (program.global) {
 
         let buffers = [];
         res.on('data', buffers.push.bind(buffers));
-        res.on('end', function() {
+        res.on('end', function () {
             let data = Buffer.concat(buffers);
             const versions = Object.keys(JSON.parse(data).versions);
             const latestVersion = versions[versions.length - 1];
             const dependencies = JSON.parse(data).versions[latestVersion].dependencies;
 
             console.log(chalk.blueBright(`${module}'s dependencies:`));
-            console.log( columnify(dependencies, {columns: ['MODULE', 'VERSION']}) );
+            console.log(columnify(dependencies, {
+                columns: ['MODULE', 'VERSION']
+            }));
         });
     });
 
