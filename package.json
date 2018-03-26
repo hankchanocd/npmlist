@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Listing npm packages in cli made easy",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/hankchanocd/npmlist-cli"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
