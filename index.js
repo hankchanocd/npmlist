@@ -102,8 +102,6 @@ if (program.global) {
 function exec(option) {
     const cmd = 'npm list --depth=0 ' + option;
     execChildProcess(cmd, function (error, stdout, stderr) {
-        if (error) console.log(chalk.red.bold.underline("exec error:") +
-            error);
         if (stdout) console.log(chalk.white(stdout));
         if (stderr) console.log(chalk.red("Error: ") +
             stderr);
