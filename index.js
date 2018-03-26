@@ -119,7 +119,7 @@ function execInfo(option) {
 
                 if (i.includes('@') && !i.includes('/')) { // titles
                     console.log(chalk.redBright(i));
-                } else if (i.includes('github')) { // hosted addresses
+                } else if (i.includes('//')) { // hosted addresses, i.e. github, bitbucket, gitlab
                     console.log(chalk.grey(i));
                 } else if (i.includes('@') && i.includes('/')) { // syslinked packages
                     console.log(chalk.magenta(i));
