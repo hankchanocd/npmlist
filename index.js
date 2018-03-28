@@ -82,10 +82,14 @@ if (program.global) {
             const latestVersion = versions[versions.length - 1];
             const dependencies = JSON.parse(data).versions[latestVersion].dependencies;
 
-            console.log(chalk.blueBright(`${module}'s dependencies:`));
-            console.log(columnify(dependencies, {
-                columns: ['MODULE', 'VERSION']
-            }));
+            if (dependencies) {
+                console.log(chalk.blueBright(`${module}'s dependencies:`));
+                console.log(columnify(dependencies, {
+                    columns: ['MODULE', 'VERSION']
+                }));
+            } else {
+                console.log(chalk.blueBright(`${module} has no dependencies`));
+            }
         });
     });
 
