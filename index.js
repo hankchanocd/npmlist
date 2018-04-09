@@ -117,9 +117,9 @@ function execInfo(option) {
     execChildProcess(cmd, function (error, stdout, stderr) {
         if (error) console.log(chalk.red.bold.underline("exec error:") +
             error);
-        if (stdout) {
-            const lines = stdout.split('\n');
-            lines.forEach((i) => {
+            if (stdout) {
+                const lines = stdout.split('\n');
+                lines.forEach((i) => {
 
                 if (i.includes('@') && !i.includes('/')) { // titles
                     console.log(chalk.redBright(i));
@@ -129,8 +129,8 @@ function execInfo(option) {
                     console.log(chalk.magenta(i));
                 } else console.log(i);
             });
-        }
-        if (stderr) console.log(chalk.red("Error: ") +
-            stderr);
-    });
+            }
+            if (stderr) console.log(chalk.red("Error: ") +
+                stderr);
+        });
 }
