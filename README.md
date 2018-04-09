@@ -1,55 +1,49 @@
-List npm package dependencies and your installed npm packages
+# npmlist
+A light-weight cli tool listing npm package dependencies and package profile.
+
+Advantages over ```npm list``` and ```npm info <package>```
+1. A shortcut for ```npm list``` with assumed configurations
+2. no more digging into the returned gigantic json data of ```npm info <package>```
+3. no need to leave terminal for the quick overview of npm package profile
 
 # Install
 
 ```
-npm install --save npmlist
+npm install npmlist
 ```
 
 # Usage
 
-```javascript
-// Request API access: http://www.yelp.com/developers/getting_started/api_access
-var Yelp = require('yelp');
-
-var yelp = new Yelp({
-  consumer_key: 'consumer-key',
-  consumer_secret: 'consumer-secret',
-  token: 'token',
-  token_secret: 'token-secret',
-});
-
-// See http://www.yelp.com/developers/documentation/v2/search_api
-yelp.search({ term: 'food', location: 'Montreal' })
-.then(function (data) {
-  console.log(data);
-})
-.catch(function (err) {
-  console.error(err);
-});
-
-// See http://www.yelp.com/developers/documentation/v2/business
-yelp.business('yelp-san-francisco')
-  .then(console.log)
-  .catch(console.error);
-
-yelp.phoneSearch({ phone: '+15555555555' })
-  .then(console.log)
-  .catch(console.error);
-
-// A callback based API is also available:
-yelp.business('yelp-san-francisco', function(err, data) {
-  if (err) return console.log(error);
-  console.log(data);
-});
+### Globally installed packages
+```bash
+npmlist -g
 ```
 
-See [./test](./test) for more usage examples.
-
-# Test
-
+### Local package dependencies
 ```bash
-CONSUMER_KEY="" CONSUMER_SECRET="" TOKEN="" TOKEN_SECRET="" npm test
+cd folder
+npmlist 
+```
+
+### Display detailed local package dependencies
+```bash
+cd folder
+npmlist --info
+```
+
+### Recently installed packages
+```bash
+npmlist -t
+
+# Result
+NAME              TIME
+npmlist-cli       4-9 2:18
+surl              4-8 20:45
+```
+
+### Fetch a npm package's profile from npm registry
+```bash
+npmlist express
 ```
 
 # License
