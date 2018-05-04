@@ -121,11 +121,11 @@ function execInfo(option) {
                 const lines = stdout.split('\n');
                 lines.forEach((i) => {
 
-                if (i.includes('@') && !i.includes('/')) { // titles
+                if (i.includes('@') && !i.includes('->') && !i.includes('//')) { // titles
                     console.log(chalk.redBright(i));
                 } else if (i.includes('//')) { // hosted addresses, i.e. github, bitbucket, gitlab
                     console.log(chalk.grey(i));
-                } else if (i.includes('@') && i.includes('/')) { // syslinked packages
+                } else if (i.includes('@') && i.includes('->')) { // symlinked packages
                     console.log(chalk.magenta(i));
                 } else console.log(i);
             });
