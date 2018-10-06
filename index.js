@@ -12,7 +12,7 @@ const execChildProcess = require('child_process').exec;
 const {
     sortByDate,
     parseDate
-} = require('./lib/date');
+} = require('./src/lib/date');
 
 // a list of globally installed node modules
 const list = ls('/usr/local/bin/lib/node_modules/*');
