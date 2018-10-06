@@ -1,4 +1,4 @@
-# npmlist-cli
+# npmlist-cli  &nbsp;&nbsp;  [![Build Status](https://travis-ci.org/hankchanocd/npmlist-cli.svg?branch=master)](https://travis-ci.org/hankchanocd/npmlist-cli)
 A light-weight CLI tool listing npm package dependencies and package profile.
 
 Much of ```npmlist-cli``` is build on ```npm``` commands, but it has some advantages over plain and cluttered ```npm list``` and ```npm info <package>```
