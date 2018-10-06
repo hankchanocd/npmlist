@@ -8,7 +8,8 @@
     "url": "https://bitbucket.org/hankchanocd/npmlist-cli"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "commit": "git-cz"
   },
   "bin": {
     "npmlist": "./index.js"
@@ -29,6 +30,13 @@
     "ls": "^0.2.1"
   },
   "devDependencies": {
+    "commitizen": "^3.0.2",
+    "cz-conventional-changelog": "^2.1.0",
     "jest": "^23.6.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
   }
 }
