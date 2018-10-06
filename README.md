@@ -1,52 +1,94 @@
-# npmlist
-A light-weight cli tool listing npm package dependencies and package profile.
+# npmlist-cli
+A light-weight CLI tool listing npm package dependencies and package profile.
 
-Advantages over ```npm list``` and ```npm info <package>```
+Much of ```npmlist-cli``` is build on ```npm``` commands, but it has some advantages over plain and cluttered ```npm list``` and ```npm info <package>```
 1. A shortcut for ```npm list``` with assumed configurations
-2. no more digging into the returned gigantic json data of ```npm info <package>```
-3. no need to leave terminal for the quick overview of npm package profile
+2. Richer and more development-relevant information than ```npm info <package>```
+3. No need to leave terminal for glancing npm package profile
 
-# Install
+## Install
 
 ```
-npm install npmlist
+$ npm install -g npmlist-cli
 ```
+Note: Though the package name is ```npmlist-cli```, the command is just ```npmlist```. For sanity's sake, we will just call it ```npmlist``` from now on.
 
-# Usage
+## Usage
 
-### Globally installed packages
+### Show a list of global packages
 ```bash
-npmlist -g
-```
-
-### Local package dependencies
-```bash
-cd folder
-npmlist 
-```
-
-### Display detailed local package dependencies
-```bash
-cd folder
-npmlist --info
-```
-
-### Recently installed packages
-```bash
-npmlist -t
+$ npmlist -g
 
 # Result
-NAME              TIME
-npmlist-cli       4-9 2:18
-surl              4-8 20:45
+/usr/local/bin/lib
+├── 0x@4.5.0
+├── @angular/cli@6.2.4
+├── aerobatic-cli@1.1.4
+├── atomizer@3.4.8
+...
+```
+
+### Show a list of local package dependencies
+```bash
+$ cd surl-cli
+$ npmlist
+
+# Result
+surl-cli@1.2.0 /Users/hank/surl-cli
+├── child_process@1.0.2
+├── commander@2.18.0
+├── jest@23.6.0
+└── ls@0.2.1
+```
+
+### Show a detailed list of local package dependencies
+```bash
+$ cd surl-cli
+$ npmlist --info
+
+# Result
+surl-cli@1.2.0
+│ /Users/hank/surl-cli
+│ URL shortener CLI
+│ git+https://github.com/hankchanocd/surl-cli.git
+│ https://github.com/hankchanocd/surl-cli#readme
+├── babel-cli@6.26.0
+│   Babel command line.
+│   https://github.com/babel/babel/tree/master/packages/babel-cli
+│   https://babeljs.io/
+...
+```
+
+### Show global packages recently installed
+A good refresher on what the heck you've installed globally on your machine in the past few weeks
+```bash
+$ npmlist -t
+
+# Result
+NAME                 TIME
+npmlist-cli          10-5 21:29
+semantic-release     10-5 8:5
+tty-table            10-5 8:5
 ```
 
 ### Fetch a npm package's profile from npm registry
 ```bash
-npmlist express
+$ npmlist surl-cli
+
+# Result
+surl-cli's dependencies:
+MODULE     VERSION
+columnify  ^1.5.4
+commander  ^2.17.1
+node-fetch ^2.2.0
 ```
 
-# License
+## Contribution
+```npmlist``` was initially a bunch of CLI aliases on top of ```npm list``` and ```npm info```, but grew larger over time. It now has its own idea of how to integrate with the workflow of JavaScript development.
+
+ ```npmlist``` is admittedly a tiny tool, but I use it all the time and believe it can be tremendously helpful if it fits your workflow. The development of ```npmlist``` will center on how to present a quick and concise report of npm packages on command line, while lifting the burden to move to browser.
+
+## License
 
 Copyright (c) 2018 Hank Chan <hankchanth@icloud.com>
 
