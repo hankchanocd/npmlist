@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:hankchanocd/npmlist-cli.git"
+    "url": "https://github.com/hankchanocd/npmlist-cli.git"
   },
   "scripts": {
     "test": "jest",
@@ -21,8 +21,12 @@
     "latest",
     "download"
   ],
-  "author": "Hank Chan",
+  "author": "Hank Chan <hankchanth@icloud.com> (https://github.com/hankchanocd)",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hankchanocd/npmlist-cli/issues"
+  },
+  "homepage": "https://github.com/hankchanocd/npmlist-cli#readme",
   "dependencies": {
     "chalk": "^2.3.2",
     "child_process": "^1.0.2",
