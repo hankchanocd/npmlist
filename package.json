@@ -8,7 +8,7 @@
     "url": "https://bitbucket.org/hankchanocd/npmlist-cli"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "bin": {
     "npmlist": "./index.js"
@@ -27,5 +27,8 @@
     "columnify": "^1.5.4",
     "commander": "^2.15.1",
     "ls": "^0.2.1"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0"
   }
 }
