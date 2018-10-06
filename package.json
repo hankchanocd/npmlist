@@ -1,11 +1,11 @@
 {
-  "name": "npmlist-cli",
+  "name": "@hankchanocd/npmlist",
   "version": "0.0.0-semantically-released",
   "description": "Listing npm packages in cli made easy",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hankchanocd/npmlist-cli.git"
+    "url": "https://github.com/hankchanocd/npmlist.git"
   },
   "scripts": {
     "test": "jest",
@@ -24,9 +24,9 @@
   "author": "Hank Chan <hankchanth@icloud.com> (https://github.com/hankchanocd)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hankchanocd/npmlist-cli/issues"
+    "url": "https://github.com/hankchanocd/npmlist/issues"
   },
-  "homepage": "https://github.com/hankchanocd/npmlist-cli#readme",
+  "homepage": "https://github.com/hankchanocd/npmlist#readme",
   "dependencies": {
     "chalk": "^2.3.2",
     "child_process": "^1.0.2",
