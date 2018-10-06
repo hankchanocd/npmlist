@@ -21,6 +21,7 @@ branches:
     - master
 
 script:
+  - npm test
 
 after_success:
   - npm run semantic-release
