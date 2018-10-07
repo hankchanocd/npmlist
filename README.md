@@ -18,7 +18,6 @@ $ npm install -g @hankchanocd/npmlist
 ```bash
 $ npmlist -g
 
-# Result
 /usr/local/bin/lib
 ├── 0x@4.5.0
 ├── @angular/cli@6.2.4
@@ -32,7 +31,6 @@ $ npmlist -g
 $ cd surl-cli
 $ npmlist
 
-# Result
 surl-cli@1.2.0 /Users/hank/surl-cli
 ├── child_process@1.0.2
 ├── commander@2.18.0
@@ -45,7 +43,6 @@ surl-cli@1.2.0 /Users/hank/surl-cli
 $ cd surl-cli
 $ npmlist --info
 
-# Result
 surl-cli@1.2.0
 │ /Users/hank/surl-cli
 │ URL shortener CLI
@@ -63,7 +60,6 @@ A good refresher on what the heck you've installed globally on your machine in t
 ```bash
 $ npmlist -t
 
-# Result
 NAME                 TIME
 npmlist-cli          10-5 21:29
 semantic-release     10-5 8:5
@@ -72,15 +68,17 @@ tty-table            10-5 8:5
 
 ### Fetch a npm package's profile from npm registry
 ```bash
-$ npmlist surl-cli
+$ npmlist express
 
-# Result
-surl-cli's dependencies:
+express's dependencies:
 MODULE     VERSION
 columnify  ^1.5.4
 commander  ^2.17.1
 node-fetch ^2.2.0
 ```
+
+## Tests
+To run unit tests and API tests, run ```npm test```.
 
 ## Contribution
 ```npmlist``` was initially a bunch of CLI aliases on top of ```npm list``` and ```npm info```, but grew larger over time. It now has its own idea of how to integrate with the workflow of JavaScript development.
