@@ -19,9 +19,10 @@
   },
   "keywords": [
     "npm",
+    "cli",
     "list",
     "latest",
-    "download"
+    "dependencies"
   ],
   "author": "Hank Chan <hankchanth@icloud.com> (https://github.com/hankchanocd)",
   "license": "ISC",
