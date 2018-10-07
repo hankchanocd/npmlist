@@ -8,6 +8,7 @@
     "url": "https://github.com/hankchanocd/npmlist.git"
   },
   "scripts": {
+    "pretest": "npm run build",
     "test": "jest",
     "flow": "flow",
     "build": "babel src/ -d build/",
