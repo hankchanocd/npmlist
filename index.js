@@ -59,7 +59,7 @@ if (program.global) {
     getRecentInstalls();
 
 } else if (program.info) {
-    execNpmList('--local');
+    execNpmListInfo('--local');
 
 } else if (program.docs || program.args.length > 0) { // If a specific package is provided
     // both independent args and '--doc args' can be used to retrieve a module's dependencies info
