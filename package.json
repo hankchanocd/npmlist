@@ -9,6 +9,7 @@
   },
   "scripts": {
     "test": "jest",
+    "build": "babel src/ -d build/",
     "commit": "git-cz",
     "semantic-release": "semantic-release"
   },
@@ -35,6 +36,9 @@
     "ls": "^0.2.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
     "commitizen": "^3.0.2",
     "cz-conventional-changelog": "^2.1.0",
     "jest": "^23.6.0",
