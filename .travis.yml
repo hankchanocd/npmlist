@@ -21,6 +21,7 @@ branches:
     - master
 
 script:
+  # `npm run build` is run before `npm test`
   - npm test
 
 after_success:
