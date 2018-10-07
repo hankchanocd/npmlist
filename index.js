@@ -43,23 +43,23 @@ program
 // Listing of installed packages are executed through 'child_process'
 if (program.global) {
     if (!program.info) {
-        execNpmList('--global');
+        execNpmList().global();
     } else {
-        execNpmListInfo('--global');
+        execNpmListInfo().global();
     }
 
 } else if (program.local) {
     if (!program.info) {
-        execNpmList('--local');
+        execNpmList().local();
     } else {
-        execNpmListInfo('--local');
+        execNpmListInfo().local();
     }
 
 } else if (program.time) { // Select only the latest 10 download packages
     getRecentInstalls();
 
 } else if (program.info) {
-    execNpmListInfo('--local');
+    execNpmListInfo().local();
 
 } else if (program.docs || program.args.length > 0) { // If a specific package is provided
     // both independent args and '--doc args' can be used to retrieve a module's dependencies info
@@ -67,7 +67,7 @@ if (program.global) {
     fetchModuleInfo(module);
 
 } else { // If nothing specified...
-    execNpmList('--local');
+    execNpmList().local();
 }
 
 
