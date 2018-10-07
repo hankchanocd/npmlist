@@ -8,13 +8,25 @@
 const execChildProcess = require('child_process').exec;
 const chalk = require('chalk');
 
-/* Run `npm list` */
-module.exports.execNpmList = function (option) {
-    const cmd = 'npm list --depth=0 ' + option;
+/**
+ * Run `npm list` with 2 options provided: local() and global()
+ * i.e. execNpmList().local()
+ */
+module.exports.execNpmList = function () {
+    const cmd = 'npm list --depth=0 ';
 
-    execChildProcess(cmd, function (error, stdout, stderr) {
-        printNpmList(error, stdout, stderr);
-    });
+    return {
+        local() {
+            execChildProcess(cmd + '--local', function (error, stdout, stderr) {
+                printNpmList(error, stdout, stderr);
+            });
+        },
+        global() {
+            execChildProcess(cmd + '--global', function (error, stdout, stderr) {
+                printNpmList(error, stdout, stderr);
+            });
+        }
+    };
 };
 
 function printNpmList(error, stdout, stderr) {
@@ -30,13 +42,25 @@ function printNpmList(error, stdout, stderr) {
 }
 
 
-/* Run `npm list --long=true` */
-module.exports.execNpmListInfo = function (option) {
-    const cmd = 'npm ll --depth=0 --long=true ' + option;
+/**
+ * Run `npm list --long=true` with 2 options provided: local() and global()
+ * i.e. execNpmListInfo().global()
+ */
+module.exports.execNpmListInfo = function () {
+    const cmd = 'npm ll --depth=0 --long=true ';
 
-    execChildProcess(cmd, function (error, stdout, stderr) {
-        printNpmListInfo(error, stdout, stderr);
-    });
+    return {
+        local() {
+            execChildProcess(cmd + '--local', function (error, stdout, stderr) {
+                printNpmListInfo(error, stdout, stderr);
+            });
+        },
+        global() {
+            execChildProcess(cmd + '--global', function (error, stdout, stderr) {
+                printNpmListInfo(error, stdout, stderr);
+            });
+        }
+    };
 };
 
 function printNpmListInfo(error, stdout, stderr) {
@@ -71,9 +95,11 @@ function parseNpmListInfo(stdout) {
     function isTitle(i) {
         return i.includes('@') && !i.includes('->') && !i.includes('//');
     }
+
     function isAddress(i) { // hosted addresses, i.e. Github, Bitbucket, Gitlab
         return i.includes('//');
     }
+
     function isSymlink(i) {
         return i.includes('@') && i.includes('->');
     }

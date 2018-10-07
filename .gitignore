@@ -1,5 +1,12 @@
-node_modules
+# Default
 tags
 *.log
+
+# Text Editor
 .vscode
+
+# npm
+node_modules
+
+# Babel
 build/
