@@ -2,7 +2,7 @@
 A light-weight CLI tool listing npm package dependencies and package profile.
 
 Much of ```npmlist``` is build on top of ```npm``` commands, but it has some advantages over plain and cluttered ```npm list``` and ```npm info <package>```
-1. A shortcut for ```npm list``` with assumed configurations
+1. A shortcut for ```npm list --depth=0 --local``` and other similar ```npm list @#$%``` commands with assumed configurations
 2. Richer and more development-relevant information than ```npm info <package>```
 3. No need to leave terminal for glancing npm package profile
 
@@ -67,14 +67,14 @@ tty-table            10-5 8:5
 ```
 
 ### Fetch a npm package's profile from npm registry
-```bash
+```
 $ npmlist express
 
 express's dependencies:
 MODULE     VERSION
-columnify  ^1.5.4
-commander  ^2.17.1
-node-fetch ^2.2.0
+columnify  1.5.4
+commander  ~2.17.1
+node-fetch ~2.2.0
 ```
 
 ## Tests
