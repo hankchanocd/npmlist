@@ -22,7 +22,7 @@ const {
 
 
 program
-    .version('1.0.0', '-v, --version')
+    .version('2.0.0', '-v, --version')
     .usage(`[option] [name]`)
     .description('Listing npm packages in cli made easy')
     .option('-g, --global', 'the command for npm list --global')
