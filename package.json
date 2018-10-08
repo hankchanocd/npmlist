@@ -10,6 +10,7 @@
   "scripts": {
     "pretest": "npm run build",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "flow": "flow",
     "build": "babel src/ -d build/",
     "commit": "git-cz",
@@ -51,10 +52,15 @@
     "commitizen": "^3.0.2",
     "cz-conventional-changelog": "^2.1.0",
     "flow-bin": "^0.82.0",
+    "ghooks": "^2.0.4",
     "jest": "^23.6.0",
     "semantic-release": "^15.9.17"
   },
   "config": {
+    "ghooks": {
+      "pre-commit": "npm run test",
+      "pre-push": "npm run test:coverage  # Include Jest's coverage report"
+    },
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
     }
