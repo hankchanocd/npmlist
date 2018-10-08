@@ -9,7 +9,7 @@ const columnify = require('columnify');
 const {
     sortByDate,
     parseDate
-} = require('./lib/date');
+} = require('./lib/dateUtil');
 
 // a list of globally installed node modules
 const list = ls('/usr/local/bin/lib/node_modules/*');

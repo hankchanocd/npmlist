@@ -1,7 +1,7 @@
 const {
     sortByDate,
     parseDate
-} = require('./../src/lib/date');
+} = require('./../build/lib/dateUtil');
 
 
 test('parseDate(new Date()) returns the correct format', () => {
