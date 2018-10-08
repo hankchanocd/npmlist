@@ -10,15 +10,15 @@ const chalk = require('chalk');
 const {
     execNpmList,
     execNpmListInfo
-} = require('./src/npm');
+} = require('./build/npm');
 
 const {
     fetchModuleInfo
-} = require('./src/https.js');
+} = require('./build/https.js');
 
 const {
     getRecentInstalls
-} = require('./src/time');
+} = require('./build/time');
 
 
 program
