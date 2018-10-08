@@ -2,9 +2,9 @@
 A light-weight CLI tool listing npm package dependencies and package profile.
 
 Much of ```npmlist``` is build on top of ```npm``` commands, but it has some advantages over plain and cluttered ```npm list``` and ```npm info <package>```
-1. A shortcut for ```npm list --depth=0 --local``` and other similar ```npm list @#$%``` commands with assumed configurations
+1. A shortcut for ```npm list --depth=0 --local``` and other similarly annoying ```npm list --@#$%``` commands with assumed configurations
 2. Richer and more development-relevant information than ```npm info <package>```
-3. No need to leave terminal for glancing npm package profile
+3. No need to leave terminal just for glancing at a package's npm profile
 
 ## Install
 
@@ -78,7 +78,7 @@ node-fetch ~2.2.0
 ```
 
 ## Tests
-To run unit tests and API tests, run ```npm test```.
+To perform unit tests and integration tests, simply run ```npm test```.
 
 ## Contribution
 ```npmlist``` was initially a bunch of CLI shortcuts aliased on top of ```npm list``` and ```npm info```, but grew larger over time. It has since got its own idea of how to integrate with the workflow of JavaScript development.
