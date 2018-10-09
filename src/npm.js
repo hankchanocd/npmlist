@@ -70,7 +70,7 @@ function printNpmListInfo(error, stdout, stderr) {
     if (stdout) {
         return parseNpmListInfo(stdout).forEach(i => {
             console.log(i);
-        });;
+        });
     }
     if (stderr) {
         return console.log(chalk.red("Error: ") + stderr);
