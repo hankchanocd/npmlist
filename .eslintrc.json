@@ -1,0 +1,35 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": false
+    }
+  },
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "globals": {
+    "MY_GLOBAL": true,
+    "EventEmitter": true,
+    "Promise": true,
+    "document": true,
+    "window": true,
+    "describe": true,
+    "it": true
+  },
+  "rules": {
+    "comma-dangle": [2, "never"],
+    "no-console": 0,
+    "no-constant-condition": 2,
+    "no-control-regex": 2,
+    "no-debugger": 1,
+    "no-dupe-keys": 2,
+    "no-duplicate-case": 2,
+    "no-empty-character-class": 2,
+    "no-empty": 2,
+    "no-ternary": 0,
+    "semi": 2
+  }
+}
