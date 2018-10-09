@@ -10,19 +10,19 @@ const chalk = require('chalk');
 const {
     execNpmList,
     execNpmListInfo
-} = require('./src/npm');
+} = require('./build/npm');
 
 const {
     fetchModuleInfo
-} = require('./src/https.js');
+} = require('./build/https.js');
 
 const {
     getRecentInstalls
-} = require('./src/time');
+} = require('./build/time');
 
 
 program
-    .version('1.0.0', '-v, --version')
+    .version('2.0.0', '-v, --version')
     .usage(`[option] [name]`)
     .description('Listing npm packages in cli made easy')
     .option('-g, --global', 'the command for npm list --global')
