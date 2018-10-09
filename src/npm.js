@@ -3,6 +3,7 @@
  * See https.js for methods fetching info from npm registry
  *
  */
+'use strict';
 
 // Dependencies
 const execChildProcess = require('child_process').exec;

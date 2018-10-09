@@ -2,6 +2,7 @@
  * time.js provides methods that deal with time-related info
  *
  */
+'use strict';
 
 // Dependencies
 const ls = require('ls');
