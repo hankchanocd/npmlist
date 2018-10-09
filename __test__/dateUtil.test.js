@@ -1,5 +1,4 @@
 const {
-    sortByDate,
     parseDate
 } = require('./../build/lib/dateUtil');
 
