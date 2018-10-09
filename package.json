@@ -9,8 +9,9 @@
   },
   "scripts": {
     "pretest": "npm run build",
-    "test": "jest",
+    "test": "jest && npm run eslint",
     "test:coverage": "jest --coverage",
+    "eslint": "eslint .",
     "flow": "flow",
     "build": "babel src/ -d build/",
     "commit": "git-cz",
