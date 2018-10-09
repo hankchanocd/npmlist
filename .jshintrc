@@ -1,0 +1,22 @@
+{
+    "forin": true,
+    "undef": true,
+    "latedef":"nofunc",
+    "unused": true,
+    "freeze": true,
+    "globals": {
+        "MY_GLOBAL": true,
+        "EventEmitter": true,
+        "Promise": true,
+        "document": true,
+        "window": true
+    },
+    "moz": true,
+    "boss": true,
+    "nocomma": true,
+    "node": true,
+    "validthis": true,
+    "maxdepth": 4,
+    "maxparams": 3,
+    "esversion": 6
+}
