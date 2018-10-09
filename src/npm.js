@@ -30,7 +30,7 @@ module.exports.execNpmList = function () {
 };
 
 function printNpmList(error, stdout, stderr) {
-    if (error) { // Don't return if errored for `npm ERR! peer dep missing:` might occur, which is normal
+    if (error) { // Don't return if erred for `npm ERR! peer dep missing:` might occur, which is normal
         console.log(chalk.red.bold.underline("exec error:") + error);
     }
     if (stdout) {
@@ -64,7 +64,7 @@ module.exports.execNpmListInfo = function () {
 };
 
 function printNpmListInfo(error, stdout, stderr) {
-    if (error) { // Don't return if errored for `npm ERR! peer dep missing:` might occur, which is normal
+    if (error) { // Don't return if erred for `npm ERR! peer dep missing:` might occur, which is normal
         console.log(chalk.red.bold.underline("exec error:") + error);
     }
     if (stdout) {
