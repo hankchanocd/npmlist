@@ -51,6 +51,8 @@
     "babel-preset-flow": "^6.23.0",
     "commitizen": "^3.0.2",
     "cz-conventional-changelog": "^2.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-promise": "^4.0.1",
     "flow-bin": "^0.82.0",
     "ghooks": "^2.0.4",
     "jest": "^23.6.0",
