@@ -2,6 +2,7 @@
  * https.js fetches lists of module dependencies from npm registry
  *
  */
+'use strict';
 
 // Dependencies
 const chalk = require('chalk');

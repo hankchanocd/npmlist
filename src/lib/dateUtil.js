@@ -2,6 +2,7 @@
  * date.js deals with code that is time-related and date-related
  *
  */
+'use strict';
 
 // Sort by date descendingly
 module.exports.sortByDate = function (arr) {

@@ -1,0 +1,15 @@
+# Default
+tags
+*.log
+
+# Text Editor
+.vscode
+
+# npm
+node_modules
+
+# Babel
+build/
+
+# Jest
+coverage/

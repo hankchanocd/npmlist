@@ -3,6 +3,7 @@
  * See https.js for methods fetching info from npm registry
  *
  */
+'use strict';
 
 // Dependencies
 const execChildProcess = require('child_process').exec;
@@ -70,7 +71,7 @@ function printNpmListInfo(error, stdout, stderr) {
     if (stdout) {
         return parseNpmListInfo(stdout).forEach(i => {
             console.log(i);
-        });;
+        });
     }
     if (stderr) {
         return console.log(chalk.red("Error: ") + stderr);
