@@ -12,6 +12,8 @@
     "test": "jest && npm run eslint",
     "test:coverage": "jest --coverage",
     "eslint": "eslint . --ignore-path .gitignore",
+    "eslint:makeHtml": "eslint . --ignore-path .gitignore --format html -o ./eslint/report.html",
+    "eslint:show": "npm run eslint:makeHtml && open ./eslint/report.html",
     "flow": "flow",
     "build": "babel src/ -d build/",
     "commit": "git-cz",
