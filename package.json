@@ -9,7 +9,7 @@
   },
   "scripts": {
     "pretest": "npm run build",
-    "test": "jest && npm run eslint",
+    "test": "npm run eslint & jest",
     "test:coverage": "jest --coverage",
     "eslint": "eslint . --ignore-path .gitignore --cache --cache-location \"./eslint/.eslintcache\" ",
     "eslint:makeHtml": "npm run eslint -- --format html -o ./eslint/report.html",
