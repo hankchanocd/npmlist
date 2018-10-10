@@ -11,7 +11,7 @@
     "pretest": "npm run build",
     "test": "jest && npm run eslint",
     "test:coverage": "jest --coverage",
-    "eslint": "eslint .",
+    "eslint": "eslint . --ignore-path .gitignore",
     "flow": "flow",
     "build": "babel src/ -d build/",
     "commit": "git-cz",
