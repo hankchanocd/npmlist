@@ -1,4 +1,4 @@
-# npmlist  &nbsp;&nbsp;  [![Build Status](https://travis-ci.org/hankchanocd/npmlist.svg?branch=master)](https://travis-ci.org/hankchanocd/npmlist)
+# npmlist  &nbsp;&nbsp;  [![Build Status](https://travis-ci.org/hankchanocd/npmlist.svg?branch=master)](https://travis-ci.org/hankchanocd/npmlist)  [![Known Vulnerabilities](https://snyk.io/test/github/hankchanocd/npmlist/badge.svg?targetFile=package.json)](https://snyk.io/test/github/hankchanocd/npmlist?targetFile=package.json)
 A light-weight CLI tool listing npm package dependencies and package profile.
 
 Much of ```npmlist``` is build on top of ```npm``` commands, but it has some advantages over plain and cluttered ```npm list``` and ```npm info <package>```
