@@ -3,13 +3,16 @@ tags
 *.log
 
 # Text Editor
-.vscode
+.vscode/
 
 # npm
-node_modules
+node_modules/
 
 # Babel
 build/
 
 # Jest
 coverage/
+
+# Eslint
+eslint/
