@@ -15,9 +15,9 @@
     "jest:coverage": "jest --coverage",
     "eslint": "eslint . --ignore-path .gitignore --cache --cache-location \"./eslint/.eslintcache\" ",
     "eslint:makeHtml": "npm run eslint -- --format html -o ./eslint/report.html",
-    "eslint:show": "npm run eslint:makeHtml && open ./eslint/report.html",
+    "eslint:open": "npm run eslint:makeHtml --silent && open ./eslint/report.html",
     "flow": "flow",
-    "build": "babel src/ -d build/",
+    "build": "babel src/ -d build/ --quiet",
     "commit": "git-cz",
     "semantic-release": "semantic-release"
   },
