@@ -8,12 +8,12 @@ node_js:
 # Install mechanism is now defaulted to the faster 'npm ci' instead of 'npm install'. We are specifying it here to make it clear
 # See https://docs.npmjs.com/cli/ci
 install:
-  - npm ci
+  - npm install
 
 # Since 'npm ci' clears "node_modules/" before installing, our cache must be moved to "$HOME/.npm"
 cache:
   directories:
-    - "$HOME/.npm"
+    - "node_modules/"
 
 # Trigger Travis CI only when master branch is pushed, ignoring develop branch
 branches:
