@@ -1,6 +1,6 @@
 # npmlist  &nbsp;&nbsp;  [![Build Status](https://travis-ci.org/hankchanocd/npmlist.svg?branch=master)](https://travis-ci.org/hankchanocd/npmlist)  [![Known Vulnerabilities](https://snyk.io/test/github/hankchanocd/npmlist/badge.svg?targetFile=package.json)](https://snyk.io/test/github/hankchanocd/npmlist?targetFile=package.json)  ![Github issues](https://img.shields.io/github/issues/hankchanocd/npmlist.svg)
 
-A light-weight CLI tool listing npm package dependencies and package profile.
+A super light-weight CLI that only lists npm package dependencies and package profile.
 
 Much of ```npmlist``` is build on top of ```npm``` commands, but it has some advantages over plain and cluttered ```npm list``` and ```npm info <package>```
 
@@ -33,7 +33,7 @@ $ npmlist -g
 
 ```bash
 $ cd surl-cli
-$ npmlist
+[~/surl-cli]$ npmlist
 
 surl-cli@1.2.0 /Users/hank/surl-cli
 ├── child_process@1.0.2
@@ -46,7 +46,7 @@ surl-cli@1.2.0 /Users/hank/surl-cli
 
 ```bash
 $ cd surl-cli
-$ npmlist --info
+[~/surl-cli]$ npmlist --info
 
 surl-cli@1.2.0
 │ /Users/hank/surl-cli
