@@ -8,6 +8,8 @@
 // Dependencies
 const execChildProcess = require('child_process').exec;
 const chalk = require('chalk');
+const pkgInfo = require('pkginfo');
+const cwd = process.cwd();
 
 /**
  * Run `npm list` with 2 options provided: local() and global()
@@ -18,9 +20,30 @@ module.exports.execNpmList = function () {
 
     return {
         local() {
-            execChildProcess(cmd + '--local', function (error, stdout, stderr) {
-                printNpmList(error, stdout, stderr);
-            });
+            // Use pkgInfo to get package.json dependencies value. Parsing package.json is faster than `npm list`
+            try {
+                let pkg = {
+                    exports: {}
+                };
+                pkgInfo(pkg, {
+                    dir: cwd,
+                    include: ["name", "dependencies", "devDependencies"]
+                });
+                let name = pkg.exports.name;
+                let dependencies = pkg.exports.dependencies;
+                let devDependencies = pkg.exports.devDependencies;
+                Object.assign(dependencies, devDependencies); // Merge into the first object
+
+                // Output
+                console.log(name);
+                Object.keys(dependencies).sort().forEach(key => {
+                    let value = dependencies[key].replace(/[^0-9.,]/g, "");
+                    return console.log('├── ' + key + '@' + chalk.grey(value));
+                });
+
+            } catch (e) {
+                console.log(e, "No package.json found");
+            }
         },
         global() {
             execChildProcess(cmd + '--global', function (error, stdout, stderr) {

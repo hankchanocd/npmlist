@@ -59,7 +59,8 @@
     "child_process": "^1.0.2",
     "columnify": "^1.5.4",
     "commander": "^2.18.0",
-    "ls": "^0.2.1"
+    "ls": "^0.2.1",
+    "pkginfo": "^0.4.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
