@@ -93,7 +93,7 @@ To perform unit tests and integration tests, simply run ```npm test```.
 
 ```npmlist``` was initially a bunch of CLI shortcuts aliased on top of ```npm list``` and ```npm info```, but grew larger over time. It has since got its own idea of how to integrate with the workflow of JavaScript development.
 
-```npmlist``` is admittedly a tiny tool, but it has served me well and I believe it can be helpful to you if it fits your workflow. The development of ```npmlist``` will center on how to present a quick and concise report of npm packages on command line, while lifting the burden to move to browser.
+The development of ```npmlist``` will now center on how to present a quick and concise report on npm packages on command line, lifting the burden on developers to move to browser.
 
 ## License
 
