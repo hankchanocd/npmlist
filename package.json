@@ -24,6 +24,9 @@
   "bin": {
     "npmlist": "./index.js"
   },
+  "engines": {
+    "node": ">=8"
+  },
   "keywords": [
     "npm",
     "cli",
