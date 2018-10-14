@@ -17,6 +17,7 @@
     "eslint:makeHtml": "npm run eslint -- --format html -o ./eslint/report.html",
     "eslint:open": "npm run eslint:makeHtml --silent && open ./eslint/report.html",
     "flow": "flow",
+    "prebuild": "rimraf ./build",
     "build": "babel src/ -d build/ --quiet",
     "commit": "git-cz",
     "semantic-release": "semantic-release"
@@ -66,6 +67,7 @@
     "ghooks": "^2.0.4",
     "jest": "^23.6.0",
     "npm-run-all": "^4.1.3",
+    "rimraf": "^2.6.2",
     "semantic-release": "^15.9.17"
   },
   "config": {
