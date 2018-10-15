@@ -1,7 +1,7 @@
 {
   "name": "@hankchanocd/npmlist",
   "version": "0.0.0-semantically-released",
-  "description": "Listing npm packages in cli made easy",
+  "description": "Listing information of npm package at command line",
   "main": "index.js",
   "repository": {
     "type": "git",
