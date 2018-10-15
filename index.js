@@ -11,15 +11,15 @@ const {
     npmList,
     npmListInfo,
     npmScripts
-} = require('./build/npm');
+} = require('./build/npmLocal.js');
 
 const {
     fetchModule
-} = require('./build/https.js');
+} = require('./build/npmRegistry.js');
 
 const {
     getRecentInstalls
-} = require('./build/time');
+} = require('./build/npmRecent.js');
 
 
 program
