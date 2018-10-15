@@ -13,9 +13,9 @@ const cwd = process.cwd();
 
 /**
  * Run `npm list` with 2 options provided: local() and global()
- * i.e. execNpmList().local()
+ * i.e. npmList().local()
  */
-module.exports.execNpmList = function () {
+module.exports.npmList = function () {
     const cmd = 'npm list --depth=0 ';
 
     return {
@@ -68,9 +68,9 @@ function printNpmList(error, stdout, stderr) {
 
 /**
  * Run `npm list --long=true` with 2 options provided: local() and global()
- * i.e. execNpmListInfo().global()
+ * i.e. npmListInfo().global()
  */
-module.exports.execNpmListInfo = function () {
+module.exports.npmListInfo = function () {
     const cmd = 'npm ll --depth=0 --long=true ';
 
     return {

@@ -8,8 +8,8 @@ const chalk = require('chalk');
 
 // local modules
 const {
-    execNpmList,
-    execNpmListInfo
+    npmList,
+    npmListInfo
 } = require('./build/npm');
 
 const {
@@ -43,23 +43,23 @@ program
 // Listing of installed packages are executed through 'child_process'
 if (program.global) {
     if (!program.info) {
-        execNpmList().global();
+        npmList().global();
     } else {
-        execNpmListInfo().global();
+        npmListInfo().global();
     }
 
 } else if (program.local) {
     if (!program.info) {
-        execNpmList().local();
+        npmList().local();
     } else {
-        execNpmListInfo().local();
+        npmListInfo().local();
     }
 
 } else if (program.time) { // Select only the latest 10 download packages
     getRecentInstalls();
 
 } else if (program.info) {
-    execNpmListInfo().local();
+    npmListInfo().local();
 
 } else if (program.docs || program.args.length > 0) { // If a specific package is provided
     // both independent args and '--doc args' can be used to retrieve a module's dependencies info
@@ -67,7 +67,7 @@ if (program.global) {
     fetchModuleInfo(module);
 
 } else { // If nothing specified...
-    execNpmList().local();
+    npmList().local();
 }
 
 
