@@ -6,27 +6,29 @@
 
 // Dependencies
 const chalk = require('chalk');
-const https = require('https');
+const {
+    fetch
+} = require('./lib/fetch');
 
-
-module.exports.fetchModuleInfo = function (module) {
-    https.get(`https://registry.npmjs.org/${module}`, (res) => {
-        if (res.statusCode !== 200) {
-            res.destroy();
-            console.log(chalk.redBright('NPM Registry returned ' + res.statusCode));
-            return;
+/*
+ * fetchModule has two options for output: simple() and all()
+ */
+module.exports.fetchModule = async function (module) {
+    let response;
+    try {
+        response = await fetch(`https://registry.npmjs.org/${module}`);
+        if (!response.status == 200) {
+            throw Error('NPM registry returns' + response.status);
         }
+    } catch(err) {
+        console.err(err);
+    }
 
-        let buffers = [];
-        res.on('data', buffers.push.bind(buffers));
-        res.on('end', function () {
-            let result = {};
-            result.module = module;
-            result.dependencies = parseFetchedList(Buffer.concat(buffers));
+    let result = {};
+    result.module = module;
+    result.dependencies = parseFetchedList(response);
 
-            printFetchedList(result);
-        });
-    });
+    printFetchedList(result);
 };
 
 function parseFetchedList(data) {

@@ -14,7 +14,7 @@ const {
 } = require('./build/npm');
 
 const {
-    fetchModuleInfo
+    fetchModule
 } = require('./build/https.js');
 
 const {
@@ -66,7 +66,7 @@ if (program.global) {
 } else if (program.docs || program.args.length > 0) { // If a package is specified
     // both independent args and '--doc args' can be used to retrieve a module's dependencies info
     const module = program.docs ? program.docs : program.args;
-    fetchModuleInfo(module);
+    fetchModule(module);
 
 } else if (program.scripts) {
     npmScripts();
@@ -74,6 +74,3 @@ if (program.global) {
 } else { // If nothing specified...
     npmList().local();
 }
-
-
-// --docs searches npm api for the detailed info of the given package
