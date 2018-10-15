@@ -9,7 +9,8 @@ const chalk = require('chalk');
 // local modules
 const {
     npmList,
-    npmListInfo
+    npmListInfo,
+    npmScripts
 } = require('./build/npm');
 
 const {
@@ -29,6 +30,7 @@ program
     .option('-l, --local', 'the command for npm list --local')
     .option('-i, --info', 'the command for what used to be npmlist --long')
     .option('-t, --time', 'the command for what used to be npmlatest, showing the five last globally installed npm packages')
+    .option('-s, --scripts', 'the command for listing scripts')
     .option('-d, --docs <args>', 'the command for a pretty print of docs/information from the given package')
     .on('--help', function () {
         console.log();
@@ -65,6 +67,9 @@ if (program.global) {
     // both independent args and '--doc args' can be used to retrieve a module's dependencies info
     const module = program.docs ? program.docs : program.args;
     fetchModuleInfo(module);
+
+} else if (program.scripts) {
+    npmScripts();
 
 } else { // If nothing specified...
     npmList().local();

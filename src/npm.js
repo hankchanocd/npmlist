@@ -128,3 +128,33 @@ function parseNpmListInfo(stdout) {
         return i.includes('@') && i.includes('->');
     }
 }
+
+
+/**
+ * Print npm tasks
+ */
+module.exports.npmScripts = function () {
+
+    try {
+        let pkg = {
+            exports: {}
+        };
+
+        // Use pkgInfo to retrieve tasks/scripts from package.json
+        pkgInfo(pkg, {
+            dir: cwd,
+            include: ["name", "scripts"]
+        });
+        let name = pkg.exports.name;
+        let scripts = pkg.exports.scripts;
+
+        // Output
+        console.log(name);
+        Object.keys(scripts).sort().forEach(key => {
+            return console.log(chalk.cyan(key) + ': ' + scripts[key]);
+        });
+
+    } catch (e) {
+        console.log(e, "No package.json found");
+    }
+};
