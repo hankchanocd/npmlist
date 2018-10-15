@@ -42,7 +42,7 @@ module.exports.npmList = function () {
                 });
 
             } catch (e) {
-                console.log(e, "No package.json found");
+                console.log("No package.json found");
             }
         },
         global() {
@@ -155,6 +155,6 @@ module.exports.npmScripts = function () {
         });
 
     } catch (e) {
-        console.log(e, "No package.json found");
+        console.log("No package.json found");
     }
 };
