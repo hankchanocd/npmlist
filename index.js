@@ -74,6 +74,12 @@ if (program.global) {
         fetchModule(module).all();
     }
 
+} else if (program.all) { // Same functionality as above but for reverse args order
+    if (process.argv.length > 1) {
+        const module = process.argv[process.argv.length - 1];
+        fetchModule(module).all();
+    }
+
 } else if (program.scripts) {
     npmScripts();
 
