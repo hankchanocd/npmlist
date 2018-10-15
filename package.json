@@ -10,9 +10,11 @@
   "scripts": {
     "pretest": "npm run build --silent",
     "test": "npm-run-all jest eslint --parallel --silent",
-    "test:coverage": "npm run jest:coverage",
     "jest": "jest",
     "jest:coverage": "jest --coverage",
+    "coverage:check": "npm run jest:coverage",
+    "coverage:open": "opn ./coverage/index.html",
+    "watch": "jest --watch",
     "eslint": "eslint . --ignore-path .gitignore --cache --cache-location \"./eslint/.eslintcache\" ",
     "eslint:makeHtml": "npm run eslint -- --format html -o ./eslint/report.html",
     "eslint:open": "npm run eslint:makeHtml --silent && opn ./eslint/report.html",
@@ -40,6 +42,12 @@
     "build/",
     "README.md"
   ],
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": [
+      "html"
+    ]
+  },
   "author": "Hank Chan <hankchanth@icloud.com> (https://github.com/hankchanocd)",
   "license": "ISC",
   "bugs": {
@@ -51,7 +59,8 @@
     "child_process": "^1.0.2",
     "columnify": "^1.5.4",
     "commander": "^2.18.0",
-    "ls": "^0.2.1"
+    "ls": "^0.2.1",
+    "pkginfo": "^0.4.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -74,7 +83,7 @@
   "config": {
     "ghooks": {
       "pre-commit": "npm run test",
-      "pre-push": "npm run test:coverage  # Include Jest's coverage report"
+      "pre-push": "npm run coverage:check  # Include Jest's coverage report"
     },
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
