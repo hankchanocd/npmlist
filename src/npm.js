@@ -12,15 +12,14 @@ const pkgInfo = require('pkginfo');
 const cwd = process.cwd();
 
 /**
- * Run `npm list` with 2 options provided: local() and global()
+ * Output npm list with 2 options provided: local() and global()
  * i.e. npmList().local()
  */
 module.exports.npmList = function () {
-    const cmd = 'npm list --depth=0 ';
 
     return {
         local() {
-            // Use pkgInfo to get package.json dependencies value. Parsing package.json is faster than `npm list`
+            // Use pkgInfo to get package.json dependencies value. Parsing package.json is faster than running `npm list`
             try {
                 let pkg = {
                     exports: {}
@@ -29,31 +28,54 @@ module.exports.npmList = function () {
                     dir: cwd,
                     include: ["name", "dependencies", "devDependencies"]
                 });
-                let name = pkg.exports.name;
-                let dependencies = pkg.exports.dependencies;
-                let devDependencies = pkg.exports.devDependencies;
-                Object.assign(dependencies, devDependencies); // Merge into the first object
-
-                // Output
-                console.log(name);
-                Object.keys(dependencies).sort().forEach(key => {
-                    let value = dependencies[key].replace(/[^0-9.,]/g, "");
-                    return console.log('├── ' + key + '@' + chalk.grey(value));
-                });
+                printLocalList(parseLocalList(pkg));
 
             } catch (e) {
                 console.log("No package.json found");
             }
         },
         global() {
+            const cmd = 'npm list --depth=0 ';
+
             execChildProcess(cmd + '--global', function (error, stdout, stderr) {
-                printNpmList(error, stdout, stderr);
+                printGlobalList(error, stdout, stderr);
             });
         }
     };
 };
 
-function printNpmList(error, stdout, stderr) {
+function parseLocalList(pkg) {
+    return {
+        name: pkg.exports.name ? pkg.exports.name : '',
+        dependencies: pkg.exports.dependencies ? pkg.exports.dependencies : '',
+        devDependencies: pkg.exports.devDependencies ? pkg.exports.devDependencies : ''
+    };
+}
+
+function printLocalList(result) {
+    if (result.name) {
+        console.log(chalk.blueBright(result.name));
+    }
+
+    if (result.dependencies) {
+        console.log(chalk.underline('Dependencies'));
+        print(result.dependencies);
+    }
+
+    if (result.devDependencies) {
+        console.log(chalk.underline('DevDependencies'));
+        print(result.devDependencies);
+    }
+
+    function print(dependencies) {
+        Object.keys(dependencies).forEach(key => {
+            let value = dependencies[key] ? dependencies[key].replace(/[^0-9.,]/g, "") : '';
+            return console.log('├── ' + key + '@' + chalk.grey(value));
+        });
+    }
+}
+
+function printGlobalList(error, stdout, stderr) {
     if (error) { // Don't return if erred for `npm ERR! peer dep missing:` might occur, which is normal
         console.log(chalk.red.bold.underline("exec error:") + error);
     }
@@ -106,7 +128,7 @@ function parseNpmListInfo(stdout) {
 
     return lines.map(i => {
         if (isTitle(i)) {
-            return chalk.redBright(i);
+            return chalk.blueBright(i);
         } else if (isAddress(i)) {
             return chalk.grey(i);
         } else if (isSymlink(i)) {
@@ -145,16 +167,21 @@ module.exports.npmScripts = function () {
             dir: cwd,
             include: ["name", "scripts"]
         });
-        let name = pkg.exports.name;
-        let scripts = pkg.exports.scripts;
 
-        // Output
-        console.log(name);
-        Object.keys(scripts).sort().forEach(key => {
-            return console.log(chalk.cyan(key) + ': ' + scripts[key]);
-        });
+        printNpmScripts(pkg);
 
     } catch (e) {
         console.log("No package.json found");
     }
 };
+
+function printNpmScripts(result) {
+    let name = result.exports.name ? result.exports.name : '';
+    let scripts = result.exports.scripts ? result.exports.scripts : '';
+
+    console.log(name);
+    Object.keys(scripts).sort().forEach(key => {
+        let value = scripts[key] ? scripts[key] : '';
+        return console.log(chalk.cyan(key) + ': ' + value);
+    });
+}
