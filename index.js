@@ -23,7 +23,7 @@ const {
 
 
 program
-    .version('2.0.0', '-v, --version')
+    .version('3.0.0', '-v, --version')
     .usage(`[option] [name]`)
     .description('Listing information of npm packages at command line')
     .option('-l, --local', 'list local dependencies, which is also the default mode')
