@@ -1,12 +1,13 @@
 # npmlist  &nbsp;&nbsp;  [![Build Status](https://travis-ci.org/hankchanocd/npmlist.svg?branch=master)](https://travis-ci.org/hankchanocd/npmlist)  [![Known Vulnerabilities](https://snyk.io/test/github/hankchanocd/npmlist/badge.svg?targetFile=package.json)](https://snyk.io/test/github/hankchanocd/npmlist?targetFile=package.json)  ![Github issues](https://img.shields.io/github/issues/hankchanocd/npmlist.svg)
 
-A super light-weight CLI that only lists npm package dependencies and package profile.
+A CLI that lists everything listable from any npm package, i.e. dependencies, scripts, profile.
 
 Much of ```npmlist``` is build on top of ```npm``` commands, but it has some advantages over plain and cluttered ```npm list``` and ```npm info <package>```
 
 1. A shortcut for ```npm list --depth=0 --local``` and other similarly annoying ```npm list --@#$%``` commands with assumed configurations
 2. Richer and more development-relevant information than ```npm info <package>```
 3. No need to leave terminal just for glancing at a package's npm profile
+4. List npm scripts
 
 ## Install
 
@@ -83,6 +84,17 @@ MODULE     VERSION
 columnify  1.5.4
 commander  ~2.17.1
 node-fetch ~2.2.0
+```
+
+### List npm scripts
+
+```
+$ npmlist -s
+
+express
+build: babel src/ -d build/ --quiet
+commit: git-cz
+test: mocha
 ```
 
 ## Tests

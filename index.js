@@ -11,32 +11,33 @@ const {
     npmList,
     npmListInfo,
     npmScripts
-} = require('./build/npm');
+} = require('./build/npmLocal.js');
 
 const {
-    fetchModuleInfo
-} = require('./build/https.js');
+    fetchModule
+} = require('./build/npmRegistry.js');
 
 const {
     getRecentInstalls
-} = require('./build/time');
+} = require('./build/npmRecent.js');
 
 
 program
     .version('2.0.0', '-v, --version')
     .usage(`[option] [name]`)
-    .description('Listing npm packages in cli made easy')
-    .option('-g, --global', 'the command for npm list --global')
-    .option('-l, --local', 'the command for npm list --local')
-    .option('-i, --info', 'the command for what used to be npmlist --long')
-    .option('-t, --time', 'the command for what used to be npmlatest, showing the five last globally installed npm packages')
-    .option('-s, --scripts', 'the command for listing scripts')
-    .option('-d, --docs <args>', 'the command for a pretty print of docs/information from the given package')
+    .description('Listing information of npm packages at command line')
+    .option('-l, --local', 'list local dependencies, which is also the default mode')
+    .option('-g, --global', 'list global dependencies')
+    .option('-i, --info', 'add information to dependencies list')
+    .option('-t, --time', 'show the last five globally installed npm packages')
+    .option('-a, --all [name]', 'show all npm packages')
+    .option('-s, --scripts', 'list scripts/tasks')
     .on('--help', function () {
         console.log();
         console.log('  Examples:');
         console.log('    ' + chalk.blueBright(`npmlist -i -l, ${chalk.white('shows a detailed list of local modules/dependencies')}`));
-        console.log('    ' + chalk.blueBright(`npmlist [args], ${chalk.white("shows a module's dependencies from npm registry API")}`));
+        console.log('    ' + chalk.blueBright(`npmlist [args], ${chalk.white("shows dependencies of a module from npm registry")}`));
+        console.log('    ' + chalk.blueBright(`npmlist [args] --all, ${chalk.white("shows all info about a module from npm registry")}`));
         console.log();
     })
     .parse(process.argv);
@@ -63,10 +64,15 @@ if (program.global) {
 } else if (program.info) {
     npmListInfo().local();
 
-} else if (program.docs || program.args.length > 0) { // If a specific package is provided
+} else if (program.args.length > 0) { // If a package is specified
     // both independent args and '--doc args' can be used to retrieve a module's dependencies info
     const module = program.docs ? program.docs : program.args;
-    fetchModuleInfo(module);
+
+    if (!program.all) {
+        fetchModule(module).simple();
+    } else {
+        fetchModule(module).all();
+    }
 
 } else if (program.scripts) {
     npmScripts();
@@ -74,6 +80,3 @@ if (program.global) {
 } else { // If nothing specified...
     npmList().local();
 }
-
-
-// --docs searches npm api for the detailed info of the given package
