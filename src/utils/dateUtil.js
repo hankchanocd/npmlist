@@ -1,5 +1,5 @@
 /**
- * date.js deals with code that is time-related and date-related
+ * dateUtil.js deals with code that is time-related and date-related
  *
  */
 'use strict';
@@ -7,6 +7,8 @@
 // Sort by date descendingly
 module.exports.sortByDate = function (arr) {
     arr.sort(function (a, b) {
+        if (!a.stat.mtime || !b.stat.mtime) throw Error('List has no `mtime` property');
+
         var keyA = new Date(a.stat.mtime),
             keyB = new Date(b.stat.mtime);
 
@@ -20,6 +22,8 @@ module.exports.sortByDate = function (arr) {
 
 // Parse date into MM:DD HH:MM format
 module.exports.parseDate = function (str) {
+    if (new Date(str) === 'Invalid Date') return;
+
     let date = new Date(str);
     return `${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
 };

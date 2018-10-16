@@ -19,7 +19,11 @@ const {
  * It has two options for output: simple() and all(). Chain operations are flexible for future expansion with backward compatibility
  * p.s. Lesson learned: async/await and methods that use promise cannot return
  */
-module.exports = function (module) {
+module.exports = function (module = '') {
+	if (!module) {
+		return console.log(chalk.redBright('No module provided'));
+	}
+
 	return {
 		simple: async function () {
 				try {
@@ -45,13 +49,22 @@ module.exports = function (module) {
 /*
  * Parsing with 2 options: simple() offers lazy evaluation, all() evaluates all defined rules
  */
-function parse(data) {
+function parse(data = {
+	'name': '',
+	'dist-tags': {
+		'latest': ''
+	},
+	'versions': {}
+}) {
+	if (!data['name'] || !data['dist-tags'] || !data['versions']) {
+		return console.log(chalk.redBright('Fetched info is incomplete, therefore useless'));
+	}
+
 	const title = data['name'] + '@' + data['dist-tags']['latest'];
 	const versions = Object.keys(data.versions);
 	const dependencies = (() => {
-		const latestVersion = versions[versions.length - 1];
-		const result = data.versions[latestVersion].dependencies; // List only the dependencies from that latest release
-		return result;
+		let latestVersion = versions[versions.length - 1];
+		return data.versions[latestVersion].dependencies; // List only the dependencies from that latest release
 	})();
 
 	return {
@@ -75,27 +88,28 @@ function parse(data) {
 /*
  * Printing with 2 options: simple() and all()
  */
-function print(result) {
-	let title = result.title ? result.title : '';
-	let dep = result.dependencies ? result.dependencies : '';
-	let versions = result.versions ? result.versions : '';
+function print({
+	title = '',
+	dependencies = '',
+	versions = ''
+}) {
 
 	return {
 		simple() { // Simple mode
-			if (!dep) { // Returns early if has no dependencies
+			if (!dependencies) {
 				return console.log(chalk.blueBright(`${title} has no dependencies`));
 			}
 
 			console.log(chalk.blueBright(`${title}'s Dependencies:`));
-			Object.keys(dep).forEach(key => {
-				let value = dep[key] ? dep[key].replace(/[^0-9.,]/g, "") : '';
+			Object.keys(dependencies).forEach(key => {
+				let value = dependencies[key] ? dependencies[key].replace(/[^0-9.,]/g, "") : '';
 				return console.log('├── ' + key + '@' + chalk.grey(value));
 			});
 		},
 		all() { // All mode
 			console.log(chalk.blueBright(title));
 			ui.div({
-				text: columnify(dep),
+				text: columnify(dependencies),
 				width: 30,
 				padding: [0, 2, 0, 2]
 			}, {

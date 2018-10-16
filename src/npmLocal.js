@@ -37,44 +37,45 @@ module.exports.npmList = function () {
 		},
 
 		global() {
-			const cmd = 'npm list --depth=0 ';
-
-			execChildProcess(cmd + '--global', function (error, stdout, stderr) {
+			execChildProcess('npm list --depth=0 --global', function (error, stdout, stderr) {
 				printGlobalList(error, stdout, stderr);
 			});
 		}
 	};
 };
 
-function printLocalList(pkg) {
-	const result = {
-		name: pkg.exports.name ? pkg.exports.name : '',
-		version: pkg.exports.version ? pkg.exports.version : '',
-		dependencies: pkg.exports.dependencies ? pkg.exports.dependencies : '',
-		devDependencies: pkg.exports.devDependencies ? pkg.exports.devDependencies : ''
-	};
+function printLocalList({
+	exports: {
+		name,
+		version,
+		dependencies,
+		devDependencies
+	}
+} = {
+	exports: {}
+}) {
 
-	if (result.name) {
-		if (result.version) {
-			console.log(chalk.blueBright(result.name + '@' + result.version));
+	if (name) {
+		if (version) {
+			console.log(chalk.blueBright(name + '@' + version));
 		} else {
-			console.log(result.name);
+			console.log(name);
 		}
 	}
 
-	if (result.dependencies) {
+	if (dependencies) {
 		console.log(chalk.underline('Dependencies'));
-		print(result.dependencies);
+		printDeps(dependencies);
 	}
 
-	if (result.devDependencies) {
+	if (devDependencies) {
 		console.log(chalk.underline('DevDependencies'));
-		print(result.devDependencies);
+		printDeps(devDependencies);
 	}
 
-	function print(dependencies) {
-		Object.keys(dependencies).forEach(key => {
-			let value = dependencies[key] ? dependencies[key].replace(/[^0-9.,]/g, "") : '';
+	function printDeps(deps = []) {
+		Object.keys(deps).forEach(key => {
+			let value = deps[key] ? deps[key].replace(/[^0-9.,]/g, "") : '';
 			return console.log('├── ' + key + '@' + chalk.grey(value));
 		});
 	}
@@ -180,11 +181,15 @@ module.exports.npmScripts = function () {
 	}
 };
 
-function printNpmScripts(result) {
-	let name = result.exports.name ? result.exports.name : '';
-	let version = result.exports.version ? result.exports.version : '';
-	let scripts = result.exports.scripts ? result.exports.scripts : '';
-
+function printNpmScripts({
+	exports: {
+		name,
+		version,
+		scripts
+	}
+} = {
+	exports: {}
+}) {
 	(function printTitle() {
 		if (name) {
 			if (version) {
@@ -194,9 +199,13 @@ function printNpmScripts(result) {
 		}
 	})();
 	(function printScripts() {
-		Object.keys(scripts).sort().forEach(key => {
-			let value = scripts[key] ? scripts[key] : '';
-			return console.log(chalk.cyan(key) + ': ' + value);
-		});
+		if (scripts) {
+			Object.keys(scripts).sort().forEach(key => {
+				let value = scripts[key] ? scripts[key] : '';
+				return console.log(chalk.cyan(key) + ': ' + value);
+			});
+		} else {
+			return console.log('Module has no scripts');
+		}
 	})();
 }
