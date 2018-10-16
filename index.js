@@ -25,19 +25,20 @@ const {
 program
 	.version('3.0.0', '-v, --version')
 	.usage(`[option] [name]`)
-	.description('Listing information of npm packages at command line')
+	.description('lists everything listable from npm package at command line')
 	.option('-l, --local', 'list local dependencies, which is also the default mode')
-	.option('-g, --global', 'list global dependencies')
-	.option('-d, --details', 'include details to each dependency')
-	.option('-t, --time', 'show the last five globally installed npm packages')
-	.option('-a, --all [name]', 'show all npm packages')
-	.option('-s, --scripts', 'list scripts/tasks')
+	.option('-g, --global', 'list global modules')
+	.option('-d, --details', 'include details to each dependency, but disable the default interactive mode')
+	.option('-t, --time', 'show the latest 5 modules installed globally')
+	.option('-a, --all [name]', 'show all information about a module fetched from NPM registry')
+	.option('-s, --scripts', 'list/execute npm scripts')
 	.on('--help', function () {
 		console.log();
 		console.log('  Examples:');
-		console.log('    ' + chalk.blueBright(`npmlist -d -l, ${chalk.white('shows a detailed list of local modules/dependencies')}`));
-		console.log('    ' + chalk.blueBright(`npmlist [args], ${chalk.white("shows dependencies of a module from npm registry")}`));
-		console.log('    ' + chalk.blueBright(`npmlist [args] --all, ${chalk.white("shows all info about a module from npm registry")}`));
+		console.log('    ' + chalk.blueBright(`npmlist, ${chalk.white('shows a list of local dependencies')}`));
+		console.log('    ' + chalk.blueBright(`npmlist -g -d, ${chalk.white('shows a detailed list of global modules')}`));
+		console.log('    ' + chalk.blueBright(`npmlist [module], ${chalk.white("shows dependencies of a module from npm registry")}`));
+		console.log('    ' + chalk.blueBright(`npmlist [module] --all, ${chalk.white("shows all info about a module from npm registry")}`));
 		console.log();
 	})
 	.parse(process.argv);
@@ -85,6 +86,6 @@ if (program.global) {
 
 } else { // default mode when nothing specified...
 	(function listLocalDependencies() {
-        npmList().local();
-    })();
+		npmList().local();
+	})();
 }

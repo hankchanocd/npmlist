@@ -17,54 +17,38 @@ $ npm install -g @hankchanocd/npmlist
 
 ## Usage
 
-### Global packages
+```
+Usage: npmlist [option] [name]
+
+Listing information of npm packages at command line
+
+Options:
+
+  -v, --version     output the version number
+  -l, --local       list local dependencies, which is also the default mode
+  -g, --global      list global modules
+  -d, --details     include details to each dependency, but disable the default interactive mode
+  -t, --time        show the latest 5 modules installed globally
+  -a, --all [name]  show all information about a module fetched from NPM registry
+  -s, --scripts     list/execute npm scripts
+  -h, --help        output usage information
+```
+
+## Examples
+
+### Global modules
 
 ```bash
 $ npmlist -g
 
 /usr/local/bin/lib
-├── 0x@4.5.0
 ├── @angular/cli@6.2.4
 ├── aerobatic-cli@1.1.4
-├── atomizer@3.4.8
-...
 ```
 
-### Local package dependencies
+### Recently installed/upgraded global modules
 
-```bash
-$ cd surl-cli
-[~/surl-cli]$ npmlist
-
-surl-cli@1.2.0
-Dependencies
-├── child_process@1.0.2
-├── commander@2.18.0
-├── jest@23.6.0
-└── ls@0.2.1
-```
-
-### Local package dependencies with details
-
-```
-$ cd surl-cli
-[~/surl-cli]$ npmlist --info
-
-surl-cli@1.2.0
-│ /Users/hank/surl-cli
-│ URL shortener CLI
-│ git+https://github.com/hankchanocd/surl-cli.git
-│ https://github.com/hankchanocd/surl-cli#readme
-├── babel-cli@6.26.0
-│   Babel command line.
-│   https://github.com/babel/babel/tree/master/packages/babel-cli
-│   https://babeljs.io/
-...
-```
-
-### Global packages recently installed/upgraded
-
-A good refresher on what the heck you've installed/upgraded globally on your machine in the recent past
+A good refresher on what the heck you've installed/upgraded globally in the recent past
 
 ```bash
 $ npmlist -t
@@ -72,28 +56,27 @@ $ npmlist -t
 NAME                 TIME
 npmlist-cli          10-5 21:29
 semantic-release     10-5 8:5
-tty-table            10-5 8:5
 ```
 
-### Fetch package dependencies from npm registry
+### Fetch from NPM registry
+
+`npmlist` fetches the latest released version by default
 
 ```
 $ npmlist express
 
-express's Dependencies:
+express@4.16.4's Dependencies:
 ├── accepts@1.3.5
 ├── array-flatten@1.1.1
-├── body-parser@1.18.3
 ```
 
-### List npm scripts
+### List module's npm scripts
 
 ```
 $ npmlist -s
 
-express@1.2.0
+express@4.16.4
 build: babel src/ -d build/ --quiet
-commit: git-cz
 test: mocha
 ```
 
@@ -101,11 +84,15 @@ test: mocha
 
 To perform unit tests and integration tests, simply run ```npm test```.
 
+## Changelog
+
+**2018-Oct-16:** Interactive mode is now enabled by default
+
 ## Contribution
 
 ```npmlist``` started off as a bunch of CLI aliases on top of ```npm list``` and ```npm info```, but grew larger over time. It has since become very effective at checking out package's dependencies.
 
-The roadmap for ```npmlist``` will now focus on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant moving between terminal and browser.
+The roadmap for ```npmlist``` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser.
 
 ## License
 
