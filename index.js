@@ -9,7 +9,7 @@ const chalk = require('chalk');
 // local modules
 const {
 	npmList,
-	npmListInfo,
+	npmListDetails,
 	npmScripts
 } = require('./build/npmLocal.js');
 
@@ -28,14 +28,14 @@ program
 	.description('Listing information of npm packages at command line')
 	.option('-l, --local', 'list local dependencies, which is also the default mode')
 	.option('-g, --global', 'list global dependencies')
-	.option('-i, --info', 'add information to dependencies list')
+	.option('-d, --details', 'include details to each dependency')
 	.option('-t, --time', 'show the last five globally installed npm packages')
 	.option('-a, --all [name]', 'show all npm packages')
 	.option('-s, --scripts', 'list scripts/tasks')
 	.on('--help', function () {
 		console.log();
 		console.log('  Examples:');
-		console.log('    ' + chalk.blueBright(`npmlist -i -l, ${chalk.white('shows a detailed list of local modules/dependencies')}`));
+		console.log('    ' + chalk.blueBright(`npmlist -d -l, ${chalk.white('shows a detailed list of local modules/dependencies')}`));
 		console.log('    ' + chalk.blueBright(`npmlist [args], ${chalk.white("shows dependencies of a module from npm registry")}`));
 		console.log('    ' + chalk.blueBright(`npmlist [args] --all, ${chalk.white("shows all info about a module from npm registry")}`));
 		console.log();
@@ -45,24 +45,24 @@ program
 
 // Listing of installed packages are executed through 'child_process'
 if (program.global) {
-	if (!program.info) {
+	if (!program.details) {
 		npmList().global();
 	} else {
-		npmListInfo().global();
+		npmListDetails().global();
 	}
 
 } else if (program.local) {
-	if (!program.info) {
+	if (!program.details) {
 		npmList().local();
 	} else {
-		npmListInfo().local();
+		npmListDetails().local();
 	}
 
 } else if (program.time) { // Select only the latest 10 download packages
 	getRecentInstalls();
 
-} else if (program.info) {
-	npmListInfo().local();
+} else if (program.details) {
+	npmListDetails().local();
 
 } else if (program.args.length > 0) { // If a package is specified
 	// both independent args and '--doc args' can be used to retrieve a module's dependencies info

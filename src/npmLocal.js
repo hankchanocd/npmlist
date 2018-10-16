@@ -95,31 +95,31 @@ function printGlobalList(error, stdout, stderr) {
 
 /**
  * Run `npm list --long=true` with 2 options provided: local() and global()
- * i.e. npmListInfo().global()
+ * i.e. npmListDetails().global()
  */
-module.exports.npmListInfo = function () {
+module.exports.npmListDetails = function () {
 	const cmd = 'npm ll --depth=0 --long=true ';
 
 	return {
 		local() {
 			execChildProcess(cmd + '--local', function (error, stdout, stderr) {
-				printNpmListInfo(error, stdout, stderr);
+				printNpmListDetails(error, stdout, stderr);
 			});
 		},
 		global() {
 			execChildProcess(cmd + '--global', function (error, stdout, stderr) {
-				printNpmListInfo(error, stdout, stderr);
+				printNpmListDetails(error, stdout, stderr);
 			});
 		}
 	};
 };
 
-function printNpmListInfo(error, stdout, stderr) {
+function printNpmListDetails(error, stdout, stderr) {
 	if (error) { // Don't return if erred for `npm ERR! peer dep missing:` might occur, which is normal
 		console.log(chalk.red.bold.underline("exec error:") + error);
 	}
 	if (stdout) {
-		return parseNpmListInfo(stdout).forEach(i => {
+		return parseNpmListDetails(stdout).forEach(i => {
 			console.log(i);
 		});
 	}
@@ -128,7 +128,7 @@ function printNpmListInfo(error, stdout, stderr) {
 	}
 }
 
-function parseNpmListInfo(stdout) {
+function parseNpmListDetails(stdout) {
 	const lines = stdout.split('\n');
 
 	return lines.map(i => {
