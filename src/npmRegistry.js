@@ -23,10 +23,7 @@ module.exports.fetchModule = function (module) {
         simple: async function () {
                 try {
                     let data = JSON.parse(await fetch(`https://registry.npmjs.org/${module}`));
-                    let result = {
-                        module: module,
-                        dependencies: parse(data).simple().dependencies
-                    };
+                    let result = parse(data).simple();
                     print(result).simple();
                 } catch (err) {
                     console.log(chalk.redBright(err));
@@ -35,10 +32,7 @@ module.exports.fetchModule = function (module) {
             all: async function () {
                 try {
                     let data = JSON.parse(await fetch(`https://registry.npmjs.org/${module}`));
-                    let result = {
-                        module
-                    };
-                    Object.assign(result, parse(data).all()); // Merge all the result into the first object: result
+                    let result = parse(data).all();
                     print(result).all();
                 } catch (err) {
                     console.log(chalk.redBright(err));
@@ -51,6 +45,7 @@ module.exports.fetchModule = function (module) {
  * Parsing with 2 options: simple() offers lazy evaluation, all() evaluates all defined rules
  */
 function parse(data) {
+    const title = data['name'] + '@' + data['dist-tags']['latest'];
     const versions = Object.keys(data.versions);
     const dependencies = (() => {
         const latestVersion = versions[versions.length - 1];
@@ -61,11 +56,13 @@ function parse(data) {
     return {
         simple() {
             return {
+                title,
                 dependencies
             };
         },
         all() {
             return {
+                title,
                 versions,
                 dependencies
             };
@@ -74,25 +71,28 @@ function parse(data) {
 }
 
 
+/*
+ * Printing with 2 options: simple() and all()
+ */
 function print(result) {
-    let module = result.module ? result.module : '';
+    let title = result.title ? result.title : '';
     let dep = result.dependencies ? result.dependencies : '';
     let versions = result.versions ? result.versions : '';
 
     return {
         simple() { // Simple mode
             if (!dep) { // Returns early if has no dependencies
-                return console.log(chalk.blueBright(`${module} has no dependencies`));
+                return console.log(chalk.blueBright(`${title} has no dependencies`));
             }
 
-            console.log(chalk.blueBright(`${module}'s Dependencies:`));
+            console.log(chalk.blueBright(`${title}'s Dependencies:`));
             Object.keys(dep).forEach(key => {
                 let value = dep[key] ? dep[key].replace(/[^0-9.,]/g, "") : '';
                 return console.log('├── ' + key + '@' + chalk.grey(value));
             });
         },
         all() { // All mode
-            console.log(chalk.blueBright(module));
+            console.log(chalk.blueBright(title));
             ui.div({
                 text: columnify(dep),
                 width: 30,

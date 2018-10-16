@@ -26,7 +26,7 @@ module.exports.npmList = function () {
                 };
                 pkgInfo(pkg, {
                     dir: cwd,
-                    include: ["name", "dependencies", "devDependencies"]
+                    include: ["name", "version", "dependencies", "devDependencies"]
                 });
                 printLocalList(parseLocalList(pkg));
 
@@ -47,6 +47,7 @@ module.exports.npmList = function () {
 function parseLocalList(pkg) {
     return {
         name: pkg.exports.name ? pkg.exports.name : '',
+        version: pkg.exports.version ? pkg.exports.version : '',
         dependencies: pkg.exports.dependencies ? pkg.exports.dependencies : '',
         devDependencies: pkg.exports.devDependencies ? pkg.exports.devDependencies : ''
     };
@@ -54,7 +55,11 @@ function parseLocalList(pkg) {
 
 function printLocalList(result) {
     if (result.name) {
-        console.log(chalk.blueBright(result.name));
+        if (result.version) {
+            console.log(chalk.blueBright(result.name + '@' + result.version));
+        } else {
+            console.log(result.name);
+        }
     }
 
     if (result.dependencies) {
@@ -165,7 +170,7 @@ module.exports.npmScripts = function () {
         // Use pkgInfo to retrieve tasks/scripts from package.json
         pkgInfo(pkg, {
             dir: cwd,
-            include: ["name", "scripts"]
+            include: ["name", "version", "scripts"]
         });
 
         printNpmScripts(pkg);
@@ -177,11 +182,21 @@ module.exports.npmScripts = function () {
 
 function printNpmScripts(result) {
     let name = result.exports.name ? result.exports.name : '';
+    let version = result.exports.version ? result.exports.version : '';
     let scripts = result.exports.scripts ? result.exports.scripts : '';
 
-    console.log(name);
-    Object.keys(scripts).sort().forEach(key => {
-        let value = scripts[key] ? scripts[key] : '';
-        return console.log(chalk.cyan(key) + ': ' + value);
-    });
+    (function printTitle() {
+        if (name) {
+            if (version) {
+                return console.log(chalk.blueBright(name + '@' + version));
+            }
+            return console.log(name);
+        }
+    })();
+    (function printScripts() {
+        Object.keys(scripts).sort().forEach(key => {
+            let value = scripts[key] ? scripts[key] : '';
+            return console.log(chalk.cyan(key) + ': ' + value);
+        });
+    })();
 }
