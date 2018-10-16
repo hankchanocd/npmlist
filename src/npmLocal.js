@@ -28,7 +28,7 @@ module.exports.npmList = function () {
 					dir: cwd,
 					include: ["name", "version", "dependencies", "devDependencies"]
 				});
-				printLocalList(parseLocalList(pkg));
+				printLocalList(pkg);
 
 			} catch (e) {
 				console.log("No package.json found");
@@ -44,16 +44,14 @@ module.exports.npmList = function () {
 	};
 };
 
-function parseLocalList(pkg) {
-	return {
+function printLocalList(pkg) {
+	const result = {
 		name: pkg.exports.name ? pkg.exports.name : '',
 		version: pkg.exports.version ? pkg.exports.version : '',
 		dependencies: pkg.exports.dependencies ? pkg.exports.dependencies : '',
 		devDependencies: pkg.exports.devDependencies ? pkg.exports.devDependencies : ''
 	};
-}
 
-function printLocalList(result) {
 	if (result.name) {
 		if (result.version) {
 			console.log(chalk.blueBright(result.name + '@' + result.version));

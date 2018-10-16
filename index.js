@@ -43,46 +43,48 @@ program
 	.parse(process.argv);
 
 
-// Listing of installed packages are executed through 'child_process'
 if (program.global) {
-	if (!program.details) {
-		npmList().global();
-	} else {
-		npmListDetails().global();
-	}
+	(function listGlobalPackages() {
+		!program.details ? npmList().global() : npmListDetails().global();
+	})();
+
 
 } else if (program.local) {
-	if (!program.details) {
-		npmList().local();
-	} else {
-		npmListDetails().local();
-	}
+	(function listLocalDependencies() {
+		!program.details ? npmList().local() : npmListDetails().local();
+	})();
 
-} else if (program.time) { // Select only the latest 10 download packages
+
+} else if (program.time) { // Select only the 10 latest installed packages
 	getRecentInstalls();
 
-} else if (program.details) {
+
+} else if (program.details) { // Default to npm local packages listing if only --details flag present
 	npmListDetails().local();
 
-} else if (program.args.length > 0) { // If a package is specified
-	// both independent args and '--doc args' can be used to retrieve a module's dependencies info
-	const module = program.docs ? program.docs : program.args;
 
-	if (!program.all) {
-		fetchModule(module).simple();
-	} else {
-		fetchModule(module).all();
-	}
+} else if (program.args.length > 0) { // execute if a module is specified, i.e. `npmlist express --all`
+	(function fetchModuleInfoFromNpmRegistry() {
+		const module = program.args;
+		!program.all ? fetchModule(module).simple() : fetchModule(module).all();
+	})();
 
-} else if (program.all) { // Same functionality as above but for reverse args order
-	if (process.argv.length > 1) {
-		const module = process.argv[process.argv.length - 1];
-		fetchModule(module).all();
-	}
+
+} else if (program.all) { // Same functionality as above but for reverse args-flags order, i.e. `npmlist --all express`
+	(function fetchModuleInfoFromNpmRegistry() {
+		if (process.argv.length > 1) {
+			const module = process.argv[process.argv.length - 1];
+			fetchModule(module).all();
+		}
+	})();
+
 
 } else if (program.scripts) {
 	npmScripts();
 
-} else { // If nothing specified...
-	npmList().local();
+
+} else { // default mode when nothing specified...
+	(function listLocalDependencies() {
+        npmList().local();
+    })();
 }
