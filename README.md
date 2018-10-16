@@ -90,9 +90,9 @@ To perform unit tests and integration tests, simply run ```npm test```.
 
 ## Contribution
 
-```npmlist``` started off as a bunch of CLI aliases on top of ```npm list``` and ```npm info```, but grew larger over time. It has since become very effective at checking out package's dependencies.
+```npmlist``` started off as a bunch of CLI aliases on top of ```npm list``` and ```npm info```, but grew larger over time. It's now very effective at checking out package's dependencies. Saying all these means we are not afraid of expanding ```npmlist``` features.
 
-The roadmap for ```npmlist``` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser.
+The roadmap for ```npmlist``` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [DOCS](./DOCS.md) for ```npmlist```'s code architecture, developments rules, and styles.
 
 ## License
 
