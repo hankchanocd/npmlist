@@ -17,7 +17,7 @@ $ npm install -g @hankchanocd/npmlist
 
 ## Usage
 
-### Show a list of global packages
+### Global packages
 
 ```bash
 $ npmlist -g
@@ -30,7 +30,7 @@ $ npmlist -g
 ...
 ```
 
-### Show a list of local package dependencies
+### Local package dependencies
 
 ```bash
 $ cd surl-cli
@@ -44,7 +44,7 @@ Dependencies
 └── ls@0.2.1
 ```
 
-### Show a list of local package dependencies with details
+### Local package dependencies with details
 
 ```
 $ cd surl-cli
@@ -62,7 +62,7 @@ surl-cli@1.2.0
 ...
 ```
 
-### Show global packages recently installed/upgraded
+### Global packages recently installed/upgraded
 
 A good refresher on what the heck you've installed/upgraded globally on your machine in the recent past
 
@@ -75,7 +75,7 @@ semantic-release     10-5 8:5
 tty-table            10-5 8:5
 ```
 
-### Fetch a npm package's profile from npm registry
+### Fetch package dependencies from npm registry
 
 ```
 $ npmlist express
