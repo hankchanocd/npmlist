@@ -11,14 +11,15 @@ const ui = require('cliui')();
 const columnify = require('columnify');
 const {
 	fetch
-} = require('./lib/fetch');
+} = require('./utils/fetchUtil');
 
 
 /*
- * fetchModule has two options for output: simple() and all(). Chain operations are flexible for future expansion with backward compatibility
+ * npmRegistry has only one exposed export function.
+ * It has two options for output: simple() and all(). Chain operations are flexible for future expansion with backward compatibility
  * p.s. Lesson learned: async/await and methods that use promise cannot return
  */
-module.exports.fetchModule = function (module) {
+module.exports = function (module) {
 	return {
 		simple: async function () {
 				try {

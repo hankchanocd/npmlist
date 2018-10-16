@@ -1,6 +1,6 @@
 /**
- * npm.js provides methods that are running npm commands underneath in the local environment
- * See https.js for methods fetching info from npm registry
+ * npmLocal.js provides methods that are running npm commands underneath in the local environment
+ * See npmRegistry.js for methods fetching module info from NPM registry
  *
  */
 'use strict';
@@ -19,7 +19,8 @@ module.exports.npmList = function () {
 
 	return {
 		local() {
-			// Use pkgInfo to get package.json dependencies value. Parsing package.json is faster than running `npm list`
+			// Use pkgInfo to get package.json dependencies value. Parsing package.json for dependencies is faster
+			// than running `npm list`
 			try {
 				let pkg = {
 					exports: {}
@@ -34,6 +35,7 @@ module.exports.npmList = function () {
 				console.log("No package.json found");
 			}
 		},
+
 		global() {
 			const cmd = 'npm list --depth=0 ';
 
@@ -165,7 +167,7 @@ module.exports.npmScripts = function () {
 			exports: {}
 		};
 
-		// Use pkgInfo to retrieve tasks/scripts from package.json
+		// Use pkgInfo to retrieve scripts from package.json
 		pkgInfo(pkg, {
 			dir: cwd,
 			include: ["name", "version", "scripts"]

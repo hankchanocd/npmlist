@@ -6,20 +6,13 @@
 const program = require('commander');
 const chalk = require('chalk');
 
-// local modules
+// Local dependencies
+const {npmLocal, npmRegistry, npmRecent} = require('./../build/index');
 const {
 	npmList,
 	npmListDetails,
 	npmScripts
-} = require('./build/npmLocal.js');
-
-const {
-	fetchModule
-} = require('./build/npmRegistry.js');
-
-const {
-	getRecentInstalls
-} = require('./build/npmRecent.js');
+} = npmLocal;
 
 
 program
@@ -57,7 +50,7 @@ if (program.global) {
 
 
 } else if (program.time) { // Select only the 10 latest installed packages
-	getRecentInstalls();
+	npmRecent();
 
 
 } else if (program.details) { // Default to npm local packages listing if only --details flag present
@@ -67,7 +60,7 @@ if (program.global) {
 } else if (program.args.length > 0) { // execute if a module is specified, i.e. `npmlist express --all`
 	(function fetchModuleInfoFromNpmRegistry() {
 		const module = program.args;
-		!program.all ? fetchModule(module).simple() : fetchModule(module).all();
+		!program.all ? npmRegistry(module).simple() : npmRegistry(module).all();
 	})();
 
 
@@ -75,7 +68,7 @@ if (program.global) {
 	(function fetchModuleInfoFromNpmRegistry() {
 		if (process.argv.length > 1) {
 			const module = process.argv[process.argv.length - 1];
-			fetchModule(module).all();
+			npmRegistry(module).all();
 		}
 	})();
 
