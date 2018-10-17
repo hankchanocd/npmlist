@@ -11,7 +11,7 @@ const ui = require('cliui')();
 const columnify = require('columnify');
 const {
 	fetch
-} = require('./utils/fetchUtil');
+} = require('./utils/promiseUtil');
 
 
 /*

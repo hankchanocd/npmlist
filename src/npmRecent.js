@@ -5,7 +5,6 @@
 'use strict';
 
 // Dependencies
-const execChildProcess = require('child_process').exec;
 const ls = require('ls');
 const path = require('path');
 const chalk = require('chalk');
@@ -14,28 +13,27 @@ const {
 	sortByDate,
 	parseDate
 } = require('./utils/dateUtil');
+const {
+	exec
+} = require('./utils/promiseUtil');
 
 
 /*
  * npmRecent.js has only one exposed function
  */
-module.exports = function () {
+module.exports = async function () {
 	try {
 		// Find the path to global modules on user's machine
-		execChildProcess('npm root -g', function (error, stdout, stderr) {
-			if (error) {
-				return console.log(chalk.red.bold.underline("exec error:") + error);
-			}
-			if (stdout) {
-				let root = stdout;
-				let list = getGlobalModulesList(root).recentTen();
-				// print
-				console.log(columnify(list));
-			}
-			if (stderr) {
-				return console.log(chalk.red("Error: ") + stderr);
-			}
-		});
+		let {stdout, stderr} = await exec('npm root -g');
+		let root = stdout;
+		let list = getGlobalModulesList(root).recentTen();
+
+		if (stderr) {
+			console.log(chalk.redBright(stderr));
+		}
+
+		// print
+		console.log(columnify(list));
 
 	} catch (err) {
 		console.log(chalk.redBright(err));
