@@ -7,7 +7,12 @@ const program = require('commander');
 const chalk = require('chalk');
 
 // Local dependencies
-const {npmDependencies, npmScripts, npmRegistry, npmRecent} = require('./../build/index');
+const {
+	npmDependencies,
+	npmScripts,
+	npmRegistry,
+	npmRecent
+} = require('./../build/index');
 const {
 	npmList,
 	npmListDetails
@@ -17,13 +22,14 @@ const {
 program
 	.version('3.0.0', '-v, --version')
 	.usage(`[option] [name]`)
-	.description('lists everything listable from npm package at command line')
+	.description('A fuzzy CLI that lists everything listable from any npm package')
 	.option('-l, --local', 'list local dependencies, which is also the default mode')
 	.option('-g, --global', 'list global modules')
 	.option('-d, --details', 'include details to each dependency, but disable the default interactive mode')
 	.option('-t, --time', 'show the latest 5 modules installed globally')
 	.option('-a, --all [name]', 'show all information about a module fetched from NPM registry')
 	.option('-s, --scripts', 'list/execute npm scripts')
+	.option('-n, --no-fuzzy', 'disable the fuzzy mode and default to stdout')
 	.on('--help', function () {
 		console.log();
 		console.log('  Examples:');
@@ -38,13 +44,13 @@ program
 
 if (program.global) {
 	(function listGlobalPackages() {
-		!program.details ? npmList().global() : npmListDetails().global();
+		!program.details ? npmList().global().fuzzy() : npmListDetails().global();
 	})();
 
 
 } else if (program.local) {
 	(function listLocalDependencies() {
-		!program.details ? npmList().local() : npmListDetails().local();
+		!program.details ? npmList().local().fuzzy() : npmListDetails().local();
 	})();
 
 
@@ -73,11 +79,11 @@ if (program.global) {
 
 
 } else if (program.scripts) {
-	npmScripts();
+	npmScripts().fuzzy();
 
 
 } else { // default mode when nothing specified...
 	(function listLocalDependencies() {
-		npmList().local();
+		npmList().local().fuzzy();
 	})();
 }
