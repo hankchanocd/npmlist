@@ -37,7 +37,9 @@ module.exports = function npmScripts() {
 				parseNpmScripts(pkg).forEach(i => console.log(i));
 			},
 			fuzzy() {
-				iPipeTo(parseNpmScripts(pkg), {}).then(keys => {
+				iPipeTo(parseNpmScripts(pkg), {
+						size: 20
+					}).then(keys => {
 						return keys.forEach(async function (key) {
 							// Clean key
 							let head = key.split(' ')[0];

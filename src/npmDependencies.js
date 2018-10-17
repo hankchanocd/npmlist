@@ -52,7 +52,9 @@ module.exports.npmList = function () {
 						parseListFromPkgOutput(pkg).forEach(i => console.log('├── ' + i));
 					},
 					fuzzy() {
-						iPipeTo(parseListFromPkgOutput(pkg), {}).then(keys => {
+						iPipeTo(parseListFromPkgOutput(pkg), {
+								size: 20
+							}).then(keys => {
 								return keys.forEach(async function (key) {
 									key = StringUtil.getRidOfColors(key);
 									let {
@@ -192,7 +194,9 @@ function getNpmListFromExec(error, stdout, stderr) {
 
 			fuzzy: async function () {
 				try {
-					let keys = await iPipeTo(parseNpmListFromStdout(stdout), {});
+					let keys = await iPipeTo(parseNpmListFromStdout(stdout), {
+						size: 20
+					});
 
 					let cleansedKeys = (function cleanKeys() {
 						return keys.map(key => {
