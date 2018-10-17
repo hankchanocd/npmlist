@@ -89,6 +89,6 @@ function parseNpmScripts({
 
 	return Object.keys(scripts).sort().map(key => {
 		let value = scripts[key] ? scripts[key] : '';
-		return chalk.cyan(key) + ' => ' + value;
+		return key + chalk.white(' => ') + chalk.grey(value);
 	});
 }
