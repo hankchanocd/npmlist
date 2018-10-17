@@ -1,13 +1,13 @@
 # npmlist  &nbsp;&nbsp;  [![Build Status](https://travis-ci.org/hankchanocd/npmlist.svg?branch=master)](https://travis-ci.org/hankchanocd/npmlist)  [![Known Vulnerabilities](https://snyk.io/test/github/hankchanocd/npmlist/badge.svg?targetFile=package.json)](https://snyk.io/test/github/hankchanocd/npmlist?targetFile=package.json)  ![Github issues](https://img.shields.io/github/issues/hankchanocd/npmlist.svg)
 
-A CLI that lists everything listable from any npm package, i.e. dependencies, scripts, profile.
+> A fuzzy CLI that lists everything listable from any npm package, i.e. dependencies, scripts, profile.
 
-Much of ```npmlist``` is build on top of ```npm``` commands, but it has some advantages over plain and cluttered ```npm list``` and ```npm info <package>```
+Advantages over cluttered ```npm list``` and ```npm info```:
 
-1. A shortcut for ```npm list --depth=0 --local``` and other similarly annoying ```npm list --@#$%``` commands with assumed configurations
-2. Richer and more development-relevant information than ```npm info <package>```
-3. No need to leave terminal just for glancing at a package's npm profile
-4. List npm scripts
+1. A replacement for ```npm list --depth=0 --local``` and other annoyingly long ```npm list --@#$%``` commands with assumed configurations
+2. Richer and more dev-relevant information than ```npm info <package>```
+3. List npm scripts better than ```npm run-script```
+4. No need to leave terminal just for glancing at a package's npm profile
 
 ## Install
 
@@ -17,53 +17,38 @@ $ npm install -g @hankchanocd/npmlist
 
 ## Usage
 
-### Show a list of global packages
+```
+Usage: npmlist [option] [name]
+
+Listing information of npm packages at command line
+
+Options:
+
+  -v, --version     output the version number
+  -l, --local       list local dependencies, which is also the default mode
+  -g, --global      list global modules
+  -d, --details     include details to each dependency, but disable the default interactive mode
+  -t, --time        show the latest 5 modules installed globally
+  -a, --all [name]  show all information about a module fetched from NPM registry
+  -s, --scripts     list/execute npm scripts
+  -h, --help        output usage information
+```
+
+## Examples
+
+### Global modules
 
 ```bash
 $ npmlist -g
 
 /usr/local/bin/lib
-├── 0x@4.5.0
 ├── @angular/cli@6.2.4
 ├── aerobatic-cli@1.1.4
-├── atomizer@3.4.8
-...
 ```
 
-### Show a list of local package dependencies
+### Recently installed/upgraded global modules
 
-```bash
-$ cd surl-cli
-[~/surl-cli]$ npmlist
-
-surl-cli@1.2.0 /Users/hank/surl-cli
-├── child_process@1.0.2
-├── commander@2.18.0
-├── jest@23.6.0
-└── ls@0.2.1
-```
-
-### Show a colored list of local package dependencies with details
-
-```bash
-$ cd surl-cli
-[~/surl-cli]$ npmlist --info
-
-surl-cli@1.2.0
-│ /Users/hank/surl-cli
-│ URL shortener CLI
-│ git+https://github.com/hankchanocd/surl-cli.git
-│ https://github.com/hankchanocd/surl-cli#readme
-├── babel-cli@6.26.0
-│   Babel command line.
-│   https://github.com/babel/babel/tree/master/packages/babel-cli
-│   https://babeljs.io/
-...
-```
-
-### Show global packages recently installed/upgraded
-
-A good refresher on what the heck you've installed/upgraded globally on your machine in the past few weeks
+A good refresher on what the heck you've installed/upgraded globally in the recent past
 
 ```bash
 $ npmlist -t
@@ -71,29 +56,27 @@ $ npmlist -t
 NAME                 TIME
 npmlist-cli          10-5 21:29
 semantic-release     10-5 8:5
-tty-table            10-5 8:5
 ```
 
-### Fetch a npm package's profile from npm registry
+### Fetch from NPM registry
+
+`npmlist` fetches the latest released version by default
 
 ```
 $ npmlist express
 
-express's dependencies:
-MODULE     VERSION
-columnify  1.5.4
-commander  ~2.17.1
-node-fetch ~2.2.0
+express@4.16.4's Dependencies:
+├── accepts@1.3.5
+├── array-flatten@1.1.1
 ```
 
-### List npm scripts
+### List module's npm scripts
 
 ```
 $ npmlist -s
 
-express
+express@4.16.4
 build: babel src/ -d build/ --quiet
-commit: git-cz
 test: mocha
 ```
 
@@ -101,11 +84,15 @@ test: mocha
 
 To perform unit tests and integration tests, simply run ```npm test```.
 
+## Changelog
+
+**2018-Oct-16:** Interactive mode is now enabled by default
+
 ## Contribution
 
-```npmlist``` was initially a bunch of CLI shortcuts aliased on top of ```npm list``` and ```npm info```, but grew larger over time. It has since got its own idea of how to integrate with the workflow of JavaScript development.
+```npmlist``` started off as a bunch of CLI aliases on top of ```npm list``` and ```npm info```, but grew larger over time. It's now very effective at checking out package's dependencies. Saying all these means we are not afraid of expanding ```npmlist``` features.
 
-The development of ```npmlist``` will now center on how to present a quick and concise report on npm packages on command line, lifting the burden on developers to move to browser.
+The roadmap for ```npmlist``` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [DOCS](./DOCS.md) for ```npmlist```'s code architecture, developments rules, and styles.
 
 ## License
 

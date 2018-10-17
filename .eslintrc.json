@@ -23,7 +23,7 @@
     "comma-dangle": [2, "never"],
     "no-console": 0,
     "no-constant-condition": 2,
-    "no-control-regex": 2,
+    "no-control-regex": 0,
     "no-debugger": 1,
     "no-dupe-keys": 2,
     "no-duplicate-case": 2,

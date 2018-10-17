@@ -1,6 +1,6 @@
 const {
     parseDate
-} = require('./../build/lib/dateUtil');
+} = require('./../build/utils/dateUtil');
 
 
 test('parseDate(new Date()) returns the correct format', () => {

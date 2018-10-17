@@ -1,8 +1,14 @@
 {
   "name": "@hankchanocd/npmlist",
   "version": "0.0.0-semantically-released",
-  "description": "Listing information of npm package at command line",
-  "main": "index.js",
+  "description": "A fuzzy CLI that lists everything listable from any npm package",
+  "main": "./build/index.js",
+  "bin": {
+    "npmlist": "./bin/cli.js"
+  },
+  "engines": {
+    "node": ">=8"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/hankchanocd/npmlist.git"
@@ -24,12 +30,6 @@
     "commit": "git-cz",
     "semantic-release": "semantic-release"
   },
-  "bin": {
-    "npmlist": "./index.js"
-  },
-  "engines": {
-    "node": ">=8"
-  },
   "keywords": [
     "npm",
     "cli",
@@ -38,8 +38,8 @@
     "dependencies"
   ],
   "files": [
-    "index.js",
     "build/",
+    "bin/",
     "README.md"
   ],
   "jest": {
@@ -60,6 +60,7 @@
     "cliui": "^4.1.0",
     "columnify": "^1.5.4",
     "commander": "^2.18.0",
+    "ipt": "^2.1.0",
     "ls": "^0.2.1",
     "pkginfo": "^0.4.1"
   },

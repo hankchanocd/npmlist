@@ -10,99 +10,119 @@ const chalk = require('chalk');
 const ui = require('cliui')();
 const columnify = require('columnify');
 const {
-    fetch
-} = require('./lib/fetch');
+	fetch
+} = require('./utils/promiseUtil');
 
 
 /*
- * fetchModule has two options for output: simple() and all(). Chain operations are flexible for future expansion with backward compatibility
+ * npmRegistry has only one exposed export function.
+ * It has two options for output: simple() and all(). Chain operations are flexible for future expansion with backward compatibility
  * p.s. Lesson learned: async/await and methods that use promise cannot return
  */
-module.exports.fetchModule = function (module) {
-    return {
-        simple: async function () {
-                try {
-                    let data = JSON.parse(await fetch(`https://registry.npmjs.org/${module}`));
-                    let result = {
-                        module: module,
-                        dependencies: parse(data).simple().dependencies
-                    };
-                    print(result).simple();
-                } catch (err) {
-                    console.log(chalk.redBright(err));
-                }
-            },
-            all: async function () {
-                try {
-                    let data = JSON.parse(await fetch(`https://registry.npmjs.org/${module}`));
-                    let result = {
-                        module
-                    };
-                    Object.assign(result, parse(data).all()); // Merge all the result into the first object: result
-                    print(result).all();
-                } catch (err) {
-                    console.log(chalk.redBright(err));
-                }
-            }
-    };
+module.exports = function (module = '') {
+	if (!module) {
+		return console.log(chalk.redBright('No module provided'));
+	}
+
+	return {
+		simple: async function () {
+				try {
+					let data = JSON.parse(await fetch(`https://registry.npmjs.org/${module}`));
+					let result = parse(data).simple();
+					print(result).simple();
+				} catch (err) {
+					console.log(chalk.redBright(err));
+				}
+			},
+			all: async function () {
+				try {
+					let data = JSON.parse(await fetch(`https://registry.npmjs.org/${module}`));
+					let result = parse(data).all();
+					print(result).all();
+				} catch (err) {
+					console.log(chalk.redBright(err));
+				}
+			}
+	};
 };
 
 /*
  * Parsing with 2 options: simple() offers lazy evaluation, all() evaluates all defined rules
  */
-function parse(data) {
-    const versions = Object.keys(data.versions);
-    const dependencies = (() => {
-        const latestVersion = versions[versions.length - 1];
-        const result = data.versions[latestVersion].dependencies; // List only the dependencies from that latest release
-        return result;
-    })();
+function parse(data = {
+	'name': '',
+	'dist-tags': {
+		'latest': ''
+	},
+	'versions': {}
+}) {
+	if (!data['name'] || !data['dist-tags'] || !data['versions']) {
+		return console.log(chalk.redBright('Fetched info is incomplete, therefore useless'));
+	}
 
-    return {
-        simple() {
-            return {
-                dependencies
-            };
-        },
-        all() {
-            return {
-                versions,
-                dependencies
-            };
-        }
-    };
+	const title = data['name'] + '@' + data['dist-tags']['latest'];
+	const versions = Object.keys(data.versions);
+	const dependencies = (() => {
+		let latestVersion = versions[versions.length - 1];
+		return data.versions[latestVersion].dependencies; // List only the dependencies from that latest release
+	})();
+
+	return {
+		simple() {
+			return {
+				title,
+				dependencies
+			};
+		},
+		all() {
+			return {
+				title,
+				versions,
+				dependencies
+			};
+		}
+	};
 }
 
 
-function print(result) {
-    let module = result.module ? result.module : '';
-    let dep = result.dependencies ? result.dependencies : '';
-    let versions = result.versions ? result.versions : '';
+/*
+ * Printing with 2 options: simple() and all()
+ */
+function print({
+	title = '',
+	dependencies = '',
+	versions = ''
+}) {
 
-    return {
-        simple() { // Simple mode
-            if (!dep) { // Returns early if has no dependencies
-                return console.log(chalk.blueBright(`${module} has no dependencies`));
-            }
+	return {
+		simple() { // Simple mode
+			if (!dependencies) {
+				return console.log(chalk.blueBright(`${title} has no dependencies`));
+			}
 
-            console.log(chalk.blueBright(`${module}'s Dependencies:`));
-            Object.keys(dep).forEach(key => {
-                let value = dep[key] ? dep[key].replace(/[^0-9.,]/g, "") : '';
-                return console.log('├── ' + key + '@' + chalk.grey(value));
-            });
-        },
-        all() { // All mode
-            console.log(chalk.blueBright(module));
-            ui.div({
-                text: columnify(dep),
-                width: 30,
-                padding: [0, 2, 0, 2]
-            }, {
-                text: columnify(versions),
-                width: 25,
-                padding: [0, 2, 0, 2]
-            });
-            console.log(ui.toString());
-        }
-    };
+			console.log(chalk.blueBright(`${title}'s Dependencies:`));
+			let list = Object.keys(dependencies).map(key => {
+				let value = dependencies[key] ? dependencies[key].replace(/[^0-9.,]/g, "") : '';
+				return '├── ' + key + '@' + chalk.grey(value);
+			});
+
+			// Print
+			return list.forEach(i => console.log(i));
+		},
+		all() { // All mode
+			console.log(chalk.blueBright(title));
+			ui.div({
+				text: columnify(dependencies),
+				width: 30,
+				padding: [0, 2, 0, 2]
+			}, {
+				text: columnify(versions),
+				width: 25,
+				padding: [0, 2, 0, 2]
+			});
+
+			// Print
+			return console.log(ui.toString());
+		}
+	};
 }
