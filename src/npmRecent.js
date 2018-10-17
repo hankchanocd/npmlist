@@ -41,9 +41,28 @@ module.exports = function () {
 function listGlobalModulesByTime(stdout) {
 	// Use path to parse the given path, and attach the following string so to avoid the `/node_modules/\n ` nasty bug
 	const GLOBAL_MODULES_ALL = path.parse(stdout).dir + '/node_modules/*';
-	const GLOBAL_MODULES_LIST = ls(GLOBAL_MODULES_ALL);
+	let modulesList = ls(GLOBAL_MODULES_ALL);
 
-	let result = sortByDate(GLOBAL_MODULES_LIST).slice(0, 10).map((item) => {
+	let finalList = (function traverseModulesList() {
+		let list = [];
+		let authorDirectories = modulesList.filter(module => module.file.includes('@')); // When module's starts with @, i.e. @username/module
+		let withoutAuthorDirectories = modulesList.filter(module => !module.file.includes('@'));
+		list = list.concat(withoutAuthorDirectories);
+
+		// Traverse one step further into the directory
+		authorDirectories.forEach(module => {
+			let childModulesList = ls(module.full + '/*');
+			childModulesList = childModulesList.map(module => {
+				// Append the module name with its parent directory, i.e. module => @username/module
+				module.name = path.parse(module.path).name + '/' + module.name;
+				return module;
+			});
+			list = list.concat(childModulesList);
+		});
+		return list;
+	})();
+
+	let result = sortByDate(finalList).slice(0, 10).map((item) => {
 		return {
 			'name': item.name ? chalk.blueBright(item.name) : '',
 			'time': item.stat.mtime ? parseDate(item.stat.mtime) : ''
