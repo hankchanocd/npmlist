@@ -11,6 +11,7 @@ const chalk = require('chalk');
 const pkgInfo = require('pkginfo');
 const cwd = process.cwd();
 
+
 /**
  * Output npm list with 2 options provided: local() and global()
  * i.e. npmList().local()
@@ -40,11 +41,35 @@ module.exports.npmList = function () {
 
 		global() {
 			execChildProcess('npm list --depth=0 --global', function (error, stdout, stderr) {
-				printGlobalList(error, stdout, stderr);
+				printNpmListFromExec(error, stdout, stderr);
 			});
 		}
 	};
 };
+
+
+/**
+ * Run `npm list --long=true` with 2 options provided: local() and global()
+ * i.e. npmList.global()
+ */
+module.exports.npmListDetails = function () {
+	const cmd = 'npm ll --depth=0 --long=true ';
+
+	return {
+		local() {
+			execChildProcess(cmd + '--local', function (error, stdout, stderr) {
+				printNpmListFromExec(error, stdout, stderr);
+			});
+		},
+		global() {
+			execChildProcess(cmd + '--global', function (error, stdout, stderr) {
+				printNpmListFromExec(error, stdout, stderr);
+			});
+		}
+	};
+};
+
+
 
 function getLocalList({
 	exports: {
@@ -70,17 +95,17 @@ function getLocalList({
 
 	if (dependencies) {
 		list.push((chalk.underline('Dependencies')));
-		list = list.concat(styleDeps(dependencies));
+		list = list.concat(styleDependencies(dependencies));
 	}
 
 	if (devDependencies) {
 		list.push((chalk.underline('DevDependencies')));
-		list = list.concat(styleDeps(devDependencies));
+		list = list.concat(styleDependencies(devDependencies));
 	}
 
 	return list;
 
-	function styleDeps(deps = []) {
+	function styleDependencies(deps = []) {
 		return Object.keys(deps).map(key => {
 			let value = deps[key] ? deps[key].replace(/[^0-9.,]/g, "") : '';
 			return '├── ' + key + '@' + chalk.grey(value);
@@ -88,47 +113,18 @@ function getLocalList({
 	}
 }
 
-function printGlobalList(error, stdout, stderr) {
-	if (error) { // Don't return if erred for `npm ERR! peer dep missing:` might occur, which is normal
-		console.log(chalk.red.bold.underline("exec error:") + error);
-	}
-	if (stdout) {
-		return console.log(chalk.white(stdout));
-	}
-	if (stderr) {
-		return console.log(chalk.red("Error: ") + stderr);
-	}
-}
 
-
-/**
- * Run `npm list --long=true` with 2 options provided: local() and global()
- * i.e. npmListDetails().global()
+/*
+ * We are stuck with handling the callback instead of using async/await because npm cli, which we run underneath the
+ * global command, is easy to blow up errors
  */
-module.exports.npmListDetails = function () {
-	const cmd = 'npm ll --depth=0 --long=true ';
-
-	return {
-		local() {
-			execChildProcess(cmd + '--local', function (error, stdout, stderr) {
-				printNpmListDetails(error, stdout, stderr);
-			});
-		},
-		global() {
-			execChildProcess(cmd + '--global', function (error, stdout, stderr) {
-				printNpmListDetails(error, stdout, stderr);
-			});
-		}
-	};
-};
-
-function printNpmListDetails(error, stdout, stderr) {
+function printNpmListFromExec(error, stdout, stderr) {
 	if (error) { // Don't return if erred for `npm ERR! peer dep missing:` might occur, which is normal
 		console.log(chalk.red.bold.underline("exec error:") + error);
 	}
 	if (stdout) {
 		// Print
-		return parseNpmListDetails(stdout).forEach(i => {
+		return parseNpmList(stdout).forEach(i => {
 			console.log(i);
 		});
 	}
@@ -137,7 +133,14 @@ function printNpmListDetails(error, stdout, stderr) {
 	}
 }
 
-function parseNpmListDetails(stdout) {
+
+/*
+ * parseNpmList parse stdout to list
+ * @params
+ * stdout: string
+ * returns list: []
+ */
+function parseNpmList(stdout) {
 	const lines = stdout.split('\n');
 
 	return lines.map(i => {
