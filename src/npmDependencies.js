@@ -1,6 +1,10 @@
 /**
- * npmLocal.js list dependencies
+ * npmDependencies.js list dependencies
  *
+ * Changelog:
+ * 2018 Oct 17:
+ * printNpmListFromExec() is stuck with handling the callback instead of using async /await because npm cli is
+ * easy to blow up errors
  */
 'use strict';
 
@@ -69,7 +73,6 @@ module.exports.npmListDetails = function () {
 };
 
 
-
 function getLocalList({
 	exports: {
 		name,
@@ -114,8 +117,7 @@ function getLocalList({
 
 
 /*
- * We are stuck with handling the callback instead of using async/await because npm cli, which we run underneath the
- * global command, is easy to blow up errors
+ * We are stuck with handling the callback instead of using async/await because npm cli is easy to blow up errors
  */
 function printNpmListFromExec(error, stdout, stderr) {
 	if (error) { // Don't return if erred for `npm ERR! peer dep missing:` might occur, which is normal

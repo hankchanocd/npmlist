@@ -12,7 +12,7 @@
 
 ### Files/Directories
 
-1. New features that warrant a new source file should be created with prefix `npm`, i.e. `npmLocal.js`
+1. New features that warrant a new source file should be created with prefix `npm`, i.e. `npmScripts.js`
 
 2. New features that don't warrant a new file should be appended to the existing ```src/``` files
 
@@ -36,7 +36,7 @@ It provides the benefits for future expansion flexibility, while offloading comm
 
 1. Don't write `npmlist.local()`, write `npmlist().local()` instead
 
-2. An great example from [```src/npmLocal.js```](/src/npmLocal.js)
+2. An great example from [```src/npmDependencies.js```](/src/npmDependencies.js)
 
     ```js
     module.exports.npmListDetails = function () {

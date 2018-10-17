@@ -7,11 +7,11 @@ const program = require('commander');
 const chalk = require('chalk');
 
 // Local dependencies
-const {npmLocal, npmScripts, npmRegistry, npmRecent} = require('./../build/index');
+const {npmDependencies, npmScripts, npmRegistry, npmRecent} = require('./../build/index');
 const {
 	npmList,
 	npmListDetails
-} = npmLocal;
+} = npmDependencies;
 
 
 program

@@ -4,7 +4,7 @@
  */
 
 // local modules
-const npmLocal = require('./npmLocal');
+const npmDependencies = require('./npmDependencies');
 
 const npmScripts = require('./npmScripts');
 
@@ -14,7 +14,7 @@ const npmRecent = require('./npmRecent');
 
 
 module.exports = {
-    npmLocal,
+    npmDependencies,
     npmScripts,
     npmRegistry,
     npmRecent
