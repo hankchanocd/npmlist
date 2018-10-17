@@ -1,6 +1,5 @@
 /**
- * npmLocal.js provides methods that are running npm commands underneath in the local environment
- * See npmRegistry.js for methods fetching module info from NPM registry
+ * npmLocal.js list dependencies
  *
  */
 'use strict';
@@ -166,57 +165,4 @@ function parseNpmList(stdout) {
 	function isSymlink(i) {
 		return i.includes('@') && i.includes('->');
 	}
-}
-
-
-/**
- * Print npm tasks
- */
-module.exports.npmScripts = function () {
-
-	try {
-		let pkg = {
-			exports: {}
-		};
-
-		// Use pkgInfo to retrieve scripts from package.json
-		pkgInfo(pkg, {
-			dir: cwd,
-			include: ["name", "version", "scripts"]
-		});
-
-		// Print
-		getNpmScripts(pkg).forEach(i => console.log(i));
-
-	} catch (e) {
-		console.log(chalk.redBright('package.json not found'));
-	}
-};
-
-function getNpmScripts({
-	exports: {
-		name,
-		version,
-		scripts
-	}
-} = {
-	exports: {}
-}) {
-	(function printTitle() {
-		if (name) {
-			if (version) {
-				return console.log(chalk.blueBright(name + '@' + version));
-			}
-			return console.log(name);
-		}
-	})();
-
-	if (!scripts) {
-		return [chalk.blueBright('Module has no scripts')];
-	}
-
-	return Object.keys(scripts).sort().map(key => {
-		let value = scripts[key] ? scripts[key] : '';
-		return chalk.cyan(key) + ': ' + value;
-	});
 }
