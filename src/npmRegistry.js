@@ -101,10 +101,13 @@ function print({
 			}
 
 			console.log(chalk.blueBright(`${title}'s Dependencies:`));
-			Object.keys(dependencies).forEach(key => {
+			let list = Object.keys(dependencies).map(key => {
 				let value = dependencies[key] ? dependencies[key].replace(/[^0-9.,]/g, "") : '';
-				return console.log('├── ' + key + '@' + chalk.grey(value));
+				return '├── ' + key + '@' + chalk.grey(value);
 			});
+
+			// Print
+			return list.forEach(i => console.log(i));
 		},
 		all() { // All mode
 			console.log(chalk.blueBright(title));
@@ -117,7 +120,9 @@ function print({
 				width: 25,
 				padding: [0, 2, 0, 2]
 			});
-			console.log(ui.toString());
+
+			// Print
+			return console.log(ui.toString());
 		}
 	};
 }

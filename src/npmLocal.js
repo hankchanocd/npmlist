@@ -29,7 +29,9 @@ module.exports.npmList = function () {
 					dir: cwd,
 					include: ["name", "version", "dependencies", "devDependencies"]
 				});
-				printLocalList(pkg);
+
+				// Print
+				getLocalList(pkg).forEach(i => console.log(i));
 
 			} catch (e) {
 				console.log("No package.json found");
@@ -44,7 +46,7 @@ module.exports.npmList = function () {
 	};
 };
 
-function printLocalList({
+function getLocalList({
 	exports: {
 		name,
 		version,
@@ -54,29 +56,34 @@ function printLocalList({
 } = {
 	exports: {}
 }) {
+	let list = [];
 
-	if (name) {
-		if (version) {
-			console.log(chalk.blueBright(name + '@' + version));
-		} else {
-			console.log(name);
+	(function printTitle() {
+		if (name) {
+			if (version) {
+				console.log(chalk.blueBright(name + '@' + version));
+			} else {
+				console.log(name);
+			}
 		}
-	}
+	})();
 
 	if (dependencies) {
-		console.log(chalk.underline('Dependencies'));
-		printDeps(dependencies);
+		list.push((chalk.underline('Dependencies')));
+		list = list.concat(styleDeps(dependencies));
 	}
 
 	if (devDependencies) {
-		console.log(chalk.underline('DevDependencies'));
-		printDeps(devDependencies);
+		list.push((chalk.underline('DevDependencies')));
+		list = list.concat(styleDeps(devDependencies));
 	}
 
-	function printDeps(deps = []) {
-		Object.keys(deps).forEach(key => {
+	return list;
+
+	function styleDeps(deps = []) {
+		return Object.keys(deps).map(key => {
 			let value = deps[key] ? deps[key].replace(/[^0-9.,]/g, "") : '';
-			return console.log('├── ' + key + '@' + chalk.grey(value));
+			return '├── ' + key + '@' + chalk.grey(value);
 		});
 	}
 }
@@ -120,6 +127,7 @@ function printNpmListDetails(error, stdout, stderr) {
 		console.log(chalk.red.bold.underline("exec error:") + error);
 	}
 	if (stdout) {
+		// Print
 		return parseNpmListDetails(stdout).forEach(i => {
 			console.log(i);
 		});
@@ -174,14 +182,15 @@ module.exports.npmScripts = function () {
 			include: ["name", "version", "scripts"]
 		});
 
-		printNpmScripts(pkg);
+		// Print
+		getNpmScripts(pkg).forEach(i => console.log(i));
 
 	} catch (e) {
-		console.log("No package.json found");
+		console.log(chalk.redBright('package.json not found'));
 	}
 };
 
-function printNpmScripts({
+function getNpmScripts({
 	exports: {
 		name,
 		version,
@@ -198,14 +207,13 @@ function printNpmScripts({
 			return console.log(name);
 		}
 	})();
-	(function printScripts() {
-		if (scripts) {
-			Object.keys(scripts).sort().forEach(key => {
-				let value = scripts[key] ? scripts[key] : '';
-				return console.log(chalk.cyan(key) + ': ' + value);
-			});
-		} else {
-			return console.log('Module has no scripts');
-		}
-	})();
+
+	if (!scripts) {
+		return [chalk.blueBright('Module has no scripts')];
+	}
+
+	return Object.keys(scripts).sort().map(key => {
+		let value = scripts[key] ? scripts[key] : '';
+		return chalk.cyan(key) + ': ' + value;
+	});
 }
