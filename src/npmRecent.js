@@ -24,9 +24,12 @@ const {
 module.exports = async function () {
 	try {
 		// Find the path to global modules on user's machine
-		let {stdout, stderr} = await exec('npm root -g');
+		let {
+			stdout,
+			stderr
+		} = await exec('npm root -g');
 		let root = stdout;
-		let list = getGlobalModulesList(root).recentTen();
+		let list = getGlobalModulesList(root).sortByDate().recentTen().build();
 
 		if (stderr) {
 			console.log(chalk.redBright(stderr));
@@ -67,25 +70,49 @@ function getGlobalModulesList(root) {
 			});
 			list = list.concat(childModulesList);
 		});
+
 		return list;
 	})();
 
-	return {
-		all() {
-			return sortByDate(finalList).map((item) => {
-				return {
-					'name': item.name ? chalk.blueBright(item.name) : '',
-					'time': item.stat.mtime ? parseDate(item.stat.mtime) : ''
-				};
-			});
-		},
-		recentTen() {
-			return sortByDate(finalList).slice(0, 10).map((item) => {
-				return {
-					'name': item.name ? chalk.blueBright(item.name) : '',
-					'time': item.stat.mtime ? parseDate(item.stat.mtime) : ''
-				};
-			});
-		}
-	};
+	return new ListBuilder(finalList);
+}
+
+/*
+ * ListBuilder uses Builder pattern to create reusable chain operations the gives users the flexibility of
+ * of choosing their custom list modifications.
+ *
+ */
+class ListBuilder {
+	constructor(list) {
+		this.list = list;
+	}
+
+	all() {
+		this.list = this.list.map(item => {
+			return {
+				'name': item.name ? chalk.blueBright(item.name) : '',
+				'time': item.stat.mtime ? parseDate(item.stat.mtime) : ''
+			};
+		});
+		return this;
+	}
+
+	recentTen() {
+		this.list = this.list.slice(0, 10).map(item => {
+			return {
+				'name': item.name ? chalk.blueBright(item.name) : '',
+				'time': item.stat.mtime ? parseDate(item.stat.mtime) : ''
+			};
+		});
+		return this;
+	}
+
+	sortByDate() {
+		this.list = sortByDate(this.list);
+		return this;
+	}
+
+	build() {
+		return this.list;
+	}
 }
