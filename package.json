@@ -1,7 +1,7 @@
 {
   "name": "@hankchanocd/npmlist",
   "version": "0.0.0-semantically-released",
-  "description": "Listing information of npm package at command line",
+  "description": "A fuzzy CLI that lists everything listable from any npm package",
   "main": "./build/index.js",
   "bin": {
     "npmlist": "./bin/cli.js"
