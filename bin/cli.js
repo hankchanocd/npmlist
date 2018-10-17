@@ -29,7 +29,8 @@ program
 	.option('-t, --time', 'show the latest 5 modules installed globally')
 	.option('-a, --all [name]', 'show all information about a module fetched from NPM registry')
 	.option('-s, --scripts', 'list/execute npm scripts')
-	.option('-n, --no-fuzzy', 'disable the fuzzy mode and default to stdout')
+	.option('-i, --interactive', 'enable interactive/fuzzy mode, which is now default')
+	.option('-n, --no-fuzzy', 'disable the fuzzy mode and resort to stdout')
 	.on('--help', function () {
 		console.log();
 		console.log('  Examples:');
