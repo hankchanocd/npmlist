@@ -27,12 +27,12 @@ program
 	// Five main features:
 	.option('-l, --local', 'list local dependencies, which is also the default mode')
 	.option('-g, --global', 'list global modules')
-	.option('-d, --details', 'include details to each dependency, but disable the default interactive mode')
-	.option('-t, --time', 'show the latest 5 modules installed globally')
+	.option('-d, --details', 'include details to each dependency, but disable the default fuzzy mode')
+	.option('-t, --time', 'show the latest 20 modules installed globally')
 	.option('-s, --scripts', 'list/execute npm scripts')
 
-	// Fetch info from NPM registry
-	.option('-a, --all [name]', 'show all information about a module fetched from NPM registry')
+	// Flavor flag
+	.option('-a, --all', 'a flavor flag that shows all available information on any feature flags')
 
 	// Mode
 	.option('-f, --fuzzy', 'enable fuzzy mode, which is now default on most features')
@@ -43,10 +43,11 @@ program
 	.on('--help', function () {
 		console.log();
 		console.log('  Examples:');
-		console.log('    ' + chalk.blueBright(`npmlist, ${chalk.white('shows a fuzzy list of local dependencies')}`));
-		console.log('    ' + chalk.blueBright(`npmlist -g -d, ${chalk.white('shows a detailed list of global modules')}`));
-		console.log('    ' + chalk.blueBright(`npmlist [module], ${chalk.white("shows a fuzzy list of a module's dependencies fetched from registry")}`));
-		console.log('    ' + chalk.blueBright(`npmlist [module] --all, ${chalk.white("shows all info about a module from npm registry")}`));
+		console.log('    ' + chalk.blueBright(`npmlist, ${chalk.white('show a fuzzy list of local dependencies')}`));
+		console.log('    ' + chalk.blueBright(`npmlist -t, ${chalk.white('show a fuzzy list of 20 latest global installs')}`));
+		console.log('    ' + chalk.blueBright(`npmlist -g -d, ${chalk.white('show a detailed list of global modules')}`));
+		console.log('    ' + chalk.blueBright(`npmlist [module], ${chalk.white("show a fuzzy list of a module's dependencies fetched from registry")}`));
+		console.log('    ' + chalk.blueBright(`npmlist [module] --all, ${chalk.white("show all info about a module from npm registry")}`));
 		console.log();
 	})
 	.parse(process.argv);
@@ -81,7 +82,19 @@ if (program.global) {
 
 
 } else if (program.time) { // Select only the 20 latest installed packages
-	npmRecent();
+	if (!program.all) {
+		if (!program.nofuzzy) { // If nofuzzy flag not specified
+			npmRecent().then(i => i.recentTwenty()).then(i => i.fuzzy()).catch(err => console.log(err));
+		} else {
+			npmRecent().then(i => i.recentTwenty()).then(i => i.default()).catch(err => console.log(err));
+		}
+	} else { // Only if all flag specified
+		if (!program.nofuzzy) { // If nofuzzy flag not specified
+			npmRecent().then(i => i.all()).then(i => i.fuzzy()).catch(err => console.log(err));
+		} else {
+			npmRecent().then(i => i.all()).then(i => i.default()).catch(err => console.log(err));
+		}
+	}
 
 
 } else if (program.details) { // Default to npm local packages listing if only --details flag present
@@ -95,21 +108,16 @@ if (program.global) {
 	})();
 
 
-} else if (program.all) { // Same functionality as above but for reverse args-flags order, i.e. `npmlist --all express`
-	(function fetchModuleInfoFromNpmRegistry() {
-		if (process.argv.length > 1) {
-			const module = process.argv[process.argv.length - 1];
-			npmRegistry(module).all();
-		}
-	})();
-
-
 } else if (program.scripts) {
 	if (!program.nofuzzy) { // If nofuzzy flag not specified
 		npmScripts().fuzzy();
 	} else {
 		npmScripts().default();
 	}
+
+
+} else if (program.all) { // --all is a flavor flag. It has no meaning if standing alone
+	console.log(`Please specify a feature`);
 
 
 } else { // default mode when nothing specified...
