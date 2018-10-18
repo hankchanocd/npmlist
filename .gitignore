@@ -14,5 +14,8 @@ build/
 # Jest
 coverage/
 
+# Coverage
+.nyc_output/
+
 # Eslint
 eslint/
