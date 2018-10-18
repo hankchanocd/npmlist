@@ -29,7 +29,7 @@ module.exports = async function () {
 			stderr
 		} = await exec('npm root -g');
 		let root = stdout;
-		let list = getGlobalModulesList(root).sortByDate().recentTen().build();
+		let list = getGlobalModulesList(root).sortByDate().recentTwenty().build();
 
 		if (stderr) {
 			console.log(chalk.redBright(stderr));
@@ -97,8 +97,8 @@ class ListBuilder {
 		return this;
 	}
 
-	recentTen() {
-		this.list = this.list.slice(0, 10).map(item => {
+	recentTwenty() {
+		this.list = this.list.slice(0, 20).map(item => {
 			return {
 				'name': item.name ? chalk.blueBright(item.name) : '',
 				'time': item.stat.mtime ? parseDate(item.stat.mtime) : ''

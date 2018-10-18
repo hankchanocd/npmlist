@@ -80,7 +80,7 @@ if (program.global) {
 	})();
 
 
-} else if (program.time) { // Select only the 10 latest installed packages
+} else if (program.time) { // Select only the 20 latest installed packages
 	npmRecent();
 
 
