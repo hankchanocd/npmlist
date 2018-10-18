@@ -5,11 +5,11 @@
 <br />
 <br />
 <p align="center">
-<img alt="demo animation" width="600" src="https://cdn.rawgit.com/hankchanocd/npmlist/master/demo.svg" />
+<img alt="demo animation" width="700" src="https://hankchanocd.github.io/npmlist/examples/demo.svg" />
 </p>
 <br />
 
-```npmlist``` fuzzifies all the list it can find about a npm module, ready to execute and search. Its default feature is dependencies listing. It has clear advantages over cluttered `npm list` and `npm info`:
+```npmlist``` fuzzifies all the lists it can find about a npm module, ready to execute and search it. Its default feature is dependencies listing. It has clear advantages over cluttered `npm list` and `npm info`:
 
 1. Fuzzy selection of an package will automatically trigger `npm info <package>`
 2. ```npmlist -s``` lists and triggers npm scripts better than `npm run-script`
