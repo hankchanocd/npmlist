@@ -9,47 +9,80 @@
 const chalk = require('chalk');
 const ui = require('cliui')();
 const columnify = require('columnify');
+const iPipeTo = require('ipt');
 const {
-	fetch
+	fetch,
+	exec
 } = require('./utils/promiseUtil');
+const StringUtil = require('./utils/stringUtil');
 
 
 /*
  * npmRegistry has only one exposed export function.
- * It has two options for output: simple() and all(). Chain operations are flexible for future expansion with backward compatibility
- * p.s. Lesson learned: async/await and methods that use promise cannot return
+ * It has two dimensions of two options for output: simple() and all(), default() and fuzzy().
+ * Chain operations are flexible for future expansion with backward compatibility
+ *
  */
-module.exports = function (module = '') {
+module.exports = async function (module = '') {
 	if (!module) {
 		return console.log(chalk.redBright('No module provided'));
 	}
 
+	let data;
+	try {
+		data = JSON.parse(await fetch(`https://registry.npmjs.org/${module}`));
+
+	} catch (err) {
+		console.log(chalk.redBright(err));
+	}
+
+	// First-level chain operation has simple() and all()
 	return {
-		simple: async function () {
-				try {
-					let data = JSON.parse(await fetch(`https://registry.npmjs.org/${module}`));
-					let result = parse(data).simple();
-					print(result).simple();
-				} catch (err) {
-					console.log(chalk.redBright(err));
+		simple() {
+			let result = parseToList(data).simple();
+
+			// Second-level chain operation has default() and fuzzy()
+			return {
+				default () {
+					return result.forEach(i => console.log(i));
+				},
+				fuzzy() {
+					return iPipeTo(result, {
+							size: 20
+						}).then(keys => {
+							return keys.forEach(async function (key) {
+								let cleansedKey = (function () {
+									let tail = key.split(' ')[1];
+									let result = StringUtil.getRidOfColors(tail);
+									result = StringUtil.getRidOfQuotationMarks(result);
+									return result;
+								})();
+								let {
+									stdout: result
+								} = await exec(`npm info ${cleansedKey} | less`);
+
+								console.log(result);
+							});
+						})
+						.catch(err => {
+							console.log(err, "Error building interactive interface");
+						});
 				}
-			},
-			all: async function () {
-				try {
-					let data = JSON.parse(await fetch(`https://registry.npmjs.org/${module}`));
-					let result = parse(data).all();
-					print(result).all();
-				} catch (err) {
-					console.log(chalk.redBright(err));
-				}
-			}
+			};
+
+		},
+		all() {
+			let result = parseToList(data).all();
+			result.forEach(i => console.log(i));
+		}
 	};
 };
+
 
 /*
  * Parsing with 2 options: simple() offers lazy evaluation, all() evaluates all defined rules
  */
-function parse(data = {
+function parseToList(data = {
 	'name': '',
 	'dist-tags': {
 		'latest': ''
@@ -67,49 +100,21 @@ function parse(data = {
 		return data.versions[latestVersion].dependencies; // List only the dependencies from that latest release
 	})();
 
+
+	// Chain operation has simple() and all()
 	return {
 		simple() {
-			return {
-				title,
-				dependencies
-			};
-		},
-		all() {
-			return {
-				title,
-				versions,
-				dependencies
-			};
-		}
-	};
-}
-
-
-/*
- * Printing with 2 options: simple() and all()
- */
-function print({
-	title = '',
-	dependencies = '',
-	versions = ''
-}) {
-
-	return {
-		simple() { // Simple mode
 			if (!dependencies) {
 				return console.log(chalk.blueBright(`${title} has no dependencies`));
 			}
-
 			console.log(chalk.blueBright(`${title}'s Dependencies:`));
-			let list = Object.keys(dependencies).map(key => {
+
+			return Object.keys(dependencies).map(key => {
 				let value = dependencies[key] ? dependencies[key].replace(/[^0-9.,]/g, "") : '';
 				return '├── ' + key + '@' + chalk.grey(value);
 			});
-
-			// Print
-			return list.forEach(i => console.log(i));
 		},
-		all() { // All mode
+		all() {
 			console.log(chalk.blueBright(title));
 			ui.div({
 				text: columnify(dependencies),
@@ -121,8 +126,7 @@ function print({
 				padding: [0, 2, 0, 2]
 			});
 
-			// Print
-			return console.log(ui.toString());
+			return ui.toString().split('\n');
 		}
 	};
 }

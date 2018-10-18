@@ -78,12 +78,14 @@ module.exports.npmList = function () {
 		global() {
 			return {
 				default () {
+					console.log(chalk.blueBright('Warning: Running global command could take up to 10 sec'));
 					execChildProcess('npm list --depth=0 --global', function (error, stdout, stderr) {
 						return getNpmListFromExec(error, stdout, stderr).print();
 					});
 				},
 
 				fuzzy() {
+					console.log(chalk.blueBright('Warning: Running global command could take up to 10 sec'));
 					execChildProcess('npm list --depth=0 --global', function (error, stdout, stderr) {
 						return getNpmListFromExec(error, stdout, stderr).fuzzy();
 					});
