@@ -39,8 +39,7 @@ Options:
   -t, --time         show the latest 20 modules installed globally
   -s, --scripts      list/execute npm scripts
   -a, --all          a flavor flag that shows all available information on any feature flags
-  -f, --fuzzy        enable fuzzy mode, which is now default on most features
-  -n, --nofuzzy      disable the fuzzy mode and resort to stdout
+  -F, --no-fuzzy     disable the fuzzy mode and resort to stdout
   -i, --interactive  enable interactive mode (in development)
   -h, --help         output usage information
 ```
@@ -52,6 +51,7 @@ Options:
 ```bash
 $ npmlist -g
 
+? Select an item:
 /usr/local/bin/lib
 ├── @angular/cli@6.2.4
 ├── aerobatic-cli@1.1.4
@@ -64,6 +64,7 @@ A good refresher on what the heck you've installed/upgraded globally in the rece
 ```bash
 $ npmlist -t
 
+? Select an item:
 NAME                 TIME
 npmlist-cli          10-5 21:29
 semantic-release     10-5 8:5
@@ -73,26 +74,23 @@ semantic-release     10-5 8:5
 
 `npmlist` fetches the module's latest version by default, unless a version is specified
 
-```
+```bash
 $ npmlist express
 
-express@4.16.4's Dependencies:
+? Select an item:
+express@4.16.4 Dependencies:
 ├── accepts@1.3.5
 ├── array-flatten@1.1.1
 ```
 
 ### Turn off fuzzy mode
 
-Fuzzy mode is rather poor at listing each item with detailed information that span more than one line. ```--nofuzzy``` mode flag is provided to simply print the output to terminal.
+Fuzzy mode is turned on in most cases, except for ```--details```, where fuzzy is not optimal for multi-line text. You can also opt for ```--no-fuzzy``` to turn off the default fuzzy mode.
 
 ```
-$ npmlist --nofuzzy
-
-express@4.16.4
-├── rimraf@2.6.2
-│   A deep deletion module for node (like `rm -rf`)
-│   git://github.com/isaacs/rimraf.git
-│   https://github.com/isaacs/rimraf#readme
+$ npmlist -t --all --no-fuzzy
+$ npmlist -g --no-fuzzy
+$ npmlist -s --no-fuzzy
 ```
 
 ## Tests
@@ -101,7 +99,7 @@ To perform unit tests and integration tests, simply run `npm test`.
 
 ## Changelog
 
-**2018-Oct-16:** Fuzzy mode is now enabled by default. It can be turned off by ```--nofuzzy```.
+**2018-Oct-16:** Fuzzy mode is now enabled by default. It can be turned off by ```--no-fuzzy```.
 
 ## Contribution
 
