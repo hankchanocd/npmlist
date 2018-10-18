@@ -41,7 +41,7 @@ Options:
   -a, --all          a flavor flag that shows all available information on any feature flags
   -f, --fuzzy        enable fuzzy mode, which is now default on most features
   -n, --nofuzzy      disable the fuzzy mode and resort to stdout
-  -i, --interactive  enable interactive mode
+  -i, --interactive  enable interactive mode (in development)
   -h, --help         output usage information
 ```
 
@@ -57,7 +57,7 @@ $ npmlist -g
 ├── aerobatic-cli@1.1.4
 ```
 
-### Recently installed/upgraded global modules
+### Recent added global modules
 
 A good refresher on what the heck you've installed/upgraded globally in the recent past
 
@@ -71,7 +71,7 @@ semantic-release     10-5 8:5
 
 ### Fetch from NPM registry
 
-`npmlist` fetches the latest released version by default
+`npmlist` fetches the module's latest version by default, unless a version is specified
 
 ```
 $ npmlist express
@@ -79,6 +79,20 @@ $ npmlist express
 express@4.16.4's Dependencies:
 ├── accepts@1.3.5
 ├── array-flatten@1.1.1
+```
+
+### Turn off fuzzy mode
+
+Fuzzy mode is rather poor at listing each item with detailed information that span more than one line. ```--nofuzzy``` mode flag is provided to simply print the output to terminal.
+
+```
+$ npmlist --nofuzzy
+
+express@4.16.4
+├── rimraf@2.6.2
+│   A deep deletion module for node (like `rm -rf`)
+│   git://github.com/isaacs/rimraf.git
+│   https://github.com/isaacs/rimraf#readme
 ```
 
 ## Tests
@@ -91,7 +105,7 @@ To perform unit tests and integration tests, simply run `npm test`.
 
 ## Contribution
 
-`npmlist` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger over time. It's now very effective at checking out package's dependencies. Saying all these means we are not afraid of expanding `npmlist` features.
+`npmlist` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking out package's dependencies. Saying all these means we are not afraid of expanding `npmlist` features beyond the current realm.
 
 The roadmap for `npmlist` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [DOCS](./DOCS.md) for `npmlist`'s code architecture, developments rules, and styles.
 

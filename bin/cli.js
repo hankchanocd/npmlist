@@ -37,7 +37,7 @@ program
 	// Mode
 	.option('-f, --fuzzy', 'enable fuzzy mode, which is now default on most features')
 	.option('-n, --nofuzzy', 'disable the fuzzy mode and resort to stdout')
-	.option('-i, --interactive', 'enable interactive mode')
+	.option('-i, --interactive', 'enable interactive mode (in development)')
 
 	// Help
 	.on('--help', function () {
