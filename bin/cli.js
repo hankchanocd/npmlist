@@ -80,19 +80,11 @@ if (program.global) {
 	})();
 
 
-} else if (program.time) { // Select only the 20 latest installed packages
-	if (!program.all) {
-		if (program.fuzzy) {
-			npmRecent().then(i => i.recentTwenty()).then(i => i.fuzzy()).catch(err => console.log(err));
-		} else {
-			npmRecent().then(i => i.recentTwenty()).then(i => i.default()).catch(err => console.log(err));
-		}
-	} else { // Only if all flag specified
-		if (program.fuzzy) {
-			npmRecent().then(i => i.all()).then(i => i.fuzzy()).catch(err => console.log(err));
-		} else {
-			npmRecent().then(i => i.all()).then(i => i.default()).catch(err => console.log(err));
-		}
+} else if (program.time) { // Output all the global packages sorted by time
+	if (program.fuzzy) {
+		npmRecent().then(i => i.all()).then(i => i.fuzzy()).catch(err => console.log(err));
+	} else {
+		npmRecent().then(i => i.all()).then(i => i.default()).catch(err => console.log(err));
 	}
 
 

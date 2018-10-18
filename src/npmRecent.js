@@ -9,6 +9,7 @@ const ls = require('ls');
 const path = require('path');
 const chalk = require('chalk');
 const columnify = require('columnify');
+const listToColumns = require('cli-columns');
 const iPipeTo = require('ipt');
 const {
 	sortByDate,
@@ -61,14 +62,17 @@ module.exports = async function () {
  *
  */
 function secondLevelChainOperation(list = []) {
+	list = columnify(list).split('\n'); // Convert the gigantic columnified string into a list
+	console.log(list.shift()); // Print and get rid of title
+
 	return { // Second-level chain operations
 		default () {
-			return console.log(columnify(list));
+			// Break the list into multiple lists that span the entire terminal width
+			return console.log(listToColumns(list, {
+				sort: false // Reject the use of default alphabetic sorting by cli-columns
+			}));
 		},
 		fuzzy() {
-			list = columnify(list).split('\n');
-
-			console.log(list.shift()); // Print title
 			return pipeToFuzzy(list);
 		}
 	};
