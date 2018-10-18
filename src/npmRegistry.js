@@ -59,7 +59,7 @@ module.exports = async function (module = '') {
 								})();
 								let {
 									stdout: result
-								} = await exec(`npm info ${cleansedKey} | less`);
+								} = await exec(`npm info ${cleansedKey}`);
 
 								console.log(result);
 							});

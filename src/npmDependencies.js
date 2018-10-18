@@ -59,7 +59,7 @@ module.exports.npmList = function () {
 									key = StringUtil.getRidOfColors(key);
 									let {
 										stdout: result
-									} = await exec(`npm info ${key} | less`);
+									} = await exec(`npm info ${key}`);
 
 									console.log(result);
 								});
@@ -212,7 +212,7 @@ function getNpmListFromExec(error, stdout, stderr) {
 					return cleansedKeys.forEach(async function (key) {
 						let {
 							stdout: result
-						} = await exec(`npm info ${key} | less`);
+						} = await exec(`npm info ${key}`);
 
 						console.log(result);
 					});
