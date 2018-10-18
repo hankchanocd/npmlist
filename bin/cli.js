@@ -122,6 +122,10 @@ if (program.global) {
 
 } else { // default mode when nothing specified...
 	(function listLocalDependencies() {
-		npmList().local().fuzzy();
+		if (program.fuzzy) {
+			npmList().local().fuzzy();
+		} else {
+			npmList().local().default();
+		}
 	})();
 }
