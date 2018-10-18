@@ -104,7 +104,15 @@ if (program.global) {
 } else if (program.args.length > 0) { // execute if a module is specified, i.e. `npmlist express --all`
 	(function fetchModuleInfoFromNpmRegistry() {
 		const module = program.args;
-		!program.all ? npmRegistry(module).simple() : npmRegistry(module).all();
+		if (!program.all) {
+			if (!program.nofuzzy) { // If nofuzzy flag not specified
+				npmRegistry(module).then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
+			} else {
+				npmRegistry(module).then(i => i.simple().default()).catch(err => console.log(chalk.redBright(err)));
+			}
+		} else {
+			npmRegistry(module).then(i => i.all()).catch(err => console.log(chalk.redBright(err)));
+		}
 	})();
 
 
