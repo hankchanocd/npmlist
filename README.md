@@ -9,14 +9,14 @@
 </p>
 <br />
 
-```npmlist``` fuzzifies all the lists it can find about a npm module, ready to execute and search it. Its default feature is dependencies listing. It has clear advantages over cluttered `npm list` and `npm info`:
+`npmlist` or `npl` (`npl` for the sake of typing) fuzzifies all the lists it can find about a npm module, ready to execute and search it. Its default feature is dependencies listing. It has clear advantages over cluttered `npm list` and `npm info`:
 
 1. Fuzzy selection of an package will automatically trigger `npm info <package>`
-2. ```npmlist -s``` lists and triggers npm scripts better than `npm run-script`
-3. ```npmlist -t``` is a good refresher on the recent global installs
-4. ```npmlist -g``` prints output as fancy and fast as `brew list`
-4. A replacement for `npm list --depth=0 --local` and other annoyingly long `npm list --@#$%` commands with assumed configurations
-5. No need to leave terminal just for glancing at a package's npm profile
+2. `npl -s` lists and triggers npm scripts better than `npm run-script`
+3. `npl -t` is a good refresher on the recent global installs
+4. `npl -g` prints output as fancy and fast as `brew list`, more than 10x faster than `npm list -g`
+5. A replacement for `npm list --depth=0 --local` and other annoyingly long `npm list --@#$%` commands with assumed configurations
+6. No need to leave terminal just for glancing at a package's npm profile
 
 ## Install
 
@@ -27,7 +27,7 @@ $ npm install -g @hankchanocd/npmlist
 ## Usage
 
 ```
-Usage: npmlist [option] [name]
+Usage: npl [option] [name]
 
 Listing information of npm packages at command line
 
@@ -49,10 +49,10 @@ Options:
 
 ### Global modules
 
-```npmlist``` runs parallel search on global modules, 10x faster than ```npm list -g```
+`npl` runs parallel search on global modules, 10x faster than `npm list -g`
 
 ```bash
-$ npmlist -g
+$ npl -g
 
 ? Select an item:
 /usr/local/bin/lib
@@ -65,7 +65,7 @@ $ npmlist -g
 A good refresher on what the heck you've installed/upgraded globally in the recent past
 
 ```bash
-$ npmlist -t
+$ npl -t
 
 ? Select an item:
 NAME                 TIME
@@ -75,10 +75,10 @@ semantic-release     10-5 8:5
 
 ### Fetch from NPM registry
 
-`npmlist` fetches the module's latest version by default, unless a version is specified
+`npl` fetches the module's latest version by default, unless a version is specified
 
 ```bash
-$ npmlist express
+$ npl express
 
 ? Select an item:
 express@4.16.4 Dependencies:
@@ -88,16 +88,15 @@ express@4.16.4 Dependencies:
 
 ### Turn off fuzzy mode
 
-Fuzzy mode is turned on in most cases, except for ```--details```, where fuzzy is not optimal for multi-line text. You can also opt for ```--no-fuzzy``` to turn off the default fuzzy mode.
+Fuzzy mode is turned on in most cases, except for `--details`, where fuzzy is not optimal for multi-line text. You can also opt for `--no-fuzzy` to turn off the default fuzzy mode.
 
 ```
-$ npmlist -t --no-fuzzy
-$ npmlist -g --no-fuzzy
-$ npmlist -s --no-fuzzy
+$ npl -t --no-fuzzy
+$ npl -g --no-fuzzy
+$ npl -s --no-fuzzy
 ```
+
 <p align="center"><img src="https://github.com/hankchanocd/npmlist/blob/master/images/no-fuzzy-demo.png" width="650"></p>
-
-
 
 ## Tests
 
@@ -105,15 +104,19 @@ To perform unit tests and integration tests, simply run `npm test`.
 
 ## Changelog
 
-**2018-Oct-16:** Fuzzy mode is now enabled by default. It can be turned off by ```--no-fuzzy```.
-**2018-Oct-18:** Give up on trying to pipe output to ```less```. Nodejs simply does not control TTY.
-**2018-Oct-19:** Speed up ```npmlist -g``` 10x than ```npm list -g```
+**2018-Oct-16:** Fuzzy mode is now enabled by default. It can be turned off by `--no-fuzzy`.
+
+**2018-Oct-18:** Give up on trying to pipe output to `less`. Nodejs simply does not control TTY.
+
+**2018-Oct-19:** Speed up `npmlist -g` 10x than `npm list -g`
+
+**2018-Oct-20:** `npmlist` can also be accessed via `npl`
 
 ## Contribution
 
-`npmlist` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking out package's dependencies. Saying all these means we are not afraid of expanding `npmlist` features beyond the current realm.
+`npl` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking out package's dependencies. Saying all these means we are not afraid of expanding `npl` features beyond the current realm.
 
-The roadmap for `npmlist` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [DOCS](./DOCS.md) for `npmlist`'s code architecture, developments rules, and styles.
+The roadmap for `npl` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [DOCS](./DOCS.md) for `npl`'s code architecture, developments rules, and styles.
 
 ## License
 
