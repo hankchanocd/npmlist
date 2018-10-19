@@ -14,6 +14,7 @@
 1. Fuzzy selection of an package will automatically trigger `npm info <package>`
 2. ```npmlist -s``` lists and triggers npm scripts better than `npm run-script`
 3. ```npmlist -t``` is a good refresher on the recent global installs
+4. ```npmlist -g``` prints output as fancy and fast as `brew list`
 4. A replacement for `npm list --depth=0 --local` and other annoyingly long `npm list --@#$%` commands with assumed configurations
 5. No need to leave terminal just for glancing at a package's npm profile
 
@@ -47,6 +48,8 @@ Options:
 ## Examples
 
 ### Global modules
+
+```npmlist``` runs parallel search on global modules, 10x faster than ```npm list -g```
 
 ```bash
 $ npmlist -g
@@ -88,10 +91,13 @@ express@4.16.4 Dependencies:
 Fuzzy mode is turned on in most cases, except for ```--details```, where fuzzy is not optimal for multi-line text. You can also opt for ```--no-fuzzy``` to turn off the default fuzzy mode.
 
 ```
-$ npmlist -t --all --no-fuzzy
+$ npmlist -t --no-fuzzy
 $ npmlist -g --no-fuzzy
 $ npmlist -s --no-fuzzy
 ```
+![No-Fuzzy-Demo](./images/np-fuzzy-demo.png)
+
+
 
 ## Tests
 
@@ -100,6 +106,8 @@ To perform unit tests and integration tests, simply run `npm test`.
 ## Changelog
 
 **2018-Oct-16:** Fuzzy mode is now enabled by default. It can be turned off by ```--no-fuzzy```.
+**2018-Oct-18:** Give up on trying to pipe output to ```less```. Nodejs simply does not control TTY.
+**2018-Oct-19:** Speed up ```npmlist -g``` 10x than ```npm list -g```
 
 ## Contribution
 
