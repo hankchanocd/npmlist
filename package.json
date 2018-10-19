@@ -15,6 +15,7 @@
   },
   "scripts": {
     "pretest": "npm run build --silent",
+    "test:unit": "npm run jest -- __test__/unit_test",
     "test": "npm-run-all jest eslint --parallel --silent",
     "jest": "jest",
     "jest:coverage": "jest --coverage",
@@ -74,6 +75,7 @@
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.6.1",
     "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^21.25.1",
     "eslint-plugin-promise": "^4.0.1",
     "flow-bin": "^0.82.0",
     "ghooks": "^2.0.4",
@@ -85,7 +87,7 @@
   },
   "config": {
     "ghooks": {
-      "pre-commit": "npm run test",
+      "pre-commit": "npm run test:unit",
       "pre-push": "npm run coverage:check  # Include Jest's coverage report"
     },
     "commitizen": {
