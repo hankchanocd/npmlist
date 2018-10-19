@@ -21,7 +21,7 @@ const {
 
 
 program
-	.version('4.0.0', '-v, --version')
+	.version('6.0.1', '-v, --version')
 	.usage(`[option] [name]`)
 	.description('A fuzzy CLI that lists everything listable from any npm package')
 
