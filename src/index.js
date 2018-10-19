@@ -12,10 +12,13 @@ const npmRegistry = require('./npmRegistry');
 
 const npmRecent = require('./npmRecent');
 
+const npmGlobal = require('./npmGlobal');
+
 
 module.exports = {
     npmDependencies,
     npmScripts,
     npmRegistry,
-    npmRecent
+    npmRecent,
+    npmGlobal
 };

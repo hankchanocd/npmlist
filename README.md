@@ -1,4 +1,4 @@
-# npmlist &nbsp;&nbsp; [![Build Status](https://travis-ci.org/hankchanocd/npmlist.svg?branch=master)](https://travis-ci.org/hankchanocd/npmlist) [![Known Vulnerabilities](https://snyk.io/test/github/hankchanocd/npmlist/badge.svg?targetFile=package.json)](https://snyk.io/test/github/hankchanocd/npmlist?targetFile=package.json) ![Github issues](https://img.shields.io/github/issues/hankchanocd/npmlist.svg)
+# npmlist &nbsp;&nbsp; [![npm](https://img.shields.io/npm/v/@hankchanocd/npmlist.svg)](https://www.npmjs.com/package/@hankchanocd/npmlist) [![Build Status](https://travis-ci.org/hankchanocd/npmlist.svg?branch=master)](https://travis-ci.org/hankchanocd/npmlist) [![Known Vulnerabilities](https://snyk.io/test/github/hankchanocd/npmlist/badge.svg?targetFile=package.json)](https://snyk.io/test/github/hankchanocd/npmlist?targetFile=package.json) ![Github issues](https://img.shields.io/github/issues/hankchanocd/npmlist.svg)
 
 > A fuzzy CLI that lists everything listable from any npm package, i.e. dependencies, scripts, profile.
 
@@ -14,6 +14,7 @@
 1. Fuzzy selection of an package will automatically trigger `npm info <package>`
 2. ```npmlist -s``` lists and triggers npm scripts better than `npm run-script`
 3. ```npmlist -t``` is a good refresher on the recent global installs
+4. ```npmlist -g``` prints output as fancy and fast as `brew list`
 4. A replacement for `npm list --depth=0 --local` and other annoyingly long `npm list --@#$%` commands with assumed configurations
 5. No need to leave terminal just for glancing at a package's npm profile
 
@@ -39,9 +40,8 @@ Options:
   -t, --time         show the latest 20 modules installed globally
   -s, --scripts      list/execute npm scripts
   -a, --all          a flavor flag that shows all available information on any feature flags
-  -f, --fuzzy        enable fuzzy mode, which is now default on most features
-  -n, --nofuzzy      disable the fuzzy mode and resort to stdout
-  -i, --interactive  enable interactive mode
+  -F, --no-fuzzy     disable the fuzzy mode and resort to stdout
+  -i, --interactive  enable interactive mode (in development)
   -h, --help         output usage information
 ```
 
@@ -49,21 +49,25 @@ Options:
 
 ### Global modules
 
+```npmlist``` runs parallel search on global modules, 10x faster than ```npm list -g```
+
 ```bash
 $ npmlist -g
 
+? Select an item:
 /usr/local/bin/lib
 ├── @angular/cli@6.2.4
 ├── aerobatic-cli@1.1.4
 ```
 
-### Recently installed/upgraded global modules
+### Recent added global modules
 
 A good refresher on what the heck you've installed/upgraded globally in the recent past
 
 ```bash
 $ npmlist -t
 
+? Select an item:
 NAME                 TIME
 npmlist-cli          10-5 21:29
 semantic-release     10-5 8:5
@@ -71,15 +75,29 @@ semantic-release     10-5 8:5
 
 ### Fetch from NPM registry
 
-`npmlist` fetches the latest released version by default
+`npmlist` fetches the module's latest version by default, unless a version is specified
 
-```
+```bash
 $ npmlist express
 
-express@4.16.4's Dependencies:
+? Select an item:
+express@4.16.4 Dependencies:
 ├── accepts@1.3.5
 ├── array-flatten@1.1.1
 ```
+
+### Turn off fuzzy mode
+
+Fuzzy mode is turned on in most cases, except for ```--details```, where fuzzy is not optimal for multi-line text. You can also opt for ```--no-fuzzy``` to turn off the default fuzzy mode.
+
+```
+$ npmlist -t --no-fuzzy
+$ npmlist -g --no-fuzzy
+$ npmlist -s --no-fuzzy
+```
+![No-Fuzzy-Demo](./images/np-fuzzy-demo.png)
+
+
 
 ## Tests
 
@@ -87,11 +105,13 @@ To perform unit tests and integration tests, simply run `npm test`.
 
 ## Changelog
 
-**2018-Oct-16:** Fuzzy mode is now enabled by default
+**2018-Oct-16:** Fuzzy mode is now enabled by default. It can be turned off by ```--no-fuzzy```.
+**2018-Oct-18:** Give up on trying to pipe output to ```less```. Nodejs simply does not control TTY.
+**2018-Oct-19:** Speed up ```npmlist -g``` 10x than ```npm list -g```
 
 ## Contribution
 
-`npmlist` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger over time. It's now very effective at checking out package's dependencies. Saying all these means we are not afraid of expanding `npmlist` features.
+`npmlist` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking out package's dependencies. Saying all these means we are not afraid of expanding `npmlist` features beyond the current realm.
 
 The roadmap for `npmlist` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [DOCS](./DOCS.md) for `npmlist`'s code architecture, developments rules, and styles.
 

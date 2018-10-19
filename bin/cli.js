@@ -11,7 +11,8 @@ const {
 	npmDependencies,
 	npmScripts,
 	npmRegistry,
-	npmRecent
+	npmRecent,
+	npmGlobal
 } = require('./../build/index');
 const {
 	npmList,
@@ -30,14 +31,14 @@ program
 	.option('-d, --details', 'include details to each dependency, but disable the default fuzzy mode')
 	.option('-t, --time', 'show the latest 20 modules installed globally')
 	.option('-s, --scripts', 'list/execute npm scripts')
+	.option('-n, --new', 'fast global modules')
 
 	// Flavor flag
 	.option('-a, --all', 'a flavor flag that shows all available information on any feature flags')
 
 	// Mode
-	.option('-f, --fuzzy', 'enable fuzzy mode, which is now default on most features')
-	.option('-n, --nofuzzy', 'disable the fuzzy mode and resort to stdout')
-	.option('-i, --interactive', 'enable interactive mode')
+	.option('-F, --no-fuzzy', 'disable the default fuzzy mode and resort to stdout')
+	.option('-i, --interactive', 'enable interactive mode (in development)')
 
 	// Help
 	.on('--help', function () {
@@ -45,9 +46,9 @@ program
 		console.log('  Examples:');
 		console.log('    ' + chalk.blueBright(`npmlist, ${chalk.white('show a fuzzy list of local dependencies')}`));
 		console.log('    ' + chalk.blueBright(`npmlist -t, ${chalk.white('show a fuzzy list of 20 latest global installs')}`));
-		console.log('    ' + chalk.blueBright(`npmlist -g -d, ${chalk.white('show a detailed list of global modules')}`));
+		console.log('    ' + chalk.blueBright(`npmlist -s --no-fuzzy, ${chalk.white("show a normal list of all the npm scripts")}`));
+		console.log('    ' + chalk.blueBright(`npmlist -g --details, ${chalk.white('show a normal, detailed list of global modules')}`));
 		console.log('    ' + chalk.blueBright(`npmlist [module], ${chalk.white("show a fuzzy list of a module's dependencies fetched from registry")}`));
-		console.log('    ' + chalk.blueBright(`npmlist [module] --all, ${chalk.white("show all info about a module from npm registry")}`));
 		console.log();
 	})
 	.parse(process.argv);
@@ -56,13 +57,13 @@ program
 if (program.global) {
 	(function listGlobalPackages() {
 		if (!program.details) { // if details flag not specified
-			if (!program.nofuzzy) { // if nofuzzy flag not specified
-				npmList().global().fuzzy();
+			if (program.fuzzy) {
+				npmGlobal().then(i => i.simple().fuzzy()).catch(err => console.log(err));
 			} else {
-				npmList().global().default();
+				npmGlobal().then(i => i.simple().print()).catch(err => console.log(err));
 			}
 		} else {
-			npmListDetails().global();
+			npmGlobal().then(i => i.details()).catch(err => console.log(err));
 		}
 	})();
 
@@ -70,42 +71,34 @@ if (program.global) {
 } else if (program.local) {
 	(function listLocalDependencies() {
 		if (!program.details) { // if details flag not specified
-			if (!program.nofuzzy) { // if nofuzzy flag not specified
-				npmList().local().fuzzy();
+			if (program.fuzzy) {
+				npmList().fuzzy();
 			} else {
-				npmList().local().default();
+				npmList().default();
 			}
 		} else {
-			npmListDetails().local();
+			npmListDetails();
 		}
 	})();
 
 
-} else if (program.time) { // Select only the 20 latest installed packages
-	if (!program.all) {
-		if (!program.nofuzzy) { // If nofuzzy flag not specified
-			npmRecent().then(i => i.recentTwenty()).then(i => i.fuzzy()).catch(err => console.log(err));
-		} else {
-			npmRecent().then(i => i.recentTwenty()).then(i => i.default()).catch(err => console.log(err));
-		}
-	} else { // Only if all flag specified
-		if (!program.nofuzzy) { // If nofuzzy flag not specified
-			npmRecent().then(i => i.all()).then(i => i.fuzzy()).catch(err => console.log(err));
-		} else {
-			npmRecent().then(i => i.all()).then(i => i.default()).catch(err => console.log(err));
-		}
+} else if (program.time) { // Output all the global packages sorted by time
+	if (program.fuzzy) {
+		npmRecent().all().then(i => i.fuzzy()).catch(err => console.log(err));
+	} else {
+		npmRecent().all().then(i => i.default()).catch(err => console.log(err));
 	}
 
 
 } else if (program.details) { // Default to npm local packages listing if only --details flag present
-	npmListDetails().local();
+	npmListDetails();
 
 
 } else if (program.args.length > 0) { // execute if a module is specified, i.e. `npmlist express --all`
 	(function fetchModuleInfoFromNpmRegistry() {
 		const module = program.args;
 		if (!program.all) {
-			if (!program.nofuzzy) { // If nofuzzy flag not specified
+			if (program.fuzzy) {
 				npmRegistry(module).then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
 			} else {
 				npmRegistry(module).then(i => i.simple().default()).catch(err => console.log(chalk.redBright(err)));
@@ -117,19 +110,24 @@ if (program.global) {
 
 
 } else if (program.scripts) {
-	if (!program.nofuzzy) { // If nofuzzy flag not specified
+	if (program.fuzzy) {
 		npmScripts().fuzzy();
 	} else {
 		npmScripts().default();
 	}
 
 
-} else if (program.all) { // --all is a flavor flag. It has no meaning if standing alone
+} else if (program.all) { // If none of the feature flags were detected but --all ...
+	// --all is a flavor flag. It has no meaning if standing alone
 	console.log(`Please specify a feature`);
 
 
 } else { // default mode when nothing specified...
 	(function listLocalDependencies() {
-		npmList().local().fuzzy();
+		if (program.fuzzy) {
+			npmList().fuzzy();
+		} else {
+			npmList().default();
+		}
 	})();
 }
