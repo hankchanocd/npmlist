@@ -11,7 +11,8 @@ const {
 	npmDependencies,
 	npmScripts,
 	npmRegistry,
-	npmRecent
+	npmRecent,
+	npmGlobal
 } = require('./../build/index');
 const {
 	npmList,
@@ -30,6 +31,7 @@ program
 	.option('-d, --details', 'include details to each dependency, but disable the default fuzzy mode')
 	.option('-t, --time', 'show the latest 20 modules installed globally')
 	.option('-s, --scripts', 'list/execute npm scripts')
+	.option('-n, --new', 'fast global modules')
 
 	// Flavor flag
 	.option('-a, --all', 'a flavor flag that shows all available information on any feature flags')
@@ -56,12 +58,12 @@ if (program.global) {
 	(function listGlobalPackages() {
 		if (!program.details) { // if details flag not specified
 			if (program.fuzzy) {
-				npmList().global().fuzzy();
+				npmGlobal().then(i => i.simple().fuzzy()).catch(err => console.log(err));
 			} else {
-				npmList().global().default();
+				npmGlobal().then(i => i.simple().print()).catch(err => console.log(err));
 			}
 		} else {
-			npmListDetails().global();
+			npmGlobal().then(i => i.details()).catch(err => console.log(err));
 		}
 	})();
 
@@ -70,26 +72,26 @@ if (program.global) {
 	(function listLocalDependencies() {
 		if (!program.details) { // if details flag not specified
 			if (program.fuzzy) {
-				npmList().local().fuzzy();
+				npmList().fuzzy();
 			} else {
-				npmList().local().default();
+				npmList().default();
 			}
 		} else {
-			npmListDetails().local();
+			npmListDetails();
 		}
 	})();
 
 
 } else if (program.time) { // Output all the global packages sorted by time
 	if (program.fuzzy) {
-		npmRecent().then(i => i.all()).then(i => i.fuzzy()).catch(err => console.log(err));
+		npmRecent().all().then(i => i.fuzzy()).catch(err => console.log(err));
 	} else {
-		npmRecent().then(i => i.all()).then(i => i.default()).catch(err => console.log(err));
+		npmRecent().all().then(i => i.default()).catch(err => console.log(err));
 	}
 
 
 } else if (program.details) { // Default to npm local packages listing if only --details flag present
-	npmListDetails().local();
+	npmListDetails();
 
 
 } else if (program.args.length > 0) { // execute if a module is specified, i.e. `npmlist express --all`
@@ -123,9 +125,9 @@ if (program.global) {
 } else { // default mode when nothing specified...
 	(function listLocalDependencies() {
 		if (program.fuzzy) {
-			npmList().local().fuzzy();
+			npmList().fuzzy();
 		} else {
-			npmList().local().default();
+			npmList().default();
 		}
 	})();
 }

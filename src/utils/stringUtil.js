@@ -12,3 +12,13 @@ module.exports.getRidOfColors = function (str) {
 module.exports.getRidOfQuotationMarks = function (str) {
 	return str.replace(/['"]+/g, '');
 };
+
+// Truncate
+module.exports.truncate = function (str, maxWidth = 50, truncateMarker = true) {
+	if (truncateMarker) {
+		str = str.length > maxWidth ? str.substring(0, maxWidth) + '...' : str;
+	} else {
+		str = str.length > maxWidth ? str.substring(0, maxWidth) : str;
+	}
+	return str;
+};

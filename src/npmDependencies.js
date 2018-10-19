@@ -24,97 +24,73 @@ const StringUtil = require('./utils/stringUtil');
  * Output npm list with 2 dimensions of 2 options provided: local() and global() &
  	default () and fuzzy()
  * i.e. npmList().local().fuzzy()
- * i.e. npmList().global().default()
  *
  */
 module.exports.npmList = function () {
 
-	// First-level returns local() and global() options
-	return {
+	// Use pkgInfo to get package.json dependencies value. Parsing package.json for dependencies is faster
+	// than running `npm list`
+	try {
+		let pkg = {
+			exports: {}
+		};
+		pkgInfo(pkg, {
+			dir: cwd,
+			include: ["name", "version", "dependencies", "devDependencies"]
+		});
 
-		local() {
-			// Use pkgInfo to get package.json dependencies value. Parsing package.json for dependencies is faster
-			// than running `npm list`
-			try {
-				let pkg = {
-					exports: {}
-				};
-				pkgInfo(pkg, {
-					dir: cwd,
-					include: ["name", "version", "dependencies", "devDependencies"]
-				});
+		// Returns default() and fuzzy() options
+		return {
+			default () {
+				// Print
+				parseListFromPkgOutput(pkg).forEach(i => console.log('├── ' + i));
+			},
+			fuzzy() {
+				iPipeTo(parseListFromPkgOutput(pkg), {
+						size: 20
+					}).then(keys => {
+						return keys.forEach(async function (key) {
+							key = StringUtil.getRidOfColors(key);
+							let {
+								stdout: result
+							} = await exec(`npm info ${key}`);
 
-
-				// Second-level at local() returns default() and fuzzy() options
-				return {
-					default () {
-						// Print
-						parseListFromPkgOutput(pkg).forEach(i => console.log('├── ' + i));
-					},
-					fuzzy() {
-						iPipeTo(parseListFromPkgOutput(pkg), {
-								size: 20
-							}).then(keys => {
-								return keys.forEach(async function (key) {
-									key = StringUtil.getRidOfColors(key);
-									let {
-										stdout: result
-									} = await exec(`npm info ${key}`);
-
-									console.log(result);
-								});
-							})
-							.catch(err => {
-								console.log(err, "Error building interactive interface");
-							});
-					}
-				};
-
-			} catch (e) {
-				console.log("No package.json found");
+							console.log(result);
+						});
+					})
+					.catch(err => {
+						console.log(err, "Error building interactive interface");
+					});
 			}
-		},
+		};
 
-		global() {
-			return {
-				default () {
-					console.log(chalk.blueBright('Warning: Running global command could take up to 10 sec'));
-					execChildProcess('npm list --depth=0 --global', function (error, stdout, stderr) {
-						return getNpmListFromExec(error, stdout, stderr).print();
-					});
-				},
-
-				fuzzy() {
-					console.log(chalk.blueBright('Warning: Running global command could take up to 10 sec'));
-					execChildProcess('npm list --depth=0 --global', function (error, stdout, stderr) {
-						return getNpmListFromExec(error, stdout, stderr).fuzzy();
-					});
-				}
-			};
-		}
-	};
+	} catch (e) {
+		console.log("No package.json found");
+	}
 };
 
 
 /**
- * Run `npm list --long=true` with 2 options provided: local() and global()
- * i.e. npmList.global()
+ * Run `npm list --long=true`
  */
 module.exports.npmListDetails = function () {
 	const cmd = 'npm ll --depth=0 --long=true ';
 
-	return {
-		local() {
-			execChildProcess(cmd + '--local', function (error, stdout, stderr) {
-				getNpmListFromExec(error, stdout, stderr).print();
-			});
-		},
-		global() {
-			execChildProcess(cmd + '--global', function (error, stdout, stderr) {
-				getNpmListFromExec(error, stdout, stderr).print();
+	// We are stuck with handling the callback instead of using async /await because npm cli is easy to blow up errors
+	execChildProcess(cmd + '--local', function (error, stdout, stderr) {
+		if (error) { // Don't return if erred for `npm ERR! peer dep missing:` might occur, which is normal
+			console.log(chalk.red.bold.underline("exec error:") + error);
+		}
+		if (stdout) {
+			let list = parseNpmListFromStdout(stdout);
+			return list.forEach(i => {
+				console.log(i);
 			});
 		}
-	};
+		if (stderr) {
+			return console.log(chalk.red("Error: ") + stderr);
+		}
+	});
 };
 
 
@@ -169,62 +145,6 @@ function parseListFromPkgOutput({
 			let value = deps[key] ? deps[key].replace(/[^0-9.,]/g, "") : '';
 			return key + '@' + chalk.grey(value);
 		});
-	}
-}
-
-
-/*
- * getNpmListFromExec deals with the standard output from child_process callback
- *
- * Return two options: print() and fuzzy() at stdout
- *
- * We are stuck with handling the callback instead of using async/await because npm cli is easy to blow up errors
- */
-function getNpmListFromExec(error, stdout, stderr) {
-	if (error) { // Don't return if erred for `npm ERR! peer dep missing:` might occur, which is normal
-		console.log(chalk.red.bold.underline("exec error:") + error);
-	}
-	if (stdout) {
-
-		// Return print() and fuzzy()
-		return {
-			print: function () {
-				return parseNpmListFromStdout(stdout).forEach(i => {
-					console.log(i);
-				});
-			},
-
-			fuzzy: async function () {
-				try {
-					let keys = await iPipeTo(parseNpmListFromStdout(stdout), {
-						size: 20
-					});
-
-					let cleansedKeys = (function cleanKeys() {
-						return keys.map(key => {
-							let tail = key.split(' ')[1]; // ├── bitcoin => bitcoin
-							key = StringUtil.getRidOfColors(tail); // ANSI code would prevent sending to `npm info`
-							key = StringUtil.getRidOfQuotationMarks(key); // bitcoin" => bitcoin
-							return key;
-						});
-					})();
-
-					return cleansedKeys.forEach(async function (key) {
-						let {
-							stdout: result
-						} = await exec(`npm info ${key}`);
-
-						console.log(result);
-					});
-
-				} catch (err) {
-					console.log(err, "Error building interactive interface");
-				}
-			}
-		};
-	}
-	if (stderr) {
-		return console.log(chalk.red("Error: ") + stderr);
 	}
 }
 
