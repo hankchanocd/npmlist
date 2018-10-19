@@ -4,10 +4,14 @@
  */
 'use strict';
 
-// Sort by date descendingly
+// Sort the object {stat: {mtime}} against dates descendingly
 module.exports.sortByDate = function (list) {
+	if (!list) throw new Error('List is not given');
+	if (list.length === 1) return;
+
 	list.sort(function (a, b) {
-		if (!a.stat.mtime || !b.stat.mtime) throw Error('List has no `mtime` property');
+		if (!a.stat || !b.stat) throw new Error('List has no `stat` property');
+		if (!a.stat.mtime || !b.stat.mtime) throw new Error('List has no `mtime` property');
 
 		let keyA = new Date(a.stat.mtime),
 			keyB = new Date(b.stat.mtime);
@@ -22,9 +26,11 @@ module.exports.sortByDate = function (list) {
 
 // Parse date into (MM:DD HH:MM Year) format for output
 module.exports.parseDate = function (str) {
-	if (new Date(str) === 'Invalid Date') return;
-
 	let date = new Date(str);
+
+	// Check for invalid date
+	if (isNaN(date.getTime())) throw new Error('Invalid Date');
+
 	if (date.getFullYear() == new Date().getFullYear()) { // If it's the current year
 		return `${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
 	} else {
