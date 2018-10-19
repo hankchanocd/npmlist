@@ -95,7 +95,7 @@ $ npmlist -t --no-fuzzy
 $ npmlist -g --no-fuzzy
 $ npmlist -s --no-fuzzy
 ```
-![No-Fuzzy-Demo](./images/np-fuzzy-demo.png)
+![No-Fuzzy-Demo](./images/no-fuzzy-demo.png)
 
 
 
