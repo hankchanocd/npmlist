@@ -23,7 +23,7 @@ const StringUtil = require('./utils/stringUtil');
  * Chain operations are flexible for future expansion with backward compatibility
  *
  */
-module.exports = async function (module = '') {
+module.exports.main = async function (module = '') {
 	if (!module) {
 		return console.log(chalk.redBright('No module provided'));
 	}
@@ -90,7 +90,7 @@ function parseToList(data = {
 	'versions': {}
 }) {
 	if (!data['name'] || !data['dist-tags'] || !data['versions']) {
-		return console.log(chalk.redBright('Fetched info is incomplete, therefore useless'));
+		throw new Error('Fetched info is incomplete, therefore useless');
 	}
 
 	const title = data['name'] + '@' + data['dist-tags']['latest'];
@@ -105,7 +105,8 @@ function parseToList(data = {
 	return {
 		simple() {
 			if (!dependencies) {
-				return console.log(chalk.blueBright(`${title} has no dependencies`));
+				console.log(chalk.blueBright(`${title} has no dependencies`));
+				return;
 			}
 			console.log(chalk.blueBright(`${title}'s Dependencies:`));
 
@@ -130,3 +131,4 @@ function parseToList(data = {
 		}
 	};
 }
+module.exports.parseToList = parseToList;
