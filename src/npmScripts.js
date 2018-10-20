@@ -87,7 +87,12 @@ function parseNpmScripts({
 		return [chalk.blueBright('Module has no scripts')];
 	}
 
-	return Object.keys(scripts).sort().map(key => {
+	// Hoist the common task commands to top
+	let commonKeys = Object.keys(scripts).filter(i => i.includes('test') || i.includes('build') || i.includes('commit') || i.includes('watch')).sort();
+	let restKeys = Object.keys(scripts).filter(i => !i.includes('test') && !i.includes('build') && !i.includes('commit') && !i.includes('watch')).sort();
+	let keys = commonKeys.concat(restKeys);
+
+	return keys.map(key => {
 		let value = scripts[key] ? scripts[key] : '';
 		return key + chalk.white(' => ') + chalk.grey(value);
 	});
