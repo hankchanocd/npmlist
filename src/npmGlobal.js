@@ -16,12 +16,14 @@ const npmRoot = require('./npmRoot');
 /*
  * npmGlobal() has only one exposed function that returns chain operations.
 
- * i.e. npmGlobal().simple().print();
- * i.e. npmGlobal().simple().fuzzy();
- * i.e. npmGlobal().details()
+ * i.e. (await npmGlobal()).simple().print();
+ * i.e. (await npmGlobal()).simple().fuzzy();
+ * i.e. (await npmGlobal()).details()
+ *
+ * The default value for 'global' is true, unless specified otherwise
 */
-module.exports = async function () {
-	let list = (await npmRoot()).getAllModulesPaths();
+module.exports.main = async function (global = true) {
+	let list = (await npmRoot(global)).getAllModulesPaths();
 
 	return { // First-level chain operations
 		simple() {
@@ -133,6 +135,7 @@ function traversePackageJson(list = [], attributes = ["name"]) {
 		return pkg;
 	});
 }
+module.exports.traversePackageJson = traversePackageJson;
 
 
 /*
@@ -152,11 +155,8 @@ function retrieveModuleInfo(list = []) {
 					}
 				} = pkg;
 
-				// Style output
-				let result = chalk.blueBright('├── ' + name) + chalk.grey('@' + version);
-
 				return {
-					module: result
+					module: chalk.blueBright('├── ' + name) + chalk.grey('@' + version)
 				};
 			});
 		},
@@ -165,30 +165,48 @@ function retrieveModuleInfo(list = []) {
 			maxWidth: 50
 		}) {
 			return list.map(pkg => {
-				// Destructuring
+				// Destructuring (with default values)
 				let {
 					exports: {
-						homepage,
-						name,
-						description,
+						homepage = '',
+						name = '',
+						description = '',
 						repository: {
-							url
-						},
-						version
-					}
+							url = ''
+						} = {},
+						version = ''
+					} = {}
 				} = pkg;
 
 				// Data cleansing
-				let maxWidth = config.maxWidth;
-				description = StringUtil.truncate(description, maxWidth);
-				homepage = homepage.split('://')[1];
-				url = url.split('://')[1];
-				url = StringUtil.truncate(url, maxWidth);
+				try {
+					let maxWidth = config.maxWidth;
+
+					name = name ? name : 'undefined';
+					if (description) {
+						description = StringUtil.truncate(description, maxWidth);
+					} else {
+						description = 'undefined';
+					}
+					if (homepage) {
+						homepage = homepage.includes('://') ? homepage.split('://')[1] : homepage;
+					} else {
+						homepage = 'undefined';
+					}
+					if (url) {
+						url = url.includes('://') ? url.split('://')[1] : url;
+						url = StringUtil.truncate(url, maxWidth);
+					} else {
+						url = 'undefined';
+					}
+				} catch (err) {
+					console.log(chalk.redBright('Data destructuring and cleansing failed'));
+				}
 
 				// Style output
-				let result = chalk.blueBright('├── ' + name) + chalk.grey('@' + version) + '\n' +
+				let result = chalk.blueBright('├── ' + name + '@' + version) + '\n' +
 					chalk.white('│   ' + description) + '\n';
-				result += chalk.grey('│   ' + homepage + '\n' + '│   ' + url + '\n' + '│   ');
+				result += chalk.grey('│   ' + homepage + '\n' + '│   ' + url);
 
 				return {
 					module: result
@@ -197,3 +215,4 @@ function retrieveModuleInfo(list = []) {
 		}
 	};
 }
+module.exports.retrieveModuleInfo = retrieveModuleInfo;
