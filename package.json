@@ -21,7 +21,7 @@
     "jest": "jest",
     "jest:coverage": "jest --coverage",
     "coverage:check": "npm run jest:coverage",
-    "coverage:open": "opn ./coverage/index.html",
+    "coverage:open": "npm run coverage:check && opn ./coverage/index.html",
     "watch": "jest --watch",
     "eslint": "eslint . --ignore-path .gitignore --cache --cache-location \"./eslint/.eslintcache\" ",
     "eslint:makeHtml": "npm run eslint -- --format html -o ./eslint/report.html",
