@@ -56,14 +56,18 @@ program
 
 if (program.global) {
 	(function listGlobalPackages() {
+		if (program.time) {
+			return console.log('Use `npl -t` instead');
+		}
+
 		if (!program.details) { // if details flag not specified
 			if (program.fuzzy) {
-				npmGlobal().then(i => i.simple().fuzzy()).catch(err => console.log(err));
+				npmGlobal().then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
 			} else {
-				npmGlobal().then(i => i.simple().print()).catch(err => console.log(err));
+				npmGlobal().then(i => i.simple().print()).catch(err => console.log(chalk.redBright(err)));
 			}
 		} else {
-			npmGlobal().then(i => i.details()).catch(err => console.log(err));
+			npmGlobal().then(i => i.details()).catch(err => console.log(chalk.redBright(err)));
 		}
 	})();
 
@@ -82,19 +86,21 @@ if (program.global) {
 	})();
 
 
-} else if (program.time) { // Output all the global packages sorted by time
-	if (program.fuzzy) {
-		npmRecent().all().then(i => i.fuzzy()).catch(err => console.log(err));
-	} else {
-		npmRecent().all().then(i => i.default()).catch(err => console.log(err));
-	}
+} else if (program.time) {
+	(function listGlobalPackagesSortedByTime() {
+		if (program.fuzzy) {
+			npmRecent().all().then(i => i.fuzzy()).catch(err => console.log(chalk.redBright(err)));
+		} else {
+			npmRecent().all().then(i => i.default()).catch(err => console.log(chalk.redBright(err)));
+		}
+	})();
 
 
 } else if (program.details) { // Default to npm local packages listing if only --details flag present
 	npmListDetails();
 
 
-} else if (program.args.length > 0) { // execute if a module is specified, i.e. `npmlist express --all`
+} else if (program.args.length > 0) { // execute if a module is specified, i.e. `npl express --all`
 	(function fetchModuleInfoFromNpmRegistry() {
 		const module = program.args;
 		if (!program.all) {

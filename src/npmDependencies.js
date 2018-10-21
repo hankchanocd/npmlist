@@ -21,56 +21,44 @@ const StringUtil = require('./utils/stringUtil');
 
 
 /*
- * Output npm list with 2 dimensions of 2 options provided: local() and global() &
- 	default () and fuzzy()
- * i.e. npmList().local().fuzzy()
+ * Output npm list 2 options provided: default () and fuzzy()
  *
  */
 module.exports.npmList = function () {
+	let pkg = collectDependencies();
+	let list = parseListFromPkgOutput(pkg);
 
-	// Use pkgInfo to get package.json dependencies value. Parsing package.json for dependencies is faster
-	// than running `npm list`
-	try {
-		let pkg = {
-			exports: {}
-		};
-		pkgInfo(pkg, {
-			dir: cwd,
-			include: ["name", "version", "dependencies", "devDependencies"]
-		});
+	// Returns default() and fuzzy() options
+	return {
+		default () {
+			if (!list) return;
 
-		// Returns default() and fuzzy() options
-		return {
-			default () {
-				// Print
-				parseListFromPkgOutput(pkg).forEach(i => console.log('├── ' + i));
-			},
-			fuzzy() {
-				iPipeTo(parseListFromPkgOutput(pkg), {
-						size: 20
-					}).then(keys => {
-						return keys.forEach(async function (key) {
-							key = StringUtil.getRidOfColors(key);
-							let {
-								stdout: result
-							} = await exec(`npm info ${key}`);
+			return list.forEach(i => console.log('├── ' + i));
+		},
+		fuzzy() {
+			if (!list) return;
 
-							console.log(result);
-						});
-					})
-					.catch(err => {
-						console.log(err, "Error building interactive interface");
+			return iPipeTo(list, {
+					size: 20
+				}).then(keys => {
+					return keys.forEach(async function (key) {
+						key = StringUtil.getRidOfColors(key);
+						let {
+							stdout: result
+						} = await exec(`npm info ${key}`);
+
+						console.log(result);
 					});
-			}
-		};
-
-	} catch (e) {
-		console.log("No package.json found");
-	}
+				})
+				.catch(err => {
+					console.log(err, "Error building interactive interface");
+				});
+		}
+	};
 };
 
 
-/**
+/*
  * Run `npm list --long=true`
  */
 module.exports.npmListDetails = function () {
@@ -95,6 +83,29 @@ module.exports.npmListDetails = function () {
 
 
 /*
+ * Use pkgInfo to get package.json dependencies value. Parsing package.json for dependencies is more than 10x faster
+ * than running `npm list`
+ */
+function collectDependencies() {
+	let pkg;
+	try {
+		pkg = {
+			exports: {}
+		};
+		pkgInfo(pkg, {
+			dir: cwd,
+			include: ["name", "version", "dependencies", "devDependencies"]
+		});
+
+	} catch (e) {
+		console.log(chalk.redBright("No package.json found"));
+	}
+	return pkg;
+}
+module.exports.collectDependencies = collectDependencies;
+
+
+/*
  * Parse pkg object into a list
  *
  */
@@ -105,18 +116,16 @@ function parseListFromPkgOutput({
 		dependencies,
 		devDependencies
 	}
-} = {
-	exports: {}
 }) {
+	if (!name && !version) return; // Not a npm package if having neither name nor version
+
 	let list = [];
 
 	(function printTitle() {
-		if (name) {
-			if (version) {
-				console.log(chalk.blueBright(name + '@' + version));
-			} else {
-				console.log(name);
-			}
+		if (version) {
+			console.log(chalk.blueBright(name + '@' + version));
+		} else {
+			console.log(name);
 		}
 	})();
 
@@ -147,6 +156,7 @@ function parseListFromPkgOutput({
 		});
 	}
 }
+module.exports.parseListFromPkgOutput = parseListFromPkgOutput;
 
 
 /*
@@ -156,6 +166,7 @@ function parseListFromPkgOutput({
  * returns list: []
  */
 function parseNpmListFromStdout(stdout) {
+	if (!stdout) return;
 	const lines = stdout.split('\n');
 
 	return lines.map(i => {
@@ -182,3 +193,4 @@ function parseNpmListFromStdout(stdout) {
 		return i.includes('@') && i.includes('->');
 	}
 }
+module.exports.parseNpmListFromStdout = parseNpmListFromStdout;

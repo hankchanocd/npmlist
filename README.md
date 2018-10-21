@@ -9,12 +9,12 @@
 </p>
 <br />
 
-`npmlist` or `npl` (`npl` for the sake of typing) fuzzifies all the lists it can find about a npm module, ready to execute and search it. Its default feature is dependencies listing. It has clear advantages over cluttered `npm list` and `npm info`:
+`npmlist` or `npl` (`npl` for the sake of typing) fuzzifies all the lists it can find about a npm module, ready to execute and search it. Its default feature is local dependencies listing, but can be changed with feature flags. It has clear advantages over painfully slow and cluttered `npm list`:
 
-1. Fuzzy selection of an package will automatically trigger `npm info <package>`
-2. `npl -s` lists and triggers npm scripts better than `npm run-script`
-3. `npl -t` is a good refresher on the recent global installs
-4. `npl -g` prints output as fancy and fast as `brew list`, more than 10x faster than `npm list -g`
+1. Selecting a package on fuzzy list will automatically trigger `npm info <package>`
+2. `npl -t` is a good refresher on the recent global installs
+3. `npl -g` finds and prints global modules as fancy as `brew list`, and more than 10x faster than `npm list -g`
+4. `npl -s` lists and triggers npm scripts better than `npm run-script`
 5. A replacement for `npm list --depth=0 --local` and other annoyingly long `npm list --@#$%` commands with assumed configurations
 6. No need to leave terminal just for glancing at a package's npm profile
 
@@ -49,7 +49,7 @@ Options:
 
 ### Global modules
 
-`npl` runs parallel search on global modules, 10x faster than `npm list -g`
+More than 10x faster than `npm list -g`
 
 ```bash
 $ npl -g
@@ -68,9 +68,22 @@ A good refresher on what the heck you've installed/upgraded globally in the rece
 $ npl -t
 
 ? Select an item:
-NAME                 TIME
-npmlist-cli          10-5 21:29
-semantic-release     10-5 8:5
+NAME                  TIME
+@hankchanocd/npmlist  10-5 21:29
+semantic-release      10-5 8:5
+```
+
+### Execute module's npm scripts
+
+Somewhat similar to [```ntl```](https://github.com/ruyadorno/ntl)
+
+```bash
+$ npmlist -s
+
+? Select an item:
+express@4.16.4
+build: babel src/ -d build/ --quiet
+test: mocha
 ```
 
 ### Fetch from NPM registry

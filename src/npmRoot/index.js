@@ -1,6 +1,8 @@
 /*
  * npmRoot.js has only one exposed function
- * It is the sole entry to all the npm global module operations, i.e. traversing and collecting information
+ * It is the sole entry to all the npm root module operations, i.e. traversing and collecting information
+ *
+ * It returns a list to the caller who is responsible for handling UI.
  *
  */
 'use strict';
@@ -18,27 +20,25 @@ const {
 } = require('./../utils/promiseUtil');
 
 
-
-module.exports = async function () {
-	let root;
-	try {
-		let {
-			stdout,
-			stderr
-		} = await exec('npm root -g'); // Find the path to global modules on user's machine
-		root = stdout;
-
-		stderr ? console.log(chalk.redBright(stderr)) : '';
-	} catch (err) {
-		console.log(chalk.redBright(err));
-	}
+/*
+ * The only exposed entry
+ * @params
+ * global: boolean
+ *
+ * Returns 3 options with each returning a list of info
+ */
+module.exports = async function npmRoot(global = true) {
+	let root = await getRootPath(global);
 
 	return {
 		getRecentTwentyModules() {
 			return getRootModulesList(root).sortByDate().twenty().getNameAndTime().build();
 		},
-		getAllModules() {
+		getAllModules() { // Returns modules and last modified time
 			return getRootModulesList(root).sortByDate().all().getNameAndTime().build();
+		},
+		getAllModulesNames() {
+			return getRootModulesList(root).sortByDate().all().getName().build();
 		},
 		getAllModulesPaths() {
 			return getRootModulesList(root).all().getNameAndPath().build();
@@ -48,12 +48,43 @@ module.exports = async function () {
 
 
 /*
+ * Get path to global installs using `npm root`
+ * @params
+ * global: boolean
+ *
+ * Returns root: string
+ */
+async function getRootPath(global = true) {
+	let root;
+	let command = global ? 'npm root -g' : 'npm root';
+
+	try {
+		let {
+			stdout,
+			stderr
+		} = await exec(command); // Find the path to global modules on user's machine
+		root = stdout;
+
+		stderr ? console.log(chalk.redBright(stderr)) : '';
+	} catch (err) {
+		console.log(chalk.redBright(err));
+		root = '~/';
+	}
+	return root;
+}
+
+
+/*
  * getRootModulesList
  * @param takes root path
  * returns two options: all() and recentTen()
  * p.s. We plan to use recentTen() only
  */
 function getRootModulesList(root) {
+	if (!root) {
+		root = '~/';
+	}
+
 	// Use path to parse the given path, and attach the following string so to avoid the `/node_modules/\n ` nasty bug
 	const GLOBAL_MODULES_ALL = path.parse(root).dir + '/node_modules/*';
 	let modulesList = ls(GLOBAL_MODULES_ALL);
@@ -103,6 +134,15 @@ class ListBuilder {
 
 	sortByDate() {
 		this.list = sortByDate(this.list);
+		return this;
+	}
+
+	getName() {
+		this.list = this.list.map(item => {
+			return {
+				'name': item.name ? item.name : ''
+			};
+		});
 		return this;
 	}
 
