@@ -23,17 +23,17 @@ const {
 program
 	.version('6.1.0', '-v, --version')
 	.usage(`[option] [name]`)
-	.description('Fuzzy list anything listable from any npm package')
+	.description('Fuzzy list anything listable with npm package')
 
 	// Five main features:
-	.option('-l, --local', 'list local dependencies, which is also the default mode')
+	.option('-l, --local', 'list local dependencies, which is also the default feature')
 	.option('-g, --global', 'list global modules')
 	.option('-d, --details', 'include details to each dependency, but disable the default fuzzy mode')
-	.option('-t, --time', 'show the latest 20 modules installed globally')
+	.option('-t, --time', 'show the latest global installs')
 	.option('-s, --scripts', 'list/execute npm scripts')
 
 	// Flavor flag
-	.option('-a, --all', 'a flavor flag that shows all available information on any feature flags')
+	.option('-a, --all', 'a flavor flag that shows all available information on any feature flag')
 
 	// Mode
 	.option('-F, --no-fuzzy', 'disable the default fuzzy mode and resort to stdout')
@@ -43,11 +43,11 @@ program
 	.on('--help', function () {
 		console.log();
 		console.log('  Examples:');
-		console.log('    ' + chalk.blueBright(`npl, ${chalk.white('show a fuzzy list of local dependencies')}`));
-		console.log('    ' + chalk.blueBright(`npl -t, ${chalk.white('show a fuzzy list of 20 latest global installs')}`));
-		console.log('    ' + chalk.blueBright(`npl -s --no-fuzzy, ${chalk.white("show a normal list of all the npm scripts")}`));
-		console.log('    ' + chalk.blueBright(`npl -g --details, ${chalk.white('show a normal, detailed list of global modules')}`));
-		console.log('    ' + chalk.blueBright(`npl [module], ${chalk.white("show a fuzzy list of a module's dependencies fetched from registry")}`));
+		console.log('    ' + chalk.blueBright(`npl, ${chalk.white('a fuzzy list of local dependencies')}`));
+		console.log('    ' + chalk.blueBright(`npl -t, ${chalk.white('a fuzzy list of latest global installs')}`));
+		console.log('    ' + chalk.blueBright(`npl -s --no-fuzzy, ${chalk.white("a normal list of all the npm scripts")}`));
+		console.log('    ' + chalk.blueBright(`npl -g --details, ${chalk.white('a normal, detailed list of global installs')}`));
+		console.log('    ' + chalk.blueBright(`npl [module], ${chalk.white("a fuzzy list of a module's dependencies fetched from NPM registry")}`));
 		console.log();
 	})
 	.parse(process.argv);

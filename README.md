@@ -29,12 +29,12 @@ $ npm install -g @hankchanocd/npmlist
 ```
 Usage: npl [option] [name]
 
-Listing information of npm packages at command line
+Fuzzy list anything listable with npm package
 
 Options:
 
   -v, --version      output the version number
-  -l, --local        list local dependencies, which is also the default mode
+  -l, --local        list local dependencies, which is also the default feature
   -g, --global       list global modules
   -d, --details      include details to each dependency, but disable the default fuzzy mode
   -t, --time         show the latest 20 modules installed globally
@@ -103,13 +103,24 @@ express@4.16.4 Dependencies:
 
 Fuzzy mode is turned on in most cases, except for `--details`, where fuzzy is not optimal for multi-line text. You can also opt for `--no-fuzzy` to turn off the default fuzzy mode.
 
-```
+```bash
 $ npl -t --no-fuzzy
 $ npl -g --no-fuzzy
 $ npl -s --no-fuzzy
 ```
 
 <p align="center"><img src="https://github.com/hankchanocd/npmlist/blob/master/images/no-fuzzy-demo.png" width="650"></p>
+
+### Details flag
+
+Applied to both local dependencies and global installs
+
+```
+$ npl --details
+$ npl -g --details
+```
+
+<p align="center"><img src="https://github.com/hankchanocd/npmlist/blob/master/images/details-flag-demo.png" width="650"></p>
 
 ## API
 
