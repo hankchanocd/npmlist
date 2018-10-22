@@ -21,9 +21,9 @@ const {
 
 
 program
-	.version('6.0.1', '-v, --version')
+	.version('6.1.0', '-v, --version')
 	.usage(`[option] [name]`)
-	.description('A fuzzy CLI that lists everything listable from any npm package')
+	.description('Fuzzy list anything listable from any npm package')
 
 	// Five main features:
 	.option('-l, --local', 'list local dependencies, which is also the default mode')
@@ -31,7 +31,6 @@ program
 	.option('-d, --details', 'include details to each dependency, but disable the default fuzzy mode')
 	.option('-t, --time', 'show the latest 20 modules installed globally')
 	.option('-s, --scripts', 'list/execute npm scripts')
-	.option('-n, --new', 'fast global modules')
 
 	// Flavor flag
 	.option('-a, --all', 'a flavor flag that shows all available information on any feature flags')

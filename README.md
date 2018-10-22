@@ -1,6 +1,6 @@
 # npmlist &nbsp;&nbsp; [![npm](https://img.shields.io/npm/v/@hankchanocd/npmlist.svg)](https://www.npmjs.com/package/@hankchanocd/npmlist) [![Build Status](https://travis-ci.org/hankchanocd/npmlist.svg?branch=master)](https://travis-ci.org/hankchanocd/npmlist) [![Known Vulnerabilities](https://snyk.io/test/github/hankchanocd/npmlist/badge.svg?targetFile=package.json)](https://snyk.io/test/github/hankchanocd/npmlist?targetFile=package.json) ![Github issues](https://img.shields.io/github/issues/hankchanocd/npmlist.svg)
 
-> A fuzzy CLI that lists everything listable from any npm package, i.e. dependencies, scripts, profile.
+> Fuzzy list anything listable from any npm package, i.e. dependencies, scripts, profile.
 
 <br />
 <br />
@@ -12,7 +12,7 @@
 `npmlist` or `npl` (`npl` for the sake of typing) fuzzifies all the lists it can find about a npm module, ready to execute and search it. Its default feature is local dependencies listing, but can be changed with feature flags. It has clear advantages over painfully slow and cluttered `npm list`:
 
 1. Selecting a package on fuzzy list will automatically trigger `npm info <package>`
-2. `npl -t` is a good refresher on the recent global installs
+2. `npl -t` gives a quick refresher on the recent global installs
 3. `npl -g` finds and prints global modules as fancy as `brew list`, and more than 10x faster than `npm list -g`
 4. `npl -s` lists and triggers npm scripts better than `npm run-script`
 5. A replacement for `npm list --depth=0 --local` and other annoyingly long `npm list --@#$%` commands with assumed configurations
@@ -62,7 +62,7 @@ $ npl -g
 
 ### Recent added global modules
 
-A good refresher on what the heck you've installed/upgraded globally in the recent past
+A quick refresher on what the heck it's installed/upgraded globally in the recent past
 
 ```bash
 $ npl -t
@@ -111,6 +111,10 @@ $ npl -s --no-fuzzy
 
 <p align="center"><img src="https://github.com/hankchanocd/npmlist/blob/master/images/no-fuzzy-demo.png" width="650"></p>
 
+## API
+
+Build a Web or CLI tool on top of ```npl```'s [API](https://github.com/hankchanocd/npmlist/wiki/API).
+
 ## Tests
 
 To perform unit tests and integration tests, simply run `npm test`.
@@ -125,11 +129,13 @@ To perform unit tests and integration tests, simply run `npm test`.
 
 **2018-Oct-20:** `npmlist` can also be accessed via `npl`
 
+**2018-Oct-21:** The first official [API](https://github.com/hankchanocd/npmlist/wiki/API) guide released.
+
 ## Contribution
 
 `npl` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking out package's dependencies. Saying all these means we are not afraid of expanding `npl` features beyond the current realm.
 
-The roadmap for `npl` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [DOCS](./DOCS.md) for `npl`'s code architecture, developments rules, and styles.
+The roadmap for `npl` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [Wiki](https://github.com/hankchanocd/npmlist/wiki/DOCS) for `npl`'s code architecture, developments rules, and styles.
 
 ## License
 
