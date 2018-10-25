@@ -30,7 +30,12 @@ module.exports.main = async function (global = true) {
 			list = traversePackageJson(list, ["name", "version"]);
 			list = retrieveModuleInfo(list).simple();
 			list = columnify(list, {
-				maxWidth: 60,
+				truncate: true,
+				config: {
+					module: {
+						maxWidth: 40
+					}
+				},
 				preserveNewLines: true
 			}).split('\n');
 
