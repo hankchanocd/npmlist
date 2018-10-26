@@ -1,6 +1,6 @@
 # npmlist &nbsp;&nbsp; [![npm](https://img.shields.io/npm/v/@hankchanocd/npmlist.svg)](https://www.npmjs.com/package/@hankchanocd/npmlist) [![Build Status](https://travis-ci.org/hankchanocd/npmlist.svg?branch=master)](https://travis-ci.org/hankchanocd/npmlist) [![Known Vulnerabilities](https://snyk.io/test/github/hankchanocd/npmlist/badge.svg?targetFile=package.json)](https://snyk.io/test/github/hankchanocd/npmlist?targetFile=package.json) ![Github issues](https://img.shields.io/github/issues/hankchanocd/npmlist.svg)
 
-> Fuzzy list anything listable from any npm package, i.e. dependencies, scripts, profile.
+> Fuzzy list anything with npm package, i.e. dependencies, installs, scripts, profile.
 
 <br />
 <br />
@@ -29,7 +29,7 @@ $ npm install -g @hankchanocd/npmlist
 ```
 Usage: npl [option] [name]
 
-Fuzzy list anything listable with npm package
+Fuzzy list anything with npm package
 
 Options:
 
