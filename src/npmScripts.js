@@ -7,11 +7,11 @@
 const chalk = require('chalk');
 const pkgInfo = require('pkginfo');
 const cwd = process.cwd();
+const {
+	spawn
+} = require('child_process');
 const nfzf = require('node-fzf');
 const iPipeTo = require('ipt');
-const {
-	exec
-} = require('./utils/promiseUtil');
 const StringUtil = require('./utils/stringUtil');
 
 
@@ -40,11 +40,11 @@ module.exports.main = function npmScripts() {
 					let head = value.split(' ')[0];
 					value = StringUtil.getRidOfQuotationMarks(head);
 					value = StringUtil.getRidOfColors(value);
-					let {
-						stdout: result
-					} = await exec(`npm info ${value}`);
+					const runScript = spawn('npm', ['run', value]);
 
-					console.log(result);
+					runScript.stdout.on('data', data => {
+						console.log(data.toString('utf8'));
+					});
 				} catch (err) {
 					console.log(err, "Error building interactive interface");
 				}
@@ -62,11 +62,11 @@ module.exports.main = function npmScripts() {
 						key = StringUtil.getRidOfColors(head);
 						key = StringUtil.getRidOfQuotationMarks(key);
 
-						let {
-							stdout: result
-						} = await exec(`npm run ${key}`);
+						const runScript = spawn('npm', ['run', key]);
 
-						console.log(result);
+						runScript.stdout.on('data', data => {
+							console.log(data.toString('utf8'));
+						});
 					});
 				})
 				.catch(err => {
