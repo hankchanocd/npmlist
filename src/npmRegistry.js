@@ -39,29 +39,33 @@ module.exports.main = async function (module = '') {
 	// First-level chain operation has simple() and all()
 	return {
 		simple() {
-			let result = parseToList(data).simple();
+			let list = parseToList(data).simple();
 
 			// Second-level chain operation has default() and fuzzy()
 			return {
 				default () {
-					return result.forEach(i => console.log(i));
+					if (!list || list.length === 0) return;
+
+					return list.forEach(i => console.log(i));
 				},
 				fuzzy() {
-					return iPipeTo(result, {
+					if (!list || list.length === 0) return;
+
+					return iPipeTo(list, {
 							size: 20
 						}).then(keys => {
 							return keys.forEach(async function (key) {
 								let cleansedKey = (function () {
 									let tail = key.split(' ')[1];
-									let result = StringUtil.getRidOfColors(tail);
-									result = StringUtil.getRidOfQuotationMarks(result);
-									return result;
+									let list = StringUtil.getRidOfColors(tail);
+									list = StringUtil.getRidOfQuotationMarks(list);
+									return list;
 								})();
 								let {
-									stdout: result
+									stdout: list
 								} = await exec(`npm info ${cleansedKey}`);
 
-								console.log(result);
+								console.log(list);
 							});
 						})
 						.catch(err => {
@@ -72,8 +76,8 @@ module.exports.main = async function (module = '') {
 
 		},
 		all() {
-			let result = parseToList(data).all();
-			result.forEach(i => console.log(i));
+			let list = parseToList(data).all();
+			list.forEach(i => console.log(i));
 		}
 	};
 };

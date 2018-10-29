@@ -18,11 +18,13 @@
     "pretest": "npm run build --silent",
     "test:unit": "npm run jest -- __test__/unit_test",
     "test": "npm-run-all jest eslint --parallel --silent",
+    "test:watch": "npm run jest:watch",
     "jest": "jest",
+    "jest:watch": "jest --watch",
     "jest:coverage": "jest --coverage",
     "coverage:check": "npm run jest:coverage",
     "coverage:open": "npm run coverage:check && opn ./coverage/index.html",
-    "watch": "jest --watch",
+    "watch": "nodemon --exec npm-run-all build test:unit",
     "eslint": "eslint . --ignore-path .gitignore --cache --cache-location \"./eslint/.eslintcache\" ",
     "eslint:makeHtml": "npm run eslint -- --format html -o ./eslint/report.html",
     "eslint:open": "npm run eslint:makeHtml --silent && opn ./eslint/report.html",
@@ -66,6 +68,7 @@
     "commander": "^2.18.0",
     "ipt": "^2.1.0",
     "ls": "^0.2.1",
+    "node-fzf": "0.0.6",
     "pkginfo": "^0.4.1"
   },
   "devDependencies": {

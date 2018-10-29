@@ -13,7 +13,9 @@ const execChildProcess = require('child_process').exec;
 const chalk = require('chalk');
 const pkgInfo = require('pkginfo');
 const cwd = process.cwd();
+const nfzf = require('node-fzf');
 const iPipeTo = require('ipt');
+
 const {
 	exec
 } = require('./utils/promiseUtil');
@@ -31,12 +33,30 @@ module.exports.npmList = function () {
 	// Returns default() and fuzzy() options
 	return {
 		default () {
-			if (!list) return;
+			if (!list || list.length === 0) return;
 
 			return list.forEach(i => console.log('├── ' + i));
 		},
 		fuzzy() {
-			if (!list) return;
+			if (!list || list.length === 0) return;
+
+			list = list.filter(i => !i.includes('Dependencies') && !i.includes('DevDependencies'));
+
+			return nfzf(list, async function (value) {
+				try {
+					value = StringUtil.getRidOfColors(value);
+					let {
+						stdout: result
+					} = await exec(`npm info ${value}`);
+
+					console.log(result);
+				} catch (err) {
+					console.log(err, "Error building interactive interface");
+				}
+			});
+		},
+		ipt() {
+			if (!list || list.length === 0) return;
 
 			return iPipeTo(list, {
 					size: 20

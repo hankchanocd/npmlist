@@ -12,6 +12,8 @@
 // Dependencies
 const util = require('util');
 const execChildProcess = require('child_process').exec;
+const spawnChildProcess = require('child_process').spawn;
+
 
 /*
  * Fetch from a given url
@@ -43,3 +45,12 @@ module.exports.fetch = function (url) {
  * example: exec(cmd);
  */
 module.exports.exec = util.promisify(execChildProcess);
+
+/*
+ * Spawn cli command
+ * @params
+ * cmd: String
+ *
+ * example: spawn(cmd);
+ */
+module.exports.spawn = util.promisify(spawnChildProcess);

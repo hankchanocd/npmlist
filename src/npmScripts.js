@@ -7,10 +7,11 @@
 const chalk = require('chalk');
 const pkgInfo = require('pkginfo');
 const cwd = process.cwd();
-const iPipeTo = require('ipt');
 const {
-	exec
-} = require('./utils/promiseUtil');
+	spawn
+} = require('child_process');
+const nfzf = require('node-fzf');
+const iPipeTo = require('ipt');
 const StringUtil = require('./utils/stringUtil');
 
 
@@ -25,10 +26,33 @@ module.exports.main = function npmScripts() {
 
 	return {
 		default () {
+			if (!scripts || scripts.length === 0) return;
+
 			// Print
 			scripts.forEach(i => console.log(i));
 		},
 		fuzzy() {
+			if (!scripts || scripts.length === 0) return;
+
+			return nfzf(scripts, async function (value) {
+				try {
+					// Clean key
+					let head = value.split(' ')[0];
+					value = StringUtil.getRidOfQuotationMarks(head);
+					value = StringUtil.getRidOfColors(value);
+					const runScript = spawn('npm', ['run', value]);
+
+					runScript.stdout.on('data', data => {
+						console.log(data.toString('utf8'));
+					});
+				} catch (err) {
+					console.log(err, "Error building interactive interface");
+				}
+			});
+		},
+		ipt() {
+			if (!scripts || scripts.length === 0) return;
+
 			iPipeTo(scripts, {
 					size: 20
 				}).then(keys => {
@@ -38,11 +62,11 @@ module.exports.main = function npmScripts() {
 						key = StringUtil.getRidOfColors(head);
 						key = StringUtil.getRidOfQuotationMarks(key);
 
-						let {
-							stdout: result
-						} = await exec(`npm run ${key}`);
+						const runScript = spawn('npm', ['run', key]);
 
-						console.log(result);
+						runScript.stdout.on('data', data => {
+							console.log(data.toString('utf8'));
+						});
 					});
 				})
 				.catch(err => {
@@ -99,8 +123,9 @@ function parseNpmScripts({
 		}
 	})();
 
-	if (!scripts) {
-		return [chalk.blueBright('Module has no scripts')];
+	if (!scripts || Object.keys(scripts).length == 0) {
+		console.log(chalk.blueBright('Module has no scripts'));
+		return [];
 	}
 
 	// Hoist the common task commands to top
@@ -110,7 +135,7 @@ function parseNpmScripts({
 
 	let list = keys.map(key => {
 		let value = scripts[key] ? scripts[key] : '';
-		return key + chalk.white(' => ') + chalk.grey(value);
+		return chalk.white(key + ' => ') + chalk.grey(value);
 	});
 	return list;
 }

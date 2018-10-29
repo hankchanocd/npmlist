@@ -51,7 +51,7 @@ describe('Test npmScripts.parseNpmScripts()', () => {
 	});
 
 	test('Returns a valid list', () => {
-		let supposedTestScript = "test" + chalk.white(' => ') + chalk.grey("jest");
+		let supposedTestScript = chalk.white("test" + ' => ') + chalk.grey("jest");
 		expect(list).toContain(supposedTestScript);
 		expect(list).toHaveLength(5);
 	});
