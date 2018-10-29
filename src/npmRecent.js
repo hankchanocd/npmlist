@@ -9,8 +9,8 @@ const columnify = require('columnify');
 const listToColumns = require('cli-columns');
 const iPipeTo = require('ipt');
 const {
-	exec
-} = require('./utils/promiseUtil');
+	spawn
+} = require('child_process');
 const StringUtil = require('./utils/stringUtil');
 const npmRoot = require('./npmRoot');
 
@@ -68,13 +68,14 @@ function secondLevelChainOperation(list = []) {
 							let head = key.split(' ')[0];
 							let result = StringUtil.getRidOfColors(head);
 							result = StringUtil.getRidOfQuotationMarks(result);
+							result = StringUtil.cleanTagName(result); // surl-cli@semantically-release => surl-cli
 							return result;
 						})();
-						let {
-							stdout: result
-						} = await exec(`npm info ${cleansedKey}`);
 
-						console.log(result);
+						spawn(`npm info ${cleansedKey} | less`, {
+							stdio: 'inherit',
+							shell: true
+						});
 					});
 				})
 				.catch(err => {

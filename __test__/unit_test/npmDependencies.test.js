@@ -12,7 +12,7 @@ const {
 
 
 describe('Test npmDependencies.collectDependencies()', () => {
-	test('Returns a valid data object', () => {
+	test('Returns a valid data object', (done) => {
 		let pkg = collectDependencies();
 		let {
 			exports: {
@@ -26,6 +26,7 @@ describe('Test npmDependencies.collectDependencies()', () => {
 		expect(version).toBeDefined();
 		expect(dependencies).toBeDefined();
 		expect(devDependencies).toBeDefined();
+		done();
 	});
 });
 
@@ -52,21 +53,25 @@ describe('Test npmDependencies.parseListFromPkgOutput()', () => {
 		};
 	});
 
-	test('Returns a valid list', () => {
+	test('Returns a valid list', (done) => {
 		let list = parseListFromPkgOutput(mockPkg);
 		let supposedDependency = "bitly@" + chalk.grey("6.0.8");
 		expect(list).toContain(supposedDependency);
 		expect(list).toHaveLength(5);
-    });
+		done();
+	});
 
-    test('Returns early if data invalid', () => {
-        let list = parseListFromPkgOutput(mockInvalidPkg);
-        expect(list).toBeUndefined();
-    });
+	test('Returns early if data invalid', (done) => {
+		let list = parseListFromPkgOutput(mockInvalidPkg);
+		expect(list).toBeUndefined();
+		done();
+	});
 });
 
 
 describe('Test npmDependencies.parseNpmListFromStdout()', () => {
-	test('Returns a valid data object', () => {
+	test('Returns a valid data object', (done) => {
+		expect(1 + 1).toBe(2);
+		done();
 	});
 });

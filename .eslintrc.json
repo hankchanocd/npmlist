@@ -29,6 +29,7 @@
 		"no-empty-character-class": 2,
 		"no-empty": 2,
 		"no-ternary": 0,
+		"no-unused-vars": 1,
 		"semi": 2,
 		"jest/no-disabled-tests": "warn",
 		"jest/no-focused-tests": "error",
@@ -38,8 +39,8 @@
 	},
 	"extends": [
 		"eslint:recommended",
-    "plugin:promise/recommended",
-    "plugin:jest/recommended"
+		"plugin:promise/recommended",
+		"plugin:jest/recommended"
 	],
 	"plugins": [
 		"eslint-plugin-import",

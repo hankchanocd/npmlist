@@ -114,6 +114,10 @@ function parseNpmScripts({
 } = {
 	exports: {}
 }) {
+	if (!name && !version && !scripts) { // Not a module, no package.json, therefore no values
+		return [];
+	}
+
 	(function printTitle() {
 		if (name) {
 			if (version) {
@@ -123,7 +127,7 @@ function parseNpmScripts({
 		}
 	})();
 
-	if (!scripts || Object.keys(scripts).length == 0) {
+	if (!scripts || Object.keys(scripts).length == 0) { // Has package.json but no scripts
 		console.log(chalk.blueBright('Module has no scripts'));
 		return [];
 	}
