@@ -36,8 +36,8 @@ program
 	.option('-a, --all', 'a flavor flag that shows all available information on any feature flag')
 
 	// Mode
+	.option('-i, --ipt', 'switch to use ipt instead of fzf')
 	.option('-F, --no-fuzzy', 'disable the default fuzzy mode and resort to stdout')
-	.option('-i, --interactive', 'enable interactive mode (in development)')
 
 	// Help
 	.on('--help', function () {
@@ -45,7 +45,9 @@ program
 		console.log('  Examples:');
 		console.log('    ' + chalk.blueBright(`npl, ${chalk.white('a fuzzy list of local dependencies')}`));
 		console.log('    ' + chalk.blueBright(`npl -t, ${chalk.white('a fuzzy list of latest global installs')}`));
-		console.log('    ' + chalk.blueBright(`npl -s --no-fuzzy, ${chalk.white("a normal list of all the npm scripts")}`));
+		console.log('    ' + chalk.blueBright(`npl -s, ${chalk.white("a fuzzy list of npm scripts using fzf")}`));
+		console.log('    ' + chalk.blueBright(`npl -s --ipt, ${chalk.white("a fuzzy list of npm scripts using ipt")}`));
+		console.log('    ' + chalk.blueBright(`npl -s --no-fuzzy, ${chalk.white("a normal list of npm scripts")}`));
 		console.log('    ' + chalk.blueBright(`npl -g --details, ${chalk.white('a normal, detailed list of global installs')}`));
 		console.log('    ' + chalk.blueBright(`npl [module], ${chalk.white("a fuzzy list of a module's dependencies fetched from NPM registry")}`));
 		console.log();

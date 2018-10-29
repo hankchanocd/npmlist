@@ -9,7 +9,7 @@
 </p>
 <br />
 
-`npmlist` or `npl` (`npl` for the sake of typing) fuzzifies all the lists it can find about a npm module, ready to execute and search it. Its default feature is local dependencies listing, but can be changed with feature flags. It has clear advantages over painfully slow and cluttered `npm list`:
+`npmlist` or `npl` (`npl` for the sake of typing) fuzzifies all the lists it can find about a npm module using `fzf` and `ipt`, making it easier for search and execution. Its default feature is local dependencies listing, but can be changed with feature flags. It has clear advantages over painfully slow and cluttered `npm list`:
 
 1. Selecting a package on fuzzy list will automatically trigger `npm info <package>`
 2. `npl -t` gives a quick refresher on the recent global installs
@@ -33,16 +33,16 @@ Fuzzy list anything with npm package
 
 Options:
 
-  -v, --version      output the version number
-  -l, --local        list local dependencies, which is also the default feature
-  -g, --global       list global modules
-  -d, --details      include details to each dependency, but disable the default fuzzy mode
-  -t, --time         show the latest 20 modules installed globally
-  -s, --scripts      list/execute npm scripts
-  -a, --all          a flavor flag that shows all available information on any feature flags
-  -F, --no-fuzzy     disable the fuzzy mode and resort to stdout
-  -i, --interactive  enable interactive mode (in development)
-  -h, --help         output usage information
+  -v, --version   output the version number
+  -l, --local     list local dependencies, which is also the default feature
+  -g, --global    list global modules
+  -d, --details   include details to each dependency, but disable the default fuzzy mode
+  -t, --time      show the latest global installs
+  -s, --scripts   list/execute npm scripts
+  -a, --all       a flavor flag that shows all available information on any feature flag
+  -i, --ipt       switch to use ipt instead of fzf
+  -F, --no-fuzzy  disable the default fuzzy mode and resort to stdout
+  -h, --help      output usage information
 ```
 
 ## Examples
@@ -54,10 +54,10 @@ More than 10x faster than `npm list -g`
 ```bash
 $ npl -g
 
-? Select an item:
-/usr/local/bin/lib
-├── @angular/cli@6.2.4
-├── aerobatic-cli@1.1.4
+> _____
+  100/100
+> ├── @angular/cli@6.2.4
+  ├── aerobatic-cli@1.1.4
 ```
 
 ### Recent added global modules
@@ -68,22 +68,22 @@ A quick refresher on what the heck it's installed/upgraded globally in the recen
 $ npl -t
 
 ? Select an item:
-NAME                  TIME
 @hankchanocd/npmlist  10-5 21:29
 semantic-release      10-5 8:5
 ```
 
 ### Execute module's npm scripts
 
-Somewhat similar to [```ntl```](https://github.com/ruyadorno/ntl)
+Somewhat similar to [`ntl`](https://github.com/ruyadorno/ntl)
 
 ```bash
 $ npmlist -s
 
-? Select an item:
 express@4.16.4
-build: babel src/ -d build/ --quiet
-test: mocha
+> _____
+  15/15
+> build: babel src/ -d build/ --quiet
+  test: mocha
 ```
 
 ### Fetch from NPM registry
@@ -97,6 +97,15 @@ $ npl express
 express@4.16.4 Dependencies:
 ├── accepts@1.3.5
 ├── array-flatten@1.1.1
+```
+
+### Use `ipt` instead of `fzf`
+
+fuzzy mode is using `fzf` as default, but could still use `ipt` with `--ipt`.
+
+```
+$ npl -s --ipt
+$ npl -g --ipt
 ```
 
 ### Turn off fuzzy mode
@@ -124,7 +133,7 @@ $ npl -g --details
 
 ## API
 
-Build a Web or CLI tool on top of ```npl```'s [API](https://github.com/hankchanocd/npmlist/wiki/API).
+Build a Web or CLI tool on top of `npl`'s [API](https://github.com/hankchanocd/npmlist/wiki/API).
 
 ## Tests
 
@@ -134,7 +143,7 @@ To perform unit tests and integration tests, simply run `npm test`.
 
 **2018-Oct-16:** Fuzzy mode is now enabled by default. It can be turned off by `--no-fuzzy`.
 
-**2018-Oct-18:** Give up on trying to pipe output to `less`. Nodejs simply does not control TTY.
+**2018-Oct-18:** Give up on trying to pipe output to `less`. Nodejs simply does not have good control of TTY.
 
 **2018-Oct-19:** Speed up `npmlist -g` 10x than `npm list -g`
 
@@ -142,13 +151,15 @@ To perform unit tests and integration tests, simply run `npm test`.
 
 **2018-Oct-21:** The first official [API](https://github.com/hankchanocd/npmlist/wiki/API) guide released.
 
+**2018-Oct-29:** Use `fzf` as default for fuzzy mode, `ipt` can still be accessed via `--ipt`.
+
 ## Contribution
 
 `npl` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking a package's dependencies. Saying all these means we are not afraid of expanding `npl` features beyond the current realm.
 
 The roadmap for `npl` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [Wiki](https://github.com/hankchanocd/npmlist/wiki/DOCS) for `npl`'s code architecture, developments rules, and styles. See [here](./CONTRIBUTION.md) on how to contribute.
 
-If you like the idea of fuzzy list, check out ruyadorno's [`ipt`](https://github.com/ruyadorno/ipt#readme).
+If you like the idea of fuzzy list, check out talmobi's nodejs implementation of [`fzf`](https://github.com/talmobi/node-fzf) and ruyadorno's [`ipt`](https://github.com/ruyadorno/ipt#readme).
 
 ## License
 
