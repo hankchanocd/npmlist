@@ -13,7 +13,7 @@ const {
 
 
 describe('Test npmScripts.collectNpmScripts()', () => {
-	test('Returns a valid data object', () => {
+	test('Returns a valid data object', (done) => {
 		let pkg = collectNpmScripts();
 		let {
 			exports: {
@@ -25,6 +25,7 @@ describe('Test npmScripts.collectNpmScripts()', () => {
 		expect(name).toBeDefined();
 		expect(version).toBeDefined();
 		expect(scripts).toBeDefined();
+		done();
 	});
 });
 
@@ -50,17 +51,19 @@ describe('Test npmScripts.parseNpmScripts()', () => {
 		list = parseNpmScripts(mockPkg);
 	});
 
-	test('Returns a valid list', () => {
+	test('Returns a valid list', (done) => {
 		let supposedTestScript = chalk.white("test" + ' => ') + chalk.grey("jest");
 		expect(list).toContain(supposedTestScript);
 		expect(list).toHaveLength(5);
+		done();
 	});
 
-	test('Returns a list with common tasks hoisted to the top', () => {
+	test('Returns a list with common tasks hoisted to the top', (done) => {
 		expect((list[0])).toEqual(expect.stringContaining('build'));
 		expect((list[1])).toEqual(expect.stringContaining('commit'));
 		expect((list[2])).toEqual(expect.stringContaining('test'));
 		expect((list[3])).toEqual(expect.stringContaining('coverage'));
 		expect((list[4])).toEqual(expect.stringContaining('eslint'));
+		done();
 	});
 });
