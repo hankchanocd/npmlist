@@ -16,10 +16,6 @@ const pkgInfo = require('pkginfo');
 const cwd = process.cwd();
 const nfzf = require('node-fzf');
 const iPipeTo = require('ipt');
-
-const {
-	exec
-} = require('./utils/promiseUtil');
 const StringUtil = require('./utils/stringUtil');
 
 

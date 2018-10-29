@@ -8,9 +8,6 @@ const listToColumns = require('cli-columns');
 const iPipeTo = require('ipt');
 const nfzf = require('node-fzf');
 const {
-	exec
-} = require('./utils/promiseUtil');
-const {
 	spawn
 } = require('child_process');
 const StringUtil = require('./utils/stringUtil');

@@ -11,8 +11,7 @@ const ui = require('cliui')();
 const columnify = require('columnify');
 const iPipeTo = require('ipt');
 const {
-	fetch,
-	exec
+	fetch
 } = require('./utils/promiseUtil');
 const {
 	spawn
