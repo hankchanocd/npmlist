@@ -100,18 +100,26 @@ if (program.global) {
 
 
 } else if (program.args.length > 0) { // execute if a module is specified, i.e. `npl express --all`
-	(function fetchModuleInfoFromNpmRegistry() {
-		const module = program.args;
-		if (!program.all) {
-			if (program.fuzzy) {
-				npmRegistry(module).then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
+	if (!program.args.length == 1) {
+		console.log(chalk.blueBright('Only one module is allowed'));
+
+	} else if (program.args.length == 1 && program.args[0] === '-') { // Typo of incomplete flag, i.e. 'npl -'
+		console.log(chalk.blueBright('Invalid input'));
+
+	} else {
+		(function fetchModuleInfoFromNpmRegistry() {
+			const module = program.args;
+			if (!program.all) {
+				if (program.fuzzy) {
+					npmRegistry(module).then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
+				} else {
+					npmRegistry(module).then(i => i.simple().default()).catch(err => console.log(chalk.redBright(err)));
+				}
 			} else {
-				npmRegistry(module).then(i => i.simple().default()).catch(err => console.log(chalk.redBright(err)));
+				npmRegistry(module).then(i => i.all()).catch(err => console.log(chalk.redBright(err)));
 			}
-		} else {
-			npmRegistry(module).then(i => i.all()).catch(err => console.log(chalk.redBright(err)));
-		}
-	})();
+		})();
+	}
 
 
 } else if (program.scripts) {
