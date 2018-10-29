@@ -65,8 +65,8 @@ module.exports.main = async function (global = true) {
 								let tail = value.split(' ')[1]; // ├── bitcoin => bitcoin
 								value = StringUtil.getRidOfColors(tail); // ANSI code would prevent sending to `npm info`
 								value = StringUtil.getRidOfQuotationMarks(value); // bitcoin" => bitcoin
+								value = StringUtil.cleanTagName(value); // surl-cli@semantically-release => surl-cli
 								return value;
-
 							})();
 
 							spawn(`npm info ${value} | less`, {
@@ -89,14 +89,15 @@ module.exports.main = async function (global = true) {
 
 						let cleansedKeys = (function cleanKeys() {
 							return keys.map(key => {
-								let tail = key.split(' ')[1]; // ├── bitcoin => bitcoin
-								key = StringUtil.getRidOfColors(tail); // ANSI code would prevent sending to `npm info`
-								key = StringUtil.getRidOfQuotationMarks(key); // bitcoin" => bitcoin
+								let tail = key.split(' ')[1];
+								key = StringUtil.getRidOfColors(tail);
+								key = StringUtil.getRidOfQuotationMarks(key);
+								key = StringUtil.cleanTagName(key);
 								return key;
 							});
 						})();
 
-						return cleansedKeys.forEach( function (key) {
+						return cleansedKeys.forEach(function (key) {
 							spawn(`npm info ${key} | less`, {
 								stdio: 'inherit',
 								shell: true

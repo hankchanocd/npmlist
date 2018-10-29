@@ -68,6 +68,7 @@ function secondLevelChainOperation(list = []) {
 							let head = key.split(' ')[0];
 							let result = StringUtil.getRidOfColors(head);
 							result = StringUtil.getRidOfQuotationMarks(result);
+							result = StringUtil.cleanTagName(result); // surl-cli@semantically-release => surl-cli
 							return result;
 						})();
 

@@ -22,3 +22,12 @@ module.exports.truncate = function (str, maxWidth = 50, truncateMarker = true) {
 	}
 	return str;
 };
+
+// Clean tag name
+module.exports.cleanTagName = function(str) {
+	if (str.includes('semantic')) {
+		let moduleName = str.split('@')[0];
+		return moduleName;
+	}
+	return str;
+};
