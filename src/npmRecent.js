@@ -25,13 +25,13 @@ module.exports = function () {
 	// First-level chain operations
 	return {
 		recentTwenty: async function () {
-				let list = (await npmRoot()).getRecentTwentyModules();
-				return secondLevelChainOperation(list);
-			},
-			all: async function () {
-				let list = (await npmRoot()).getAllModules();
-				return secondLevelChainOperation(list);
-			}
+			let list = (await npmRoot()).getRecentTwentyModules();
+			return secondLevelChainOperation(list);
+		},
+		all: async function () {
+			let list = (await npmRoot()).getAllModules();
+			return secondLevelChainOperation(list);
+		}
 	};
 };
 
@@ -42,11 +42,14 @@ module.exports = function () {
  *
  */
 function secondLevelChainOperation(list = []) {
-	list = columnify(list).split('\n'); // Convert the gigantic columnified string into a list
-	console.log(list.shift()); // Print and get rid of title
+	list = columnify(list, {
+		showHeaders: false
+	}).split('\n'); // Convert the gigantic columnified string into a list
 
 	return { // Second-level chain operations
 		default () {
+			if (!list || list.length === 0) return;
+
 			// Break the list into multiple lists that span the entire terminal width
 			return console.log(listToColumns(list, {
 				sort: false // Reject the use of default alphabetic sorting by cli-columns
@@ -54,6 +57,8 @@ function secondLevelChainOperation(list = []) {
 		},
 
 		fuzzy() {
+			if (!list || list.length === 0) return;
+
 			return iPipeTo(list, {
 					size: 20
 				}).then(keys => {

@@ -31,12 +31,12 @@ module.exports.npmList = function () {
 	// Returns default() and fuzzy() options
 	return {
 		default () {
-			if (!list) return;
+			if (!list || list.length === 0) return;
 
 			return list.forEach(i => console.log('├── ' + i));
 		},
 		fuzzy() {
-			if (!list) return;
+			if (!list || list.length === 0) return;
 
 			return iPipeTo(list, {
 					size: 20

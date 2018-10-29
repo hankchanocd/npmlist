@@ -25,10 +25,14 @@ module.exports.main = function npmScripts() {
 
 	return {
 		default () {
+			if (!scripts || scripts.length === 0) return;
+
 			// Print
 			scripts.forEach(i => console.log(i));
 		},
 		fuzzy() {
+			if (!scripts || scripts.length === 0) return;
+
 			iPipeTo(scripts, {
 					size: 20
 				}).then(keys => {
@@ -99,8 +103,9 @@ function parseNpmScripts({
 		}
 	})();
 
-	if (!scripts) {
-		return [chalk.blueBright('Module has no scripts')];
+	if (!scripts || Object.keys(scripts).length == 0) {
+		console.log(chalk.blueBright('Module has no scripts'));
+		return [];
 	}
 
 	// Hoist the common task commands to top
