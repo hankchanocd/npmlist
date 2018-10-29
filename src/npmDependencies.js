@@ -10,6 +10,7 @@
 
 // Dependencies
 const execChildProcess = require('child_process').exec;
+const spawn = require('child_process').spawn;
 const chalk = require('chalk');
 const pkgInfo = require('pkginfo');
 const cwd = process.cwd();
@@ -42,14 +43,14 @@ module.exports.npmList = function () {
 
 			list = list.filter(i => !i.includes('Dependencies') && !i.includes('DevDependencies'));
 
-			return nfzf(list, async function (value) {
+			return nfzf(list, function (value) {
 				try {
 					value = StringUtil.getRidOfColors(value);
-					let {
-						stdout: result
-					} = await exec(`npm info ${value}`);
 
-					console.log(result);
+					spawn(`npm info ${value} | less`, {
+						stdio: 'inherit',
+						shell: true
+					});
 				} catch (err) {
 					console.log(err, "Error building interactive interface");
 				}
@@ -61,13 +62,13 @@ module.exports.npmList = function () {
 			return iPipeTo(list, {
 					size: 20
 				}).then(keys => {
-					return keys.forEach(async function (key) {
+					return keys.forEach(function (key) {
 						key = StringUtil.getRidOfColors(key);
-						let {
-							stdout: result
-						} = await exec(`npm info ${key}`);
 
-						console.log(result);
+						spawn(`npm info ${key} | less`, {
+							stdio: 'inherit',
+							shell: true
+						});
 					});
 				})
 				.catch(err => {

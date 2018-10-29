@@ -10,6 +10,9 @@ const nfzf = require('node-fzf');
 const {
 	exec
 } = require('./utils/promiseUtil');
+const {
+	spawn
+} = require('child_process');
 const StringUtil = require('./utils/stringUtil');
 const npmRoot = require('./npmRoot');
 
@@ -59,7 +62,7 @@ module.exports.main = async function (global = true) {
 
 					list = list.filter(i => !i.includes('Dependencies') && !i.includes('DevDependencies'));
 
-					return nfzf(list, async function (value) {
+					return nfzf(list, function (value) {
 						try {
 							value = (function cleanValue() {
 								let tail = value.split(' ')[1]; // ├── bitcoin => bitcoin
@@ -69,11 +72,10 @@ module.exports.main = async function (global = true) {
 
 							})();
 
-							let {
-								stdout: result
-							} = await exec(`npm info ${value}`);
-
-							console.log(result);
+							spawn(`npm info ${value} | less`, {
+								stdio: 'inherit',
+								shell: true
+							});
 						} catch (err) {
 							console.log(err, "Error building interactive interface");
 						}
@@ -97,12 +99,11 @@ module.exports.main = async function (global = true) {
 							});
 						})();
 
-						return cleansedKeys.forEach(async function (key) {
-							let {
-								stdout: result
-							} = await exec(`npm info ${key}`);
-
-							console.log(result);
+						return cleansedKeys.forEach( function (key) {
+							spawn(`npm info ${key} | less`, {
+								stdio: 'inherit',
+								shell: true
+							});
 						});
 
 					} catch (err) {

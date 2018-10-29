@@ -9,8 +9,8 @@ const columnify = require('columnify');
 const listToColumns = require('cli-columns');
 const iPipeTo = require('ipt');
 const {
-	exec
-} = require('./utils/promiseUtil');
+	spawn
+} = require('child_process');
 const StringUtil = require('./utils/stringUtil');
 const npmRoot = require('./npmRoot');
 
@@ -70,11 +70,11 @@ function secondLevelChainOperation(list = []) {
 							result = StringUtil.getRidOfQuotationMarks(result);
 							return result;
 						})();
-						let {
-							stdout: result
-						} = await exec(`npm info ${cleansedKey}`);
 
-						console.log(result);
+						spawn(`npm info ${cleansedKey} | less`, {
+							stdio: 'inherit',
+							shell: true
+						});
 					});
 				})
 				.catch(err => {

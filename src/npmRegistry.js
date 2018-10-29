@@ -14,6 +14,9 @@ const {
 	fetch,
 	exec
 } = require('./utils/promiseUtil');
+const {
+	spawn
+} = require('child_process');
 const StringUtil = require('./utils/stringUtil');
 
 
@@ -61,11 +64,11 @@ module.exports.main = async function (module = '') {
 									list = StringUtil.getRidOfQuotationMarks(list);
 									return list;
 								})();
-								let {
-									stdout: list
-								} = await exec(`npm info ${cleansedKey}`);
 
-								console.log(list);
+								spawn(`npm info ${cleansedKey} | less`, {
+									stdio: 'inherit',
+									shell: true
+								});
 							});
 						})
 						.catch(err => {
