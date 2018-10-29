@@ -68,6 +68,7 @@
     "commander": "^2.18.0",
     "ipt": "^2.1.0",
     "ls": "^0.2.1",
+    "node-fzf": "0.0.6",
     "pkginfo": "^0.4.1"
   },
   "devDependencies": {

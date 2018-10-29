@@ -6,6 +6,7 @@ const chalk = require('chalk');
 const columnify = require('columnify');
 const listToColumns = require('cli-columns');
 const iPipeTo = require('ipt');
+const nfzf = require('node-fzf');
 const {
 	exec
 } = require('./utils/promiseUtil');
@@ -54,6 +55,32 @@ module.exports.main = async function (global = true) {
 				},
 
 				fuzzy: async function () {
+					if (!list || list.length === 0) return;
+
+					list = list.filter(i => !i.includes('Dependencies') && !i.includes('DevDependencies'));
+
+					return nfzf(list, async function (value) {
+						try {
+							value = (function cleanValue() {
+								let tail = value.split(' ')[1]; // ├── bitcoin => bitcoin
+								value = StringUtil.getRidOfColors(tail); // ANSI code would prevent sending to `npm info`
+								value = StringUtil.getRidOfQuotationMarks(value); // bitcoin" => bitcoin
+								return value;
+
+							})();
+
+							let {
+								stdout: result
+							} = await exec(`npm info ${value}`);
+
+							console.log(result);
+						} catch (err) {
+							console.log(err, "Error building interactive interface");
+						}
+					});
+				},
+
+				ipt: async function () {
 					if (!list || list.length === 0) return;
 
 					try {

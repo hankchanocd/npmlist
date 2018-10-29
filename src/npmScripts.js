@@ -7,6 +7,7 @@
 const chalk = require('chalk');
 const pkgInfo = require('pkginfo');
 const cwd = process.cwd();
+const nfzf = require('node-fzf');
 const iPipeTo = require('ipt');
 const {
 	exec
@@ -31,6 +32,25 @@ module.exports.main = function npmScripts() {
 			scripts.forEach(i => console.log(i));
 		},
 		fuzzy() {
+			if (!scripts || scripts.length === 0) return;
+
+			return nfzf(scripts, async function (value) {
+				try {
+					// Clean key
+					let head = value.split(' ')[0];
+					value = StringUtil.getRidOfQuotationMarks(head);
+					value = StringUtil.getRidOfColors(value);
+					let {
+						stdout: result
+					} = await exec(`npm info ${value}`);
+
+					console.log(result);
+				} catch (err) {
+					console.log(err, "Error building interactive interface");
+				}
+			});
+		},
+		ipt() {
 			if (!scripts || scripts.length === 0) return;
 
 			iPipeTo(scripts, {
@@ -115,7 +135,7 @@ function parseNpmScripts({
 
 	let list = keys.map(key => {
 		let value = scripts[key] ? scripts[key] : '';
-		return key + chalk.white(' => ') + chalk.grey(value);
+		return chalk.white(key + ' => ') + chalk.grey(value);
 	});
 	return list;
 }

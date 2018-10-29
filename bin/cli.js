@@ -56,50 +56,16 @@ program
 
 
 if (program.global) {
-	(function listGlobalPackages() {
-		if (program.time) {
-			return console.log('Use `npl -t` instead');
-		}
-
-		if (!program.details) { // if details flag not specified
-			if (program.fuzzy) {
-				npmGlobal().then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
-			} else {
-				npmGlobal().then(i => i.simple().print()).catch(err => console.log(chalk.redBright(err)));
-			}
-		} else {
-			npmGlobal().then(i => i.details()).catch(err => console.log(chalk.redBright(err)));
-		}
-	})();
-
+	listGlobalPackages();
 
 } else if (program.local) {
-	(function listLocalDependencies() {
-		if (!program.details) { // if details flag not specified
-			if (program.fuzzy) {
-				npmList().fuzzy();
-			} else {
-				npmList().default();
-			}
-		} else {
-			npmListDetails();
-		}
-	})();
-
+	listLocalDependencies();
 
 } else if (program.time) {
-	(function listGlobalPackagesSortedByTime() {
-		if (program.fuzzy) {
-			npmRecent().all().then(i => i.fuzzy()).catch(err => console.log(chalk.redBright(err)));
-		} else {
-			npmRecent().all().then(i => i.default()).catch(err => console.log(chalk.redBright(err)));
-		}
-	})();
-
+	listGlobalPackagesSortedByTime();
 
 } else if (program.details) { // Default to npm local packages listing if only --details flag present
 	npmListDetails();
-
 
 } else if (program.args.length > 0) { // execute if a module is specified, i.e. `npl express --all`
 	if (!program.args.length == 1) {
@@ -109,40 +75,88 @@ if (program.global) {
 		console.log(chalk.blueBright('Invalid input'));
 
 	} else {
-		(function fetchModuleInfoFromNpmRegistry() {
-			const module = program.args;
-			if (!program.all) {
-				if (program.fuzzy) {
-					npmRegistry(module).then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
-				} else {
-					npmRegistry(module).then(i => i.simple().default()).catch(err => console.log(chalk.redBright(err)));
-				}
-			} else {
-				npmRegistry(module).then(i => i.all()).catch(err => console.log(chalk.redBright(err)));
-			}
-		})();
+		fetchModuleInfoFromNpmRegistry();
 	}
-
 
 } else if (program.scripts) {
-	if (program.fuzzy) {
-		npmScripts().fuzzy();
-	} else {
-		npmScripts().default();
-	}
+	listNpmScripts();
 
-
-} else if (program.all) { // If none of the feature flags were detected but --all ...
+} else if (program.all) {
+	// If none of the feature flags were detected but --all ...
 	// --all is a flavor flag. It has no meaning if standing alone
 	console.log(`Please specify a feature`);
 
+} else { // default is list local dependencies when nothing specified...
+	listLocalDependencies();
+}
 
-} else { // default mode when nothing specified...
-	(function listLocalDependencies() {
+
+/* Helper Functions */
+function listGlobalPackages() {
+	if (program.time) {
+		return console.log('Use `npl -t` instead');
+	}
+
+	if (!program.details) { // if details flag not specified
 		if (program.fuzzy) {
-			npmList().fuzzy();
+			if (!program.ipt) { // Default is fzf
+				npmGlobal().then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
+			} else if (program.ipt) { // Specify to use ipt
+				npmGlobal().then(i => i.simple().ipt()).catch(err => console.log(chalk.redBright(err)));
+			}
+		} else {
+			npmGlobal().then(i => i.simple().print()).catch(err => console.log(chalk.redBright(err)));
+		}
+	} else {
+		npmGlobal().then(i => i.details()).catch(err => console.log(chalk.redBright(err)));
+	}
+}
+
+function listGlobalPackagesSortedByTime() {
+	if (program.fuzzy) {
+		npmRecent().all().then(i => i.fuzzy()).catch(err => console.log(chalk.redBright(err)));
+	} else {
+		npmRecent().all().then(i => i.default()).catch(err => console.log(chalk.redBright(err)));
+	}
+}
+
+function listLocalDependencies() {
+	if (!program.details) { // if details flag not specified
+		if (program.fuzzy) {
+			if (!program.ipt) { // Default is fzf
+				npmList().fuzzy();
+			} else if (program.ipt) { // Specify to use ipt
+				npmList().ipt();
+			}
 		} else {
 			npmList().default();
 		}
-	})();
+	} else {
+		npmListDetails();
+	}
+}
+
+function fetchModuleInfoFromNpmRegistry() {
+	const module = program.args;
+	if (!program.all) {
+		if (program.fuzzy) {
+			npmRegistry(module).then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
+		} else {
+			npmRegistry(module).then(i => i.simple().default()).catch(err => console.log(chalk.redBright(err)));
+		}
+	} else {
+		npmRegistry(module).then(i => i.all()).catch(err => console.log(chalk.redBright(err)));
+	}
+}
+
+function listNpmScripts() {
+	if (program.fuzzy) {
+		if (!program.ipt) { // Default is fzf
+			npmScripts().fuzzy();
+		} else if (program.ipt) { // Specify to use ipt
+			npmScripts().ipt();
+		}
+	} else {
+		npmScripts().default();
+	}
 }
