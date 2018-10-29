@@ -84,7 +84,8 @@ module.exports.main = async function (global = true) {
 
 					try {
 						let keys = await iPipeTo(list, {
-							size: 20
+							size: 20,
+							autocomplete: true
 						});
 
 						let cleansedKeys = (function cleanKeys() {

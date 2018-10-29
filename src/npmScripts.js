@@ -54,7 +54,8 @@ module.exports.main = function npmScripts() {
 			if (!scripts || scripts.length === 0) return;
 
 			iPipeTo(scripts, {
-					size: 20
+					size: 20,
+					autocomplete: true
 				}).then(keys => {
 					return keys.forEach(async function (key) {
 						// Clean key

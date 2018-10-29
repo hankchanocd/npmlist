@@ -56,7 +56,8 @@ module.exports.npmList = function () {
 			if (!list || list.length === 0) return;
 
 			return iPipeTo(list, {
-					size: 20
+					size: 20,
+					autocomplete: true
 				}).then(keys => {
 					return keys.forEach(function (key) {
 						key = StringUtil.getRidOfColors(key);
