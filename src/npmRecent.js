@@ -61,7 +61,8 @@ function secondLevelChainOperation(list = []) {
 
 			return iPipeTo(list, {
 					size: 20,
-					autocomplete: true
+					autocomplete: true,
+					message: ' '
 				}).then(keys => {
 					return keys.forEach(async function (key) {
 						// Clean key
