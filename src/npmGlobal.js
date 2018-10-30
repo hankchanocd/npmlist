@@ -6,7 +6,6 @@ const chalk = require('chalk');
 const columnify = require('columnify');
 const listToColumns = require('cli-columns');
 const iPipeTo = require('ipt');
-const nfzf = require('node-fzf');
 const {
 	spawn
 } = require('child_process');
@@ -34,7 +33,7 @@ module.exports.main = async function (global = true) {
 				truncate: true,
 				config: {
 					module: {
-						maxWidth: 40
+						maxWidth: 50
 					}
 				},
 				preserveNewLines: true,
@@ -57,35 +56,11 @@ module.exports.main = async function (global = true) {
 				fuzzy: async function () {
 					if (!list || list.length === 0) return;
 
-					list = list.filter(i => !i.includes('Dependencies') && !i.includes('DevDependencies'));
-
-					return nfzf(list, function (value) {
-						try {
-							value = (function cleanValue() {
-								let tail = value.split(' ')[1]; // ├── bitcoin => bitcoin
-								value = StringUtil.getRidOfColors(tail); // ANSI code would prevent sending to `npm info`
-								value = StringUtil.getRidOfQuotationMarks(value); // bitcoin" => bitcoin
-								value = StringUtil.cleanTagName(value); // surl-cli@semantically-release => surl-cli
-								return value;
-							})();
-
-							spawn(`npm info ${value} | less`, {
-								stdio: 'inherit',
-								shell: true
-							});
-						} catch (err) {
-							console.log(err, "Error building interactive interface");
-						}
-					});
-				},
-
-				ipt: async function () {
-					if (!list || list.length === 0) return;
-
 					try {
 						let keys = await iPipeTo(list, {
 							size: 20,
-							autocomplete: true
+							autocomplete: true,
+							message: ' '
 						});
 
 						let cleansedKeys = (function cleanKeys() {

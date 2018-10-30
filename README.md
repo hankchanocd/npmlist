@@ -9,7 +9,7 @@
 </p>
 <br />
 
-`npmlist` or `npl` (`npl` for the sake of typing) fuzzifies all the lists it can find about a npm module using `fzf` and `ipt`, making it easier for search and execution. Its default feature is local dependencies listing, but can be changed with feature flags. It has clear advantages over painfully slow and cluttered `npm list`:
+`npmlist` or `npl` (`npl` for the sake of typing) fuzzifies all the lists it can find about a npm module using [`ipt`](https://github.com/ruyadorno/ipt#readme), making it easier for search and execution. Its default feature is local dependencies listing, but can be changed with feature flags. It has clear advantages over painfully slow and cluttered `npm list`:
 
 1. Selecting a package on fuzzy list will automatically trigger `npm info <package>`
 2. `npl -t` gives a quick refresher on the recent global installs
@@ -40,7 +40,6 @@ Options:
   -t, --time      show the latest global installs
   -s, --scripts   list/execute npm scripts
   -a, --all       a flavor flag that shows all available information on any feature flag
-  -i, --ipt       switch to use ipt instead of fzf
   -F, --no-fuzzy  disable the default fuzzy mode and resort to stdout
   -h, --help      output usage information
 ```
@@ -54,10 +53,9 @@ More than 10x faster than `npm list -g`
 ```bash
 $ npl -g
 
-> _____
-  100/100
-> ├── @angular/cli@6.2.4
-  ├── aerobatic-cli@1.1.4
+? (Use arrow keys or type to search)
+├── @angular/cli@6.2.4
+├── aerobatic-cli@1.1.4
 ```
 
 ### Recent added global modules
@@ -67,7 +65,7 @@ A quick refresher on what the heck it's installed/upgraded globally in the recen
 ```bash
 $ npl -t
 
-? Select an item:
+? (Use arrow keys or type to search)
 @hankchanocd/npmlist  10-5 21:29
 semantic-release      10-5 8:5
 ```
@@ -77,13 +75,12 @@ semantic-release      10-5 8:5
 Somewhat similar to [`ntl`](https://github.com/ruyadorno/ntl)
 
 ```bash
-$ npmlist -s
+$ npl -s
 
 express@4.16.4
-> _____
-  15/15
-> build: babel src/ -d build/ --quiet
-  test: mocha
+? run (Use arrow keys or type to search)
+build: babel src/ -d build/ --quiet
+test: mocha
 ```
 
 ### Fetch from NPM registry
@@ -93,19 +90,10 @@ express@4.16.4
 ```bash
 $ npl express
 
-? Select an item:
 express@4.16.4 Dependencies:
+? (Use arrow keys or type to search)
 ├── accepts@1.3.5
 ├── array-flatten@1.1.1
-```
-
-### Use `ipt` instead of `fzf`
-
-fuzzy mode is using `fzf` as default, but could still use `ipt` with `--ipt`.
-
-```
-$ npl -s --ipt
-$ npl -g --ipt
 ```
 
 ### Turn off fuzzy mode
@@ -151,7 +139,7 @@ To perform unit tests and integration tests, simply run `npm test`.
 
 **2018-Oct-21:** The first official [API](https://github.com/hankchanocd/npmlist/wiki/API) guide released.
 
-**2018-Oct-29:** Use `fzf` as default for fuzzy mode, `ipt` can still be accessed via `--ipt`.
+**2018-Oct-29:** Add autocomplete.
 
 ## Contribution
 
@@ -159,7 +147,7 @@ To perform unit tests and integration tests, simply run `npm test`.
 
 The roadmap for `npl` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [Wiki](https://github.com/hankchanocd/npmlist/wiki/DOCS) for `npl`'s code architecture, developments rules, and styles. See [here](./CONTRIBUTION.md) on how to contribute.
 
-If you like the idea of fuzzy list, check out talmobi's nodejs implementation of [`fzf`](https://github.com/talmobi/node-fzf) and ruyadorno's [`ipt`](https://github.com/ruyadorno/ipt#readme).
+If you like the idea of fuzzy list, check out ruyadorno's [`ipt`](https://github.com/ruyadorno/ipt#readme).
 
 ## License
 

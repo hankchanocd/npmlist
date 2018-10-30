@@ -36,7 +36,6 @@ program
 	.option('-a, --all', 'a flavor flag that shows all available information on any feature flag')
 
 	// Mode
-	.option('-i, --ipt', 'switch to use ipt instead of fzf')
 	.option('-F, --no-fuzzy', 'disable the default fuzzy mode and resort to stdout')
 
 	// Help
@@ -46,7 +45,6 @@ program
 		console.log('    ' + chalk.blueBright(`npl, ${chalk.white('a fuzzy list of local dependencies')}`));
 		console.log('    ' + chalk.blueBright(`npl -t, ${chalk.white('a fuzzy list of latest global installs')}`));
 		console.log('    ' + chalk.blueBright(`npl -s, ${chalk.white("a fuzzy list of npm scripts using fzf")}`));
-		console.log('    ' + chalk.blueBright(`npl -s --ipt, ${chalk.white("a fuzzy list of npm scripts using ipt")}`));
 		console.log('    ' + chalk.blueBright(`npl -s --no-fuzzy, ${chalk.white("a normal list of npm scripts")}`));
 		console.log('    ' + chalk.blueBright(`npl -g --details, ${chalk.white('a normal, detailed list of global installs')}`));
 		console.log('    ' + chalk.blueBright(`npl [module], ${chalk.white("a fuzzy list of a module's dependencies fetched from NPM registry")}`));
@@ -99,11 +97,7 @@ function listGlobalPackages() {
 
 	if (!program.details) { // if details flag not specified
 		if (program.fuzzy) {
-			if (!program.ipt) { // Default is fzf
-				npmGlobal().then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
-			} else if (program.ipt) { // Specify to use ipt
-				npmGlobal().then(i => i.simple().ipt()).catch(err => console.log(chalk.redBright(err)));
-			}
+			npmGlobal().then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
 		} else {
 			npmGlobal().then(i => i.simple().print()).catch(err => console.log(chalk.redBright(err)));
 		}
@@ -123,11 +117,7 @@ function listGlobalPackagesSortedByTime() {
 function listLocalDependencies() {
 	if (!program.details) { // if details flag not specified
 		if (program.fuzzy) {
-			if (!program.ipt) { // Default is fzf
-				npmList().fuzzy();
-			} else if (program.ipt) { // Specify to use ipt
-				npmList().ipt();
-			}
+			npmList().fuzzy();
 		} else {
 			npmList().default();
 		}
@@ -151,11 +141,7 @@ function fetchModuleInfoFromNpmRegistry() {
 
 function listNpmScripts() {
 	if (program.fuzzy) {
-		if (!program.ipt) { // Default is fzf
-			npmScripts().fuzzy();
-		} else if (program.ipt) { // Specify to use ipt
-			npmScripts().ipt();
-		}
+		npmScripts().fuzzy();
 	} else {
 		npmScripts().default();
 	}

@@ -14,7 +14,6 @@ const spawn = require('child_process').spawn;
 const chalk = require('chalk');
 const pkgInfo = require('pkginfo');
 const cwd = process.cwd();
-const nfzf = require('node-fzf');
 const iPipeTo = require('ipt');
 const StringUtil = require('./utils/stringUtil');
 
@@ -37,27 +36,10 @@ module.exports.npmList = function () {
 		fuzzy() {
 			if (!list || list.length === 0) return;
 
-			list = list.filter(i => !i.includes('Dependencies') && !i.includes('DevDependencies'));
-
-			return nfzf(list, function (value) {
-				try {
-					value = StringUtil.getRidOfColors(value);
-
-					spawn(`npm info ${value} | less`, {
-						stdio: 'inherit',
-						shell: true
-					});
-				} catch (err) {
-					console.log(err, "Error building interactive interface");
-				}
-			});
-		},
-		ipt() {
-			if (!list || list.length === 0) return;
-
 			return iPipeTo(list, {
 					size: 20,
-					autocomplete: true
+					autocomplete: true,
+					message: ' '
 				}).then(keys => {
 					return keys.forEach(function (key) {
 						key = StringUtil.getRidOfColors(key);

@@ -55,7 +55,8 @@ module.exports.main = async function (module = '') {
 
 					return iPipeTo(list, {
 							size: 20,
-							autocomplete: true
+							autocomplete: true,
+							message: ' '
 						}).then(keys => {
 							return keys.forEach(async function (key) {
 								let cleansedKey = (function () {

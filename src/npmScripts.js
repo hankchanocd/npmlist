@@ -10,7 +10,6 @@ const cwd = process.cwd();
 const {
 	spawn
 } = require('child_process');
-const nfzf = require('node-fzf');
 const iPipeTo = require('ipt');
 const StringUtil = require('./utils/stringUtil');
 
@@ -34,28 +33,10 @@ module.exports.main = function npmScripts() {
 		fuzzy() {
 			if (!scripts || scripts.length === 0) return;
 
-			return nfzf(scripts, async function (value) {
-				try {
-					// Clean key
-					let head = value.split(' ')[0];
-					value = StringUtil.getRidOfQuotationMarks(head);
-					value = StringUtil.getRidOfColors(value);
-					const runScript = spawn('npm', ['run', value]);
-
-					runScript.stdout.on('data', data => {
-						console.log(data.toString('utf8'));
-					});
-				} catch (err) {
-					console.log(err, "Error building interactive interface");
-				}
-			});
-		},
-		ipt() {
-			if (!scripts || scripts.length === 0) return;
-
 			iPipeTo(scripts, {
 					size: 20,
-					autocomplete: true
+					autocomplete: true,
+					message: 'run'
 				}).then(keys => {
 					return keys.forEach(async function (key) {
 						// Clean key
