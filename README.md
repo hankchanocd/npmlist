@@ -145,7 +145,7 @@ To perform unit tests and integration tests, simply run `npm test`.
 
 `npl` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking a package's dependencies. Saying all these means we are not afraid of expanding `npl` features beyond the current realm.
 
-The roadmap for `npl` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [Wiki](https://github.com/hankchanocd/npmlist/wiki/DOCS) for `npl`'s code architecture, developments rules, and styles. See [here](./CONTRIBUTION.md) on how to contribute.
+The roadmap for `npl` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [Wiki](https://github.com/hankchanocd/npmlist/wiki/Wiki) for `npl`'s code architecture, developments rules, and styles. See [here](./CONTRIBUTION.md) on how to contribute.
 
 If you like the idea of fuzzy list, check out ruyadorno's [`ipt`](https://github.com/ruyadorno/ipt#readme).
 
