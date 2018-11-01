@@ -33,15 +33,15 @@ Fuzzy list anything with npm package
 
 Options:
 
-  -v, --version   output the version number
-  -l, --local     list local dependencies, which is also the default feature
-  -g, --global    list global modules
-  -d, --details   include details to each dependency, but disable the default fuzzy mode
-  -t, --time      show the latest global installs
-  -s, --scripts   list/execute npm scripts
-  -a, --all       a flavor flag that shows all available information on any feature flag
-  -F, --no-fuzzy  disable the default fuzzy mode and resort to stdout
-  -h, --help      output usage information
+-v, --version   output the version number
+-l, --local     list local dependencies, which is also the default feature
+-g, --global    list global modules
+-d, --details   include details to each dependency, but disable the default fuzzy mode
+-t, --time      show the latest global installs
+-s, --scripts   list/execute npm scripts
+-a, --all       a flavor flag that shows all available information on any feature flag
+-F, --no-fuzzy  disable the default fuzzy mode and resort to stdout
+-h, --help      output usage information
 ```
 
 ## Examples
@@ -54,100 +54,100 @@ More than 10x faster than `npm list -g`
 $ npl -g
 
 ? (Use arrow keys or type to search)
-├── @angular/cli@6.2.4
-├── aerobatic-cli@1.1.4
-```
+  ├── @angular/cli@6.2.4
+  ├── aerobatic-cli@1.1.4
+  ```
 
 ### Recent added global modules
 
-A quick refresher on what the heck it's installed/upgraded globally in the recent past
+  A quick refresher on what the heck it's installed/upgraded globally in the recent past
 
-```bash
-$ npl -t
+  ```bash
+  $ npl -t
 
 ? (Use arrow keys or type to search)
-@hankchanocd/npmlist  10-5 21:29
-semantic-release      10-5 8:5
-```
+  @hankchanocd/npmlist  10-5 21:29
+  semantic-release      10-5 8:5
+  ```
 
 ### Execute module's npm scripts
 
-Somewhat similar to [`ntl`](https://github.com/ruyadorno/ntl)
+  Somewhat similar to [`ntl`](https://github.com/ruyadorno/ntl)
 
-```bash
-$ npl -s
+  ```bash
+  $ npl -s
 
-express@4.16.4
+  express@4.16.4
 ? run (Use arrow keys or type to search)
-build: babel src/ -d build/ --quiet
-test: mocha
-```
+  build: babel src/ -d build/ --quiet
+  test: mocha
+  ```
 
 ### Fetch from NPM registry
 
-`npl` fetches the module's latest version by default, unless a version is specified
+  `npl` fetches the module's latest version by default, unless a version is specified
 
-```bash
-$ npl express
+  ```bash
+  $ npl express
 
-express@4.16.4 Dependencies:
+  express@4.16.4 Dependencies:
 ? (Use arrow keys or type to search)
-├── accepts@1.3.5
-├── array-flatten@1.1.1
-```
+  ├── accepts@1.3.5
+  ├── array-flatten@1.1.1
+  ```
 
 ### Turn off fuzzy mode
 
-Fuzzy mode is turned on in most cases, except for `--details`, where fuzzy is not optimal for multi-line text. You can also opt for `--no-fuzzy` to turn off the default fuzzy mode.
+  Fuzzy mode is turned on in most cases, except for `--details`, where fuzzy is not optimal for multi-line text. You can also opt for `--no-fuzzy` to turn off the default fuzzy mode.
 
-```bash
-$ npl -t --no-fuzzy
-$ npl -g --no-fuzzy
-$ npl -s --no-fuzzy
-```
+  ```bash
+  $ npl -t --no-fuzzy
+  $ npl -g --no-fuzzy
+  $ npl -s --no-fuzzy
+  ```
 
-<p align="center"><img src="https://github.com/hankchanocd/npmlist/blob/master/images/no-fuzzy-demo.png" width="650"></p>
+  <p align="center"><img src="https://github.com/hankchanocd/npmlist/blob/master/images/no-fuzzy-demo.png" width="650"></p>
 
 ### Details flag
 
-Applied to both local dependencies and global installs
+  Applied to both local dependencies and global installs
 
-```
-$ npl --details
-$ npl -g --details
-```
+  ```
+  $ npl --details
+  $ npl -g --details
+  ```
 
-<p align="center"><img src="https://github.com/hankchanocd/npmlist/blob/master/images/details-flag-demo.png" width="650"></p>
+  <p align="center"><img src="https://github.com/hankchanocd/npmlist/blob/master/images/details-flag-demo.png" width="650"></p>
 
 ## API
 
-Build a Web or CLI tool on top of `npl`'s [API](https://github.com/hankchanocd/npmlist/wiki/API).
+  Build a Web or CLI tool on top of `npl`'s [API](https://github.com/hankchanocd/npmlist/wiki/API).
 
 ## Tests
 
-To perform unit tests and integration tests, simply run `npm test`.
+  To perform unit tests and integration tests, simply run `npm test`.
 
 ## Changelog
 
-**2018-Oct-16:** Fuzzy mode is now enabled by default. It can be turned off by `--no-fuzzy`.
+  **2018-Oct-16:** Fuzzy mode is now enabled by default. It can be turned off by `--no-fuzzy`.
 
-**2018-Oct-18:** Give up on trying to pipe output to `less`. Nodejs simply does not have good control of TTY.
+  **2018-Oct-18:** Give up on trying to pipe output to `less`. Nodejs simply does not have good control of TTY.
 
-**2018-Oct-19:** Speed up `npmlist -g` 10x than `npm list -g`
+  **2018-Oct-19:** Speed up `npmlist -g` 10x than `npm list -g`
 
-**2018-Oct-20:** `npmlist` can also be accessed via `npl`
+  **2018-Oct-20:** `npmlist` can also be accessed via `npl`
 
-**2018-Oct-21:** The first official [API](https://github.com/hankchanocd/npmlist/wiki/API) guide released.
+  **2018-Oct-21:** The first official [API](https://github.com/hankchanocd/npmlist/wiki/API) guide released.
 
-**2018-Oct-29:** Add autocomplete.
+  **2018-Oct-29:** Add autocomplete.
 
 ## Contribution
 
-`npl` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking a package's dependencies. Saying all these means we are not afraid of expanding `npl` features beyond the current realm.
+  `npl` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking a package's dependencies. Saying all these means we are not afraid of expanding `npl` features beyond the current realm.
 
-The roadmap for `npl` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [Wiki](https://github.com/hankchanocd/npmlist/wiki/Wiki) for `npl`'s code architecture, developments rules, and styles. See [here](./CONTRIBUTION.md) on how to contribute.
+  The roadmap for `npl` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [Wiki](https://github.com/hankchanocd/npmlist/wiki/Wiki) for `npl`'s code architecture, developments rules, and styles. See [here](./CONTRIBUTING.md) on how to contribute.
 
-If you like the idea of fuzzy list, check out ruyadorno's [`ipt`](https://github.com/ruyadorno/ipt#readme).
+  If you like the idea of fuzzy list, check out ruyadorno's [`ipt`](https://github.com/ruyadorno/ipt#readme).
 
 ## License
 
