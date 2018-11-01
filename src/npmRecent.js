@@ -74,7 +74,7 @@ function secondLevelChainOperation(list = []) {
 							return result;
 						})();
 
-						spawn(`npm info ${cleansedKey} | less`, {
+						spawn(`npm info ${cleansedKey} | less -r`, {
 							stdio: 'inherit',
 							shell: true
 						});

@@ -66,7 +66,7 @@ module.exports.main = async function (module = '') {
 									return list;
 								})();
 
-								spawn(`npm info ${cleansedKey} | less`, {
+								spawn(`npm info ${cleansedKey} | less -r`, {
 									stdio: 'inherit',
 									shell: true
 								});
