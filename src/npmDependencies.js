@@ -44,7 +44,7 @@ module.exports.npmList = function () {
 					return keys.forEach(function (key) {
 						key = StringUtil.getRidOfColors(key);
 
-						spawn(`npm info ${key} | less`, {
+						spawn(`npm info ${key} | less -r`, {
 							stdio: 'inherit',
 							shell: true
 						});

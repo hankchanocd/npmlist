@@ -74,7 +74,7 @@ module.exports.main = async function (global = true) {
 						})();
 
 						return cleansedKeys.forEach(function (key) {
-							spawn(`npm info ${key} | less`, {
+							spawn(`npm info ${key} | less -r`, {
 								stdio: 'inherit',
 								shell: true
 							});
