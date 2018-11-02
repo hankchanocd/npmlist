@@ -44,10 +44,8 @@ module.exports.main = function npmScripts() {
 						key = StringUtil.getRidOfColors(head);
 						key = StringUtil.getRidOfQuotationMarks(key);
 
-						const runScript = spawn('npm', ['run', key]);
-
-						runScript.stdout.on('data', data => {
-							console.log(data.toString('utf8'));
+						spawn('npm', ['run', key], {
+							stdio: [process.stdin, process.stdout, process.stderr]
 						});
 					});
 				})

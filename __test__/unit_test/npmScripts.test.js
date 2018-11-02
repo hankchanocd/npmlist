@@ -31,6 +31,9 @@ describe('Test npmScripts.collectNpmScripts()', () => {
 
 
 describe('Test npmScripts.parseNpmScripts()', () => {
+	// Set timeout well over the default 5000
+	jest.setTimeout(8000);
+
 	let list;
 	beforeAll(() => {
 		let mockPkg = (function generateMockPkg() {
