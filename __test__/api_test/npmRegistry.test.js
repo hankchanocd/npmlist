@@ -61,23 +61,26 @@ describe('Test npmRegistry.parseToList() options', () => {
 		};
 	});
 
-	test('Empty data would throw an error', () => {
+	test('Empty data would throw an error', (done) => {
 		expect(() => {
 			parseToList(mockEmptyData);
 		}).toThrowError('Fetched info is incomplete, therefore useless');
+		done();
 	});
 
-	test('simple() returns a valid list', () => {
+	test('simple() returns a valid list', (done) => {
 		let notDefined = parseToList(mockWithoutDepsData).simple();
 		expect(notDefined).toBeUndefined();
 
 		let list = parseToList(mockFilledData).simple();
 		expect(list).toHaveLength(2);
 		expect(list[0]).toEqual('├── ' + 'chalk' + '@' + chalk.grey('2.4.1'));
+		done();
 	});
 
-	test('all() returns a result strings split in list', () => {
+	test('all() returns a result strings split in list', (done) => {
 		let list = parseToList(mockFilledData).all();
 		expect(list).toHaveLength(3); // With title
+		done();
 	});
 });
