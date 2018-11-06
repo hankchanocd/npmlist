@@ -9,7 +9,7 @@
 </p>
 <br />
 
-`npmlist` or `npl` (`npl` for the sake of typing) fuzzifies all the lists it can find about a npm module using [`ipt`](https://github.com/ruyadorno/ipt#readme), making it easier for search and execution. Its default feature is local dependencies listing, but can be changed with feature flags. It has clear advantages over painfully slow and cluttered `npm list`:
+`npmlist` or `npl` (`npl` for the sake of typing) fuzzifies all the lists it can find about a npm module using [`ipt`](https://github.com/ruyadorno/ipt#readme), making it easier for search and execution. `npl`'s default feature is local dependencies listing, but can be changed with feature flags. `npl` has several advantages over painfully slow and cluttered `npm list`:
 
 1. Selecting a package on fuzzy list will automatically trigger `npm info <package>`
 2. `npl -t` gives a quick refresher on the recent global installs
@@ -143,7 +143,7 @@ $ npl -g
 
 ## Contribution
 
-  `npl` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking a package's dependencies. Saying all these means we are not afraid of expanding `npl` features beyond the current realm.
+  `npl` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking a package's dependencies and global installs. This is to say we are not afraid of expanding `npl` features beyond the current realm.
 
   The roadmap for `npl` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [Wiki](https://github.com/hankchanocd/npmlist/wiki/Wiki) for `npl`'s code architecture, developments rules, and styles. See [here](./CONTRIBUTING.md) on how to contribute.
 
