@@ -18,6 +18,10 @@
 5. A replacement for `npm list --depth=0 --local` and other annoyingly long `npm list --@#$%` commands with assumed configurations
 6. No need to leave terminal just for glancing at a package's npm profile
 
+## Requirements
+
+`npl` requires Node 8 or above.
+
 ## CLI
 
 ```bash

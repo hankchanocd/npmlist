@@ -48,7 +48,7 @@ npmList()
 
 - Async/await with color
 
-  Since ES7, anything written in Promise can also be written in async/await. Async/await code in the following APIs is very similar to this one, so I won't repeat it.
+  Since Node 8, anything written in Promise can also be written in async/await. Async/await code in the following APIs is very similar to this one, so I won't repeat it.
 
 ```js
 async () => {
