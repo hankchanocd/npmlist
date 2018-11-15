@@ -22,11 +22,14 @@ const npmRecent = require('./npmRecent');
 
 const npmGlobal = require('./npmGlobal').main;
 
+const stringUtil = require('./utils/stringUtil');
+
 
 module.exports = {
 	npmDependencies,
 	npmScripts,
 	npmRegistry,
 	npmRecent,
-	npmGlobal
+	npmGlobal,
+	stringUtil
 };

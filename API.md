@@ -1,6 +1,6 @@
 # API
 
-`npl`'s API is made available in Promise, which is also accessible with async/await.
+`npl`'s API is made available in Promise, which is also accessible via async/await.
 
 ## Install
 
@@ -18,13 +18,20 @@ const {
 	npmScripts,
 	npmRegistry,
 	npmRecent,
-	npmGlobal
+	npmGlobal,
+	StringUtil
 } = require("@hankchanocd/npmlist");
 
 const { npmList } = npmDependencies;
 ```
 
-## npmDependencies()
+<br/>
+
+## Features
+
+### npmList
+
+> npmList()
 
 Used by `npl` - list module's dependencies.
 
@@ -61,7 +68,11 @@ async () => {
 };
 ```
 
-## npmRecent()
+<br/>
+
+### npmRecent
+
+> npmRecent()
 
 Used by `npl -t` - list recent global installs.
 
@@ -85,7 +96,11 @@ npmRecent()
 	.catch(err => console.log(err));
 ```
 
-## npmGlobal()
+<br/>
+
+### npmGlobal
+
+> npmGlobal()
 
 Used by `npl -g` - list global installs.
 
@@ -107,7 +122,11 @@ npmGlobal()
 	.catch(err => console.log(err));
 ```
 
-## npmScripts()
+<br/>
+
+### npmScripts
+
+> npmScripts()
 
 Used by `npl -s` - return a list of scripts.
 
@@ -129,14 +148,19 @@ npmScripts()
 	.catch(err => console.log(err));
 ```
 
-## npmRegistry()
+<br/>
+
+### npmRegistry
+
+> npmRegistry(module: String)
 
 Used by `npl module` - fetch package dependencies from npm registry.
 
 - With color
 
 ```js
-npmRegistry(moduleString) // i.e. moduleString = 'express'
+let module = 'express';
+npmRegistry(module)
 	.then(i => i.simple().raw())
 	.then(i => yourFunction)
 	.catch(err => console.log(err));
@@ -145,8 +169,61 @@ npmRegistry(moduleString) // i.e. moduleString = 'express'
 - Without color
 
 ```js
-npmRegistry(moduleString)
+npmRegistry(module)
 	.then(i => i.simple().rawNoColor())
 	.then(i => yourFunction)
 	.catch(err => console.log(err));
+```
+
+<br/>
+
+## StringUtil
+
+### cleanTagName
+
+> cleanTagName(str: string)
+
+```js
+let str = 'surl-cli@semantically-release';
+StringUtil.cleanTagName(str); // 'surl-cli'
+```
+
+<br/>
+
+
+### getRidOfColors
+
+> getRidOfColors(str: String)
+
+Especially useful for converting seemingly white text on terminal, which in reality is littered with ANSI color code, to reusable clean text.
+
+```js
+StringUtil.getRidOfColors(str);
+```
+
+<br/>
+
+### getRidOfQuotationMarks
+
+> getRidOfQuotationMarks(str: String)
+
+```js
+StringUtil.getRidOfQuotationMarks(str);
+```
+
+<br/>
+
+### truncate
+
+> truncate(str: String, maxWidth: Number, truncateMarker: Boolean)
+
+#### Parameters
+
+- str: required
+- maxWidth: optional, default = 50
+- truncateMarker: optional, default = true
+
+```js
+let str = 'surl-cli@semantically-release';
+StringUtil.truncate(str, 8, false); // 'surl-cli...'
 ```
