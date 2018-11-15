@@ -18,6 +18,7 @@ const npmRoot = require('./npmRoot');
 
  * i.e. (await npmGlobal()).simple().print();
  * i.e. (await npmGlobal()).simple().fuzzy();
+ * i.e.(await npmGlobal()).simple().raw();
  * i.e. (await npmGlobal()).details()
  *
  * The default value for 'global' is true, unless specified otherwise
@@ -83,6 +84,25 @@ module.exports.main = async function (global = true) {
 					} catch (err) {
 						console.log(err, "Error building interactive interface");
 					}
+				},
+
+
+				/***** For API use *****/
+				raw: async function () {
+					if (!list || list.length === 0) return;
+
+					return list;
+				},
+
+				rawNoColor: async function () {
+					if (!list || list.length === 0) return;
+
+					return list.map(key => {
+						let tail = key.split(' ')[1];
+						let result = StringUtil.getRidOfColors(tail);
+						result = StringUtil.getRidOfQuotationMarks(result);
+						return result;
+					});
 				}
 			};
 		},

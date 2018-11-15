@@ -52,6 +52,24 @@ module.exports.main = function npmScripts() {
 				.catch(err => {
 					console.log(err, "Error building interactive interface");
 				});
+		},
+
+
+		/***** For API use *****/
+		raw: async function () {
+			if (!scripts || scripts.length === 0) return;
+
+			return scripts;
+		},
+
+		rawNoColor: async function () {
+			if (!scripts || scripts.length === 0) return;
+
+			return scripts.map(key => {
+				let result = StringUtil.getRidOfColors(key);
+				result = StringUtil.getRidOfQuotationMarks(result);
+				return result;
+			});
 		}
 	};
 };

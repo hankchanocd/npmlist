@@ -83,6 +83,24 @@ function secondLevelChainOperation(list = []) {
 				.catch(err => {
 					console.log(err, "Error building interactive interface");
 				});
+		},
+
+
+		/***** For API use *****/
+		raw: async function () {
+			if (!list || list.length === 0) return;
+
+			return list;
+		},
+
+		rawNoColor: async function () {
+			if (!list || list.length === 0) return;
+
+			return list.map(key => {
+				let result = StringUtil.getRidOfColors(key);
+				result = StringUtil.getRidOfQuotationMarks(result);
+				return result;
+			});
 		}
 	};
 }
