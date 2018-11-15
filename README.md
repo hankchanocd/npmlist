@@ -29,7 +29,7 @@ $ npm install -g @hankchanocd/npmlist
 ```
 Usage: npl [option] [name]
 
-Fuzzy list anything with npm package
+Fuzzy search npm modules' dependencies
 
 Options:
 

@@ -23,7 +23,7 @@ const {
 program
 	.version('7.0.0', '-v, --version')
 	.usage(`[option] [name]`)
-	.description('Fuzzy list anything listable with npm package')
+	.description(`Fuzzy search npm modules' dependencies`)
 
 	// Five main features:
 	.option('-l, --local', 'list local dependencies, which is also the default feature')
