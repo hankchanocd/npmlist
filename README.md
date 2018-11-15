@@ -106,7 +106,7 @@ $ npl -g --no-fuzzy
 $ npl -s --no-fuzzy
 ```
 
-  <p align="center"><img src="https://github.com/hankchanocd/npmlist/blob/master/images/no-fuzzy-demo.png" width="800"></p>
+  <p align="center"><img src="https://raw.githubusercontent.com/hankchanocd/npmlist/master/images/no-fuzzy-demo.png" width="800"></p>
 
 ### Details flag
 
@@ -117,7 +117,7 @@ $ npl --details
 $ npl -g --details
 ```
 
-  <p align="center"><img src="https://github.com/hankchanocd/npmlist/blob/master/images/details-flag-demo.png" width="800"></p>
+  <p align="center"><img src="https://raw.githubusercontent.com/hankchanocd/npmlist/master/images/details-flag-demo.png" width="800"></p>
 
 ## API
 
