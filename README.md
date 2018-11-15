@@ -18,6 +18,10 @@
 5. A replacement for `npm list --depth=0 --local` and other annoyingly long `npm list --@#$%` commands with assumed configurations
 6. No need to leave terminal just for glancing at a package's npm profile
 
+## Requirements
+
+`npl` requires Node 8 or above.
+
 ## CLI
 
 ```bash
@@ -106,7 +110,7 @@ $ npl -g --no-fuzzy
 $ npl -s --no-fuzzy
 ```
 
-  <p align="center"><img src="https://github.com/hankchanocd/npmlist/blob/master/images/no-fuzzy-demo.png" width="800"></p>
+  <p align="center"><img src="https://raw.githubusercontent.com/hankchanocd/npmlist/master/images/no-fuzzy-demo.png" width="800"></p>
 
 ### Details flag
 
@@ -117,7 +121,7 @@ $ npl --details
 $ npl -g --details
 ```
 
-  <p align="center"><img src="https://github.com/hankchanocd/npmlist/blob/master/images/details-flag-demo.png" width="800"></p>
+  <p align="center"><img src="https://raw.githubusercontent.com/hankchanocd/npmlist/master/images/details-flag-demo.png" width="800"></p>
 
 ## API
 
