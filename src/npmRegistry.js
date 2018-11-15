@@ -1,6 +1,6 @@
 /**
- * https.js fetches lists of module info from npm registry
- * https.js uses chain operations that are divided into 2 categories: simple() and all()
+ * npmRegistry.js fetches package dependencies and others infos from npm registry
+ * It uses chain operations that are divided into 2 categories: simple() and all()
  *
  */
 'use strict';

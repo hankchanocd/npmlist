@@ -1,3 +1,7 @@
+/**
+ * npmGlobal.js list global installs.
+ *
+ */
 'use strict';
 
 // Dependencies

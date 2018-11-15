@@ -1,5 +1,5 @@
 /**
- * npmRecent.js provides methods that present time-related info about npm packages
+ * npmRecent.js list recent global installs.
  *
  */
 'use strict';

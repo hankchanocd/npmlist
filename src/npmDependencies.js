@@ -1,5 +1,5 @@
 /**
- * npmDependencies.js list dependencies
+ * npmDependencies.js list module's dependencies
  *
  * Changelog:
  * 2018 Oct 17:

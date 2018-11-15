@@ -1,5 +1,5 @@
 /**
- * npmScripts.js returns scripts list
+ * npmScripts.js returns a list of scripts to be executed
  *
  */
 
