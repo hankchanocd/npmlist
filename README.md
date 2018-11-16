@@ -46,13 +46,18 @@ Fuzzy search npm modules' dependencies
 Options:
 
 -v, --version   output the version number
+
+# Feature flags
 -l, --local     list local dependencies, which is also the default feature
 -g, --global    list global modules
--d, --details   include details to each dependency, but disable the default fuzzy mode
 -t, --time      show the latest global installs
 -s, --scripts   list/execute npm scripts
+
+# Flavor flags
+-d, --details   include details to each dependency, but disable the default fuzzy mode
 -a, --all       a flavor flag that shows all available information on any feature flag
 -F, --no-fuzzy  disable the default fuzzy mode and resort to stdout
+
 -h, --help      output usage information
 ```
 
