@@ -20,7 +20,15 @@
 
 ## Requirements
 
-`npl` requires Node 8 or above.
+`npl` requires Node 8 for runtime or above.
+
+## API
+
+```bash
+$ npm install @hankchanocd/npmlist
+```
+
+Build a CLI tool on top of `npl`'s API. Read [API doc](https://github.com/hankchanocd/npmlist/wiki/API) for more info. See [use cases](#use-cases).
 
 ## CLI
 
@@ -123,10 +131,6 @@ $ npl -g --details
 
   <p align="center"><img src="https://raw.githubusercontent.com/hankchanocd/npmlist/master/images/details-flag-demo.png" width="800"></p>
 
-## API
-
-Build a Web or CLI tool on top of `npl`'s API. Read [API doc](https://github.com/hankchanocd/npmlist/wiki/API) for more info.
-
 ## Tests
 
 To perform unit tests and integration tests, simply run `npm test`.
@@ -155,7 +159,7 @@ The roadmap for `npl` now focuses on presenting a quick and concise report on te
 
 If you like the idea of fuzzy list, check out ruyadorno's [`ipt`](https://github.com/ruyadorno/ipt#readme).
 
-## Others
+## Use Cases
 
 [`npm-fzf`](https://github.com/hankchanocd/npm-fzf) - Fuzzy search npm modules with [`fzf`](https://github.com/junegunn/fzf)
 
