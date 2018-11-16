@@ -25,17 +25,15 @@ program
 	.usage(`[option] [name]`)
 	.description(`Fuzzy search npm modules' dependencies`)
 
-	// Five main features:
+	// Four main features:
 	.option('-l, --local', 'list local dependencies, which is also the default feature')
 	.option('-g, --global', 'list global modules')
-	.option('-d, --details', 'include details to each dependency, but disable the default fuzzy mode')
 	.option('-t, --time', 'show the latest global installs')
 	.option('-s, --scripts', 'list/execute npm scripts')
 
-	// Flavor flag
+	// Flavor flags:
+	.option('-d, --details', 'include details to each dependency, but disable the default fuzzy mode')
 	.option('-a, --all', 'a flavor flag that shows all available information on any feature flag')
-
-	// Mode
 	.option('-F, --no-fuzzy', 'disable the default fuzzy mode and resort to stdout')
 
 	// Help
@@ -51,6 +49,22 @@ program
 		console.log();
 	})
 	.parse(process.argv);
+
+
+// Fail if multiple feature flags given at the same time
+(function failIfMultipleFeatureFlags() {
+	let count = 0;
+	Object.keys(program).forEach(i => {
+		if (i == 'global' || i == 'local' || i == 'time' || i == 'scripts') {
+			if (program[i]) count += 1;
+		}
+
+		if (count >= 2) {
+			console.log(`Multiple feature flags. I'm confused.`);
+			return process.exit(1);
+		}
+	});
+})();
 
 
 if (program.global) {
@@ -91,10 +105,6 @@ if (program.global) {
 
 /* Helper Functions */
 function listGlobalPackages() {
-	if (program.time) {
-		return console.log('Use `npl -t` instead');
-	}
-
 	if (!program.details) { // if details flag not specified
 		if (program.fuzzy) {
 			npmGlobal().then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
