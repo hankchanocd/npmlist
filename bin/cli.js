@@ -68,19 +68,19 @@ program
 
 
 if (program.global) {
-	listGlobalPackages();
+	globalInstalls();
 
 } else if (program.local) {
-	listLocalDependencies();
+	localDependencies();
 
 } else if (program.time) {
 	recentGlobalInstalls();
 
 } else if (program.args.length > 0) { // execute if a module is specified, i.e. `npl express --all`
-	fetchFromNpmRegistry();
+	fetchNpmRegistry();
 
 } else if (program.scripts) {
-	listNpmScripts();
+	executeScripts();
 
 } else if (program.details) { // Default to npm local packages listing if only --details flag present
 	npmListDetails();
@@ -91,12 +91,12 @@ if (program.global) {
 	console.log(`Please specify a feature`);
 
 } else { // default is list local dependencies when nothing specified...
-	listLocalDependencies();
+	localDependencies();
 }
 
 
 /* Helper Functions */
-function listGlobalPackages() {
+function globalInstalls() {
 	if (!program.details) { // if details flag not specified
 		if (program.fuzzy) {
 			npmGlobal().then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
@@ -120,7 +120,7 @@ function recentGlobalInstalls() {
 	}
 }
 
-function listLocalDependencies() {
+function localDependencies() {
 	if (!program.details) { // if details flag not specified
 		if (program.fuzzy) {
 			npmList().fuzzy();
@@ -132,7 +132,7 @@ function listLocalDependencies() {
 	}
 }
 
-function fetchFromNpmRegistry() {
+function fetchNpmRegistry() {
 	/* Filter */
 	if (!program.args.length == 1) {
 		return console.log(chalk.white('Only one module is allowed'));
@@ -158,7 +158,7 @@ function fetchFromNpmRegistry() {
 	}
 }
 
-function listNpmScripts() {
+function executeScripts() {
 	if (program.details) {
 		return console.log(`This combination does not exist`);
 	}
