@@ -74,24 +74,16 @@ if (program.global) {
 	listLocalDependencies();
 
 } else if (program.time) {
-	listGlobalPackagesSortedByTime();
-
-} else if (program.details) { // Default to npm local packages listing if only --details flag present
-	npmListDetails();
+	recentGlobalInstalls();
 
 } else if (program.args.length > 0) { // execute if a module is specified, i.e. `npl express --all`
-	if (!program.args.length == 1) {
-		console.log(chalk.blueBright('Only one module is allowed'));
-
-	} else if (program.args.length == 1 && program.args[0] === '-') { // Typo of incomplete flag, i.e. 'npl -'
-		console.log(chalk.blueBright('Invalid input'));
-
-	} else {
-		fetchModuleInfoFromNpmRegistry();
-	}
+	fetchFromNpmRegistry();
 
 } else if (program.scripts) {
 	listNpmScripts();
+
+} else if (program.details) { // Default to npm local packages listing if only --details flag present
+	npmListDetails();
 
 } else if (program.all) {
 	// If none of the feature flags were detected but --all ...
@@ -116,7 +108,11 @@ function listGlobalPackages() {
 	}
 }
 
-function listGlobalPackagesSortedByTime() {
+function recentGlobalInstalls() {
+	if (program.details) {
+		return console.log(`This combination does not exist`);
+	}
+
 	if (program.fuzzy) {
 		npmRecent().all().then(i => i.fuzzy()).catch(err => console.log(chalk.redBright(err)));
 	} else {
@@ -136,20 +132,37 @@ function listLocalDependencies() {
 	}
 }
 
-function fetchModuleInfoFromNpmRegistry() {
-	const module = program.args;
-	if (!program.all) {
-		if (program.fuzzy) {
-			npmRegistry(module).then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
-		} else {
-			npmRegistry(module).then(i => i.simple().default()).catch(err => console.log(chalk.redBright(err)));
-		}
+function fetchFromNpmRegistry() {
+	/* Filter */
+	if (!program.args.length == 1) {
+		return console.log(chalk.white('Only one module is allowed'));
+	}
+
+	const module = program.args[0];
+	if (module === '-') { // incomplete flag => 'npl -'
+		return console.log(chalk.white('Incomplete flag'));
+	}
+
+	if (module === '/' || module === '~' || module === '*' || module === '^' || module === '`') { // typos
+		return console.log(chalk.white('Invalid input'));
+	}
+
+	if (program.fuzzy) {
+		npmRegistry(module).then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
 	} else {
+		npmRegistry(module).then(i => i.simple().default()).catch(err => console.log(chalk.redBright(err)));
+	}
+
+	if (program.all) {
 		npmRegistry(module).then(i => i.all()).catch(err => console.log(chalk.redBright(err)));
 	}
 }
 
 function listNpmScripts() {
+	if (program.details) {
+		return console.log(`This combination does not exist`);
+	}
+
 	if (program.fuzzy) {
 		npmScripts().fuzzy();
 	} else {
