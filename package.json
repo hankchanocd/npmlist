@@ -4,7 +4,6 @@
   "description": "A fuzzy CLI that lists everything listable from any npm package",
   "main": "./build/index.js",
   "bin": {
-    "npmlist": "./bin/cli.js",
     "npl": "./bin/cli.js"
   },
   "engines": {

@@ -33,18 +33,22 @@ const { npmList } = npmDependencies;
 
 > npmList()
 
-Used by `npl` - list module's dependencies.
+List module's dependencies - used by `npl`
 
-- With color
+- With ANSI color (A better visual on terminal)
 
 ```js
 npmList()
 	.raw()
 	.then(i => yourFunction)
 	.catch(err => console.log(err));
+
+// @express@1.0.0
+// ├── Dependencies
+// ├── chalk@2.4.1
 ```
 
-- Without color
+- Without ANSI color (Clean text)
 
 ```js
 npmList()
@@ -74,9 +78,9 @@ async () => {
 
 > npmRecent()
 
-Used by `npl -t` - list recent global installs.
+List recent global installs - used by `npl -t`
 
-- With color
+- With ANSI color
 
 ```js
 npmRecent()
@@ -84,9 +88,12 @@ npmRecent()
 	.then(i => i.raw())
 	.then(i => yourFunction)
 	.catch(err => console.log(err));
+
+// @hankchanocd/npmlist    11-16 21:37
+// npm-fzf                 11-16 2:22
 ```
 
-- Without color
+- Without ANSI color
 
 ```js
 npmRecent()
@@ -102,18 +109,21 @@ npmRecent()
 
 > npmGlobal()
 
-Used by `npl -g` - list global installs.
+List global installs - used by `npl -g`
 
-- With color
+- With ANSI color
 
 ```js
 npmGlobal()
 	.then(i => i.simple().raw())
 	.then(i => yourFunction)
 	.catch(err => console.log(err));
+
+// ├── 0x@4.5.3
+// ├── aerobatic-cli@1.1.4
 ```
 
-- Without color
+- Without ANSI color
 
 ```js
 npmGlobal()
@@ -128,18 +138,22 @@ npmGlobal()
 
 > npmScripts()
 
-Used by `npl -s` - return a list of scripts.
+Return a list of scripts - used by `npl -s`
 
-- With color
+- With ANSI color
 
 ```js
 npmScripts()
 	.raw()
 	.then(i => yourFunction)
 	.catch(err => console.log(err));
+
+// @express@1.0.0
+// build => babel src/ -d build/ --quiet
+// commit => git-cz
 ```
 
-- Without color
+- Without ANSI color
 
 ```js
 npmScripts()
@@ -154,9 +168,9 @@ npmScripts()
 
 > npmRegistry(module: String)
 
-Used by `npl module` - fetch package dependencies from npm registry.
+Fetch package dependencies from npm registry - used by `npl module`
 
-- With color
+- With ANSI color
 
 ```js
 let module = 'express';
@@ -164,9 +178,12 @@ npmRegistry(module)
 	.then(i => i.simple().raw())
 	.then(i => yourFunction)
 	.catch(err => console.log(err));
+
+// ├── accepts@1.3.5
+// ├── array-flatten@1.1.1
 ```
 
-- Without color
+- Without ANSI color
 
 ```js
 npmRegistry(module)
@@ -225,5 +242,5 @@ StringUtil.getRidOfQuotationMarks(str);
 
 ```js
 let str = 'surl-cli@semantically-release';
-StringUtil.truncate(str, 8, false); // 'surl-cli...'
+StringUtil.truncate(str, 8, false); // => 'surl-cli...'
 ```

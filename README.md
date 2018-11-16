@@ -1,6 +1,70 @@
-# npmlist &nbsp;&nbsp; [![npm](https://img.shields.io/npm/v/@hankchanocd/npmlist.svg)](https://www.npmjs.com/package/@hankchanocd/npmlist) [![Build Status](https://travis-ci.org/hankchanocd/npmlist.svg?branch=master)](https://travis-ci.org/hankchanocd/npmlist) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Known Vulnerabilities](https://snyk.io/test/github/hankchanocd/npmlist/badge.svg?targetFile=package.json)](https://snyk.io/test/github/hankchanocd/npmlist?targetFile=package.json) [![Github issues](https://img.shields.io/github/issues/hankchanocd/npmlist.svg)](https://github.com/hankchanocd/npmlist/issues)
+# npmlist
 
-> Fuzzy search npm modules' dependencies, and others, i.e. global installs, scripts, profile.
+[![npm](https://img.shields.io/npm/v/@hankchanocd/npmlist.svg)](https://www.npmjs.com/package/@hankchanocd/npmlist) [![Build Status](https://travis-ci.org/hankchanocd/npmlist.svg?branch=master)](https://travis-ci.org/hankchanocd/npmlist) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Known Vulnerabilities](https://snyk.io/test/github/hankchanocd/npmlist/badge.svg?targetFile=package.json)](https://snyk.io/test/github/hankchanocd/npmlist?targetFile=package.json) [![Github issues](https://img.shields.io/github/issues/hankchanocd/npmlist.svg)](https://github.com/hankchanocd/npmlist/issues)
+
+> Fuzzy search npm modules' dependencies.
+
+`npmlist` is a library providing parsing and fetching dependencies, global installs, scripts, profile. It empowers many CLI apps, i.e. [`npm-fzf`](#use-cases).
+
+## Requirements
+
+`npmlist` requires Node 8 or above for runtime.
+
+## API
+
+### Install
+
+```bash
+$ npm install @hankchanocd/npmlist
+```
+
+### Examples
+
+#### List local dependencies
+
+```js
+const { npmDependencies } = require("@hankchanocd/npmlist");
+const { npmList } = npmDependencies;
+
+npmList()
+	.raw()
+	.then(i => yourFunction)
+	.catch(err => console.log(err));
+
+// @express@1.0.0
+// ├── Dependencies
+// ├── chalk@2.4.1
+```
+
+#### List npm module's scripts
+
+```js
+const { npmScripts } = require("@hankchanocd/npmlist");
+
+npmScripts()
+	.raw()
+	.then(i => yourFunction)
+	.catch(err => console.log(err));
+
+// @express@1.0.0
+// build => babel src/ -d build/ --quiet
+// commit => git-cz
+```
+
+`npmlist` has several advantages over painfully slow and cluttered `npm list`:
+
+1. `npmList()` is a replacement for annoyingly long `npm list --depth=0 --local` and other `npm list --@#$%` commands
+2. `npmScripts()` lists and triggers npm scripts better than `npm run-script`
+3. `npmRecent()` gives a quick refresher on the recent global installs
+4. `npmGlobal()` finds and prints global modules as fancy as `brew list`, and more than 10x faster than `npm list -g`
+
+Read [API doc](https://github.com/hankchanocd/npmlist/wiki/API) to find out more.
+
+<br />
+
+## CLI
+
+`npmlist` also provides its own CLI implementation called `npl`, which fuzzifies all the lists it can find about a npm module using [`ipt`](https://github.com/ruyadorno/ipt#readme), making it easier for search and execution. `npl`'s default feature is local dependencies listing.
 
 <br />
 <br />
@@ -9,34 +73,13 @@
 </p>
 <br />
 
-`npmlist` or `npl` (`npl` for the sake of typing) fuzzifies all the lists it can find about a npm module using [`ipt`](https://github.com/ruyadorno/ipt#readme), making it easier for search and execution. `npl`'s default feature is local dependencies listing, but can be changed with feature flags. `npl` has several advantages over painfully slow and cluttered `npm list`:
-
-1. Selecting a package on fuzzy list will automatically trigger `npm info <package>`
-2. `npl -t` gives a quick refresher on the recent global installs
-3. `npl -g` finds and prints global modules as fancy as `brew list`, and more than 10x faster than `npm list -g`
-4. `npl -s` lists and triggers npm scripts better than `npm run-script`
-5. A replacement for `npm list --depth=0 --local` and other annoyingly long `npm list --@#$%` commands with assumed configurations
-6. No need to leave terminal just for glancing at a package's npm profile
-
-## Requirements
-
-`npl` requires Node 8 for runtime or above.
-
-## API
-
-```bash
-$ npm install @hankchanocd/npmlist
-```
-
-Build a CLI tool on top of `npl`'s API. Read [API doc](https://github.com/hankchanocd/npmlist/wiki/API) for more info. See [use cases](#use-cases).
-
-## CLI
+### Install
 
 ```bash
 $ npm install -g @hankchanocd/npmlist
 ```
 
-## Usage
+### Usage
 
 ```
 Usage: npl [option] [name]
@@ -61,11 +104,9 @@ Options:
 -h, --help      output usage information
 ```
 
-## Examples
+### Examples
 
-### Global modules
-
-More than 10x faster than `npm list -g`
+#### Global modules
 
 ```bash
 $ npl -g
@@ -75,9 +116,7 @@ $ npl -g
   ├── aerobatic-cli@1.1.4
 ```
 
-### Recent global installs
-
-A quick refresher on what the heck it's installed/upgraded globally in the recent past
+#### Recent global installs
 
 ```bash
 $ npl -t
@@ -87,7 +126,7 @@ $ npl -t
 semantic-release      10-5 8:5
 ```
 
-### Execute module's npm scripts
+#### Execute module's npm scripts
 
 Somewhat similar to [`ntl`](https://github.com/ruyadorno/ntl)
 
@@ -100,7 +139,7 @@ build: babel src/ -d build/ --quiet
 test: mocha
 ```
 
-### Fetch from NPM registry
+#### Fetch from NPM registry
 
 `npl` fetches the module's latest version by default, unless a version is specified
 
@@ -113,7 +152,7 @@ express@4.16.4 Dependencies:
 ├── array-flatten@1.1.1
 ```
 
-### Turn off fuzzy mode
+#### Turn off fuzzy mode
 
 Fuzzy mode is turned on in most cases, except for `--details`, where fuzzy is not optimal for multi-line text. You can also opt for `--no-fuzzy` to turn off the default fuzzy mode.
 
@@ -123,9 +162,9 @@ $ npl -g --no-fuzzy
 $ npl -s --no-fuzzy
 ```
 
-  <p align="center"><img src="https://raw.githubusercontent.com/hankchanocd/npmlist/master/images/no-fuzzy-demo.png" width="800"></p>
+  <p align="center"><img src="https://raw.githubusercontent.com/hankchanocd/npmlist/master/images/no-fuzzy-demo.png" width="650"></p>
 
-### Details flag
+#### Details flag
 
 Applied to both local dependencies and global installs
 
@@ -134,7 +173,7 @@ $ npl --details
 $ npl -g --details
 ```
 
-  <p align="center"><img src="https://raw.githubusercontent.com/hankchanocd/npmlist/master/images/details-flag-demo.png" width="800"></p>
+  <p align="center"><img src="https://raw.githubusercontent.com/hankchanocd/npmlist/master/images/details-flag-demo.png" width="650"></p>
 
 ## Tests
 
@@ -142,19 +181,7 @@ To perform unit tests and integration tests, simply run `npm test`.
 
 ## Changelog
 
-**2018-Oct-16:** Fuzzy mode is now enabled by default. It can be turned off by `--no-fuzzy`.
-
-**2018-Oct-18:** Give up on trying to pipe output to `less`. Nodejs simply does not have good control of TTY.
-
-**2018-Oct-19:** Speed up `npmlist -g` 10x than `npm list -g`
-
-**2018-Oct-20:** `npmlist` can also be accessed via `npl`
-
-**2018-Oct-21:** The first official [API](https://github.com/hankchanocd/npmlist/wiki/API) guide released.
-
-**2018-Oct-29:** Add autocomplete.
-
-**2018-Nov-14:** [`npm-fzf`](https://github.com/hankchanocd/npm-fzf) uses `npmlist` as dependencies.
+[CHANGELOG](./CHANGELOG.md)
 
 ## Contribution
 
