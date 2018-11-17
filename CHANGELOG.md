@@ -17,3 +17,5 @@
 **2018-Oct-29:** `v7` released. Add autocomplete.
 
 **2018-Nov-14:** [`npm-fzf`](https://github.com/hankchanocd/npm-fzf) is now built on `npmlist`.
+
+**2018-Nov-17:** `npl`, `npmlist`'s CLI, is now deprecated. The support for library will continue.
