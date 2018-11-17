@@ -25,17 +25,15 @@ program
 	.usage(`[option] [name]`)
 	.description(`Fuzzy search npm modules' dependencies`)
 
-	// Five main features:
+	// Four main features:
 	.option('-l, --local', 'list local dependencies, which is also the default feature')
 	.option('-g, --global', 'list global modules')
-	.option('-d, --details', 'include details to each dependency, but disable the default fuzzy mode')
 	.option('-t, --time', 'show the latest global installs')
 	.option('-s, --scripts', 'list/execute npm scripts')
 
-	// Flavor flag
+	// Flavor flags:
+	.option('-d, --details', 'include details to each dependency, but disable the default fuzzy mode')
 	.option('-a, --all', 'a flavor flag that shows all available information on any feature flag')
-
-	// Mode
 	.option('-F, --no-fuzzy', 'disable the default fuzzy mode and resort to stdout')
 
 	// Help
@@ -53,31 +51,39 @@ program
 	.parse(process.argv);
 
 
+// Fail if multiple feature flags given at the same time
+(function failIfMultipleFeatureFlags() {
+	let count = 0;
+	Object.keys(program).forEach(i => {
+		if (i == 'global' || i == 'local' || i == 'time' || i == 'scripts') {
+			if (program[i]) count += 1;
+		}
+
+		if (count >= 2) {
+			console.log(`Multiple feature flags. I'm confused.`);
+			return process.exit(1);
+		}
+	});
+})();
+
+
 if (program.global) {
-	listGlobalPackages();
+	globalInstalls();
 
 } else if (program.local) {
-	listLocalDependencies();
+	localDependencies();
 
 } else if (program.time) {
-	listGlobalPackagesSortedByTime();
+	recentGlobalInstalls();
+
+} else if (program.args.length > 0) { // execute if a module is specified, i.e. `npl express --all`
+	fetchNpmRegistry();
+
+} else if (program.scripts) {
+	executeScripts();
 
 } else if (program.details) { // Default to npm local packages listing if only --details flag present
 	npmListDetails();
-
-} else if (program.args.length > 0) { // execute if a module is specified, i.e. `npl express --all`
-	if (!program.args.length == 1) {
-		console.log(chalk.blueBright('Only one module is allowed'));
-
-	} else if (program.args.length == 1 && program.args[0] === '-') { // Typo of incomplete flag, i.e. 'npl -'
-		console.log(chalk.blueBright('Invalid input'));
-
-	} else {
-		fetchModuleInfoFromNpmRegistry();
-	}
-
-} else if (program.scripts) {
-	listNpmScripts();
 
 } else if (program.all) {
 	// If none of the feature flags were detected but --all ...
@@ -85,16 +91,12 @@ if (program.global) {
 	console.log(`Please specify a feature`);
 
 } else { // default is list local dependencies when nothing specified...
-	listLocalDependencies();
+	localDependencies();
 }
 
 
 /* Helper Functions */
-function listGlobalPackages() {
-	if (program.time) {
-		return console.log('Use `npl -t` instead');
-	}
-
+function globalInstalls() {
 	if (!program.details) { // if details flag not specified
 		if (program.fuzzy) {
 			npmGlobal().then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
@@ -106,7 +108,11 @@ function listGlobalPackages() {
 	}
 }
 
-function listGlobalPackagesSortedByTime() {
+function recentGlobalInstalls() {
+	if (program.details) {
+		return console.log(`This combination does not exist`);
+	}
+
 	if (program.fuzzy) {
 		npmRecent().all().then(i => i.fuzzy()).catch(err => console.log(chalk.redBright(err)));
 	} else {
@@ -114,7 +120,7 @@ function listGlobalPackagesSortedByTime() {
 	}
 }
 
-function listLocalDependencies() {
+function localDependencies() {
 	if (!program.details) { // if details flag not specified
 		if (program.fuzzy) {
 			npmList().fuzzy();
@@ -126,20 +132,37 @@ function listLocalDependencies() {
 	}
 }
 
-function fetchModuleInfoFromNpmRegistry() {
-	const module = program.args;
-	if (!program.all) {
-		if (program.fuzzy) {
-			npmRegistry(module).then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
-		} else {
-			npmRegistry(module).then(i => i.simple().default()).catch(err => console.log(chalk.redBright(err)));
-		}
+function fetchNpmRegistry() {
+	/* Filter */
+	if (!program.args.length == 1) {
+		return console.log(chalk.white('Only one module is allowed'));
+	}
+
+	const module = program.args[0];
+	if (module === '-') { // incomplete flag => 'npl -'
+		return console.log(chalk.white('Incomplete flag'));
+	}
+
+	if (module === '/' || module === '~' || module === '*' || module === '^' || module === '`') { // typos
+		return console.log(chalk.white('Invalid input'));
+	}
+
+	if (program.fuzzy) {
+		npmRegistry(module).then(i => i.simple().fuzzy()).catch(err => console.log(chalk.redBright(err)));
 	} else {
+		npmRegistry(module).then(i => i.simple().default()).catch(err => console.log(chalk.redBright(err)));
+	}
+
+	if (program.all) {
 		npmRegistry(module).then(i => i.all()).catch(err => console.log(chalk.redBright(err)));
 	}
 }
 
-function listNpmScripts() {
+function executeScripts() {
+	if (program.details) {
+		return console.log(`This combination does not exist`);
+	}
+
 	if (program.fuzzy) {
 		npmScripts().fuzzy();
 	} else {

@@ -4,7 +4,6 @@
   "description": "A fuzzy CLI that lists everything listable from any npm package",
   "main": "./build/index.js",
   "bin": {
-    "npmlist": "./bin/cli.js",
     "npl": "./bin/cli.js"
   },
   "engines": {
@@ -28,7 +27,6 @@
     "eslint": "eslint . --ignore-path .gitignore --cache --cache-location \"./eslint/.eslintcache\" ",
     "eslint:makeHtml": "npm run eslint -- --format html -o ./eslint/report.html",
     "eslint:open": "npm run eslint:makeHtml --silent && opn ./eslint/report.html",
-    "flow": "flow",
     "prebuild": "rimraf ./build",
     "build": "babel src/ -d build/ --quiet",
     "build:watch": "nodemon --exec npm run build",
@@ -60,7 +58,6 @@
   },
   "homepage": "https://github.com/hankchanocd/npmlist#readme",
   "dependencies": {
-    "acorn": "^6.0.4",
     "chalk": "^2.4.1",
     "cli-columns": "^3.1.2",
     "cliui": "^4.1.0",
@@ -74,14 +71,12 @@
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-env": "^1.7.0",
-    "babel-preset-flow": "^6.23.0",
     "commitizen": "^3.0.4",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.9.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jest": "^22.0.0",
     "eslint-plugin-promise": "^4.0.1",
-    "flow-bin": "^0.86.0",
     "ghooks": "^2.0.4",
     "jest": "^23.6.0",
     "nodemon": "^1.18.6",
