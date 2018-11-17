@@ -68,6 +68,7 @@
     "pkginfo": "^0.4.1"
   },
   "devDependencies": {
+    "acorn": "^6.0.4",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-env": "^1.7.0",
