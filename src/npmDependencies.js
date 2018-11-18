@@ -26,7 +26,7 @@ module.exports.npmList = function () {
 	let pkg = collectDependencies();
 	let list = parseListFromPkgOutput(pkg);
 
-	// Returns default() and fuzzy() options
+	// Returns default(), fuzzy(), raw(), rawNoColor() options
 	return {
 		default () {
 			if (!list || list.length === 0) return;

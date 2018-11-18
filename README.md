@@ -4,7 +4,7 @@
 
 > Fuzzy search npm modules' dependencies.
 
-`npmlist` is a library providing parsing and fetching dependencies, global installs, scripts, profile. It empowers many CLI apps, i.e. [`npm-fzf`](#use-cases).
+`npmlist` is a library providing searching and parsing dependencies, global installs, scripts, profile. It empowers many CLI apps, i.e. [`npm-fzf`](#use-cases).
 
 ## Requirements
 
@@ -66,9 +66,11 @@ npmScripts()
 // commit => git-cz
 ```
 
-1. `npmSearch()` searches for npm modules with [npms.io](https://npms.io), a better search engine with score analysis.
+`npmlist` has a few distinct advantages:
+
+1. `npmSearch()` searches for npm modules with [npms.io](https://npms.io), a better npm search engine than `npm search` with score analysis.
 2. `npmList()` is a replacement for painfully long and slow `npm list --depth=0 --local` and other `npm list --@#$%` commands
-3. `npmScripts()` lists and triggers npm scripts better than `npm run-script`
+3. `npmScripts()` lists npm scripts better than `npm run-script`
 4. `npmRecent()` gives a quick refresher on the recent global installs
 5. `npmGlobal()` finds and prints global modules as fancy as `brew list`, and more than 10x faster than `npm list -g`
 
@@ -88,11 +90,9 @@ To perform unit tests and integration tests, simply run `npm test`.
 
 ## Contribution
 
-`npl` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking a package's dependencies and global installs. This is to say we are not afraid of expanding `npl` features beyond the current realm.
+`npmlist` started off as a bunch of CLI aliases on top of `npm list` and `npm info`, but grew larger quickly. It's now very effective at checking a package's dependencies and global installs. This is to say we are not afraid of expanding `npmlist` features beyond the current realm.
 
-The roadmap for `npl` now focuses on presenting a quick and concise report on terminal with minimal commands (it means no sub-commands), freeing developers from the burden of constant switching between terminal and browser. See [Wiki](https://github.com/hankchanocd/npmlist/wiki/Wiki) for `npl`'s code architecture, developments rules, and styles. See [here](./CONTRIBUTING.md) on how to contribute.
-
-If you like the idea of fuzzy list, check out ruyadorno's [`ipt`](https://github.com/ruyadorno/ipt#readme).
+The roadmap for `npmlist` now focuses on serving as a library to provide a quick and concise report on terminal, freeing developers from the burden of constant switching between terminal and browser. See [Wiki](https://github.com/hankchanocd/npmlist/wiki/Wiki) for `npmlist`'s code architecture, developments rules, and styles. See [here](./CONTRIBUTING.md) on how to contribute.
 
 ## Use Cases
 

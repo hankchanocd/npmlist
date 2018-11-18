@@ -1,6 +1,6 @@
 # API
 
-`npl`'s API is made available in Promise, which is also accessible via async/await.
+`npmlist`'s API is made available in Promise, which is also accessible via async/await.
 
 ## Install
 
