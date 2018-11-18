@@ -42,16 +42,16 @@ describe('sortByDate()', () => {
 			}
 		};
 
-		expect(sortByDate).toThrowError('List is not given');
+		expect(sortByDate).toThrow('List is not given');
 		expect(sortByDate([mockStandardObj])).toBeUndefined();
 
 		// Error behaviors test must be wrapped in an anonymous function
 		expect(() => {
 			sortByDate([mockStandardObj, mockCorruptStatObj]);
-		}).toThrowError('List has no `stat` property');
+		}).toThrow('List has no `stat` property');
 		expect(() => {
 			sortByDate([mockStandardObj, mockCorruptMtimeObj]);
-		}).toThrowError('List has no `mtime` property');
+		}).toThrow('List has no `mtime` property');
 	});
 });
 
@@ -78,6 +78,6 @@ describe('parseDate()', () => {
 	test('`xxx` returns `Invalid Date` Error', () => {
 		expect(() => {
 			parseDate('xxx');
-		}).toThrowError('Invalid Date');
+		}).toThrow('Invalid Date');
 	});
 });
