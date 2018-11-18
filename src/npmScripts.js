@@ -16,7 +16,7 @@ const StringUtil = require('./utils/stringUtil');
 
 /*
  * npmScripts' main entry to print npm scripts (the only method exposed to index.js)
- * Has two options: default() and fuzzy()
+ * Has four options: default(), fuzzy(), raw(), rawNoColor()
  *
  */
 module.exports.main = function npmScripts() {

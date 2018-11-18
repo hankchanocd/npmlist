@@ -16,9 +16,10 @@ const npmRoot = require('./npmRoot');
 
 
 /*
- *
- i.e.npmRecent().recentTwenty().fuzzy();
+ * npmRecent.js has only one exposed export function.
+ * i.e.npmRecent().recentTwenty().fuzzy();
  * i.e.npmRecent().all().default();
+ * i.e.npmRecent().all().rawNoColor();
 */
 module.exports = function () {
 
@@ -37,7 +38,7 @@ module.exports = function () {
 
 
 /*
- * secondLevelChainOperations deals with default() and fuzzy()
+ * secondLevelChainOperations deals with default(), fuzzy(), raw(), rawNoColor()
  * Increase code reuse.
  *
  */

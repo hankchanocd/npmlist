@@ -27,7 +27,7 @@ const StringUtil = require('./utils/stringUtil');
  */
 module.exports.main = async function (module = '') {
 	if (!module) {
-		return console.log(chalk.redBright('No module provided'));
+		throw chalk.redBright('No module provided');
 	}
 
 	let data;
@@ -43,7 +43,7 @@ module.exports.main = async function (module = '') {
 		simple() {
 			let list = parseToList(data).simple();
 
-			// Second-level chain operation has default() and fuzzy()
+			// Second-level chain operation has default(), fuzzy(), raw(), rawNoColor()
 			return {
 				default () {
 					if (!list || list.length === 0) return;

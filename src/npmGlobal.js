@@ -45,7 +45,7 @@ module.exports.main = async function (global = true) {
 				showHeaders: false
 			}).split('\n');
 
-			return { // Second-level chain operation returns print() and fuzzy()
+			return { // Second-level chain operation returns print(), fuzzy(), raw(), rawNoColor()
 				print: function () {
 					if (!list || list.length === 0) return;
 
