@@ -64,7 +64,7 @@ describe('Test npmRegistry.parseToList() options', () => {
 	test('Empty data would throw an error', (done) => {
 		expect(() => {
 			parseToList(mockEmptyData);
-		}).toThrowError('Fetched info is incomplete, therefore useless');
+		}).toThrow('Fetched info is incomplete, therefore useless');
 		done();
 	});
 
