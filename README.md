@@ -20,6 +20,21 @@ $ npm install @hankchanocd/npmlist
 
 ### Examples
 
+#### Search npm modules
+
+```js
+const { npmSearch } = require("@hankchanocd/npmlist");
+
+let module = ['express'];
+npmSearch(module)
+	.then(i => i.raw())
+	.then(i => yourFunction)
+	.catch(err => console.log(err));
+
+// 92 express@4.16.4 express framework sinatra web rest restful router app api
+// 91 path-to-regexp@2.4.0 express regexp route routing
+```
+
 #### List local dependencies
 
 ```js
@@ -51,12 +66,11 @@ npmScripts()
 // commit => git-cz
 ```
 
-`npmlist` has several advantages over painfully slow and cluttered `npm list`:
-
-1. `npmList()` is a replacement for annoyingly long `npm list --depth=0 --local` and other `npm list --@#$%` commands
-2. `npmScripts()` lists and triggers npm scripts better than `npm run-script`
-3. `npmRecent()` gives a quick refresher on the recent global installs
-4. `npmGlobal()` finds and prints global modules as fancy as `brew list`, and more than 10x faster than `npm list -g`
+1. `npmSearch()` searches for npm modules with [npms.io](https://npms.io), a better search engine with score analysis.
+2. `npmList()` is a replacement for painfully long and slow `npm list --depth=0 --local` and other `npm list --@#$%` commands
+3. `npmScripts()` lists and triggers npm scripts better than `npm run-script`
+4. `npmRecent()` gives a quick refresher on the recent global installs
+5. `npmGlobal()` finds and prints global modules as fancy as `brew list`, and more than 10x faster than `npm list -g`
 
 Read [API doc](https://github.com/hankchanocd/npmlist/wiki/API) to find out more.
 

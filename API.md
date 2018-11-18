@@ -15,10 +15,11 @@ Import only what you need. I'm listing all of the available imports here for she
 ```js
 const {
 	npmDependencies,
-	npmScripts,
+	npmGlobal,
 	npmRegistry,
 	npmRecent,
-	npmGlobal,
+	npmScripts,
+	npmSearch,
 	StringUtil
 } = require("@hankchanocd/npmlist");
 
@@ -29,13 +30,66 @@ const { npmList } = npmDependencies;
 
 ## Features
 
+### npmSearch
+
+> npmSearch(modules: [ module: String ])
+
+Search npm modules with score analysis
+
+- With ANSI color (A better visual on terminal)
+
+```js
+const { npmSearch } = require("@hankchanocd/npmlist");
+
+let module = ["express"];
+npmSearch(module)
+	.then(i => i.raw())
+	.then(i => yourFunction)
+	.catch(err => console.log(err));
+
+// 92 express@4.16.4 express framework sinatra web rest restful router app api
+// 91 path-to-regexp@2.4.0 express regexp route routing
+```
+
+- Without ANSI color (Clean text)
+
+```js
+const { npmSearch } = require("@hankchanocd/npmlist");
+
+let module = ["express"];
+npmSearch(module)
+	.then(i => i.rawNoColor())
+	.then(i => yourFunction)
+	.catch(err => console.log(err));
+
+// 92 express@4.16.4 express framework sinatra web rest restful router app api
+// 91 path-to-regexp@2.4.0 express regexp route routing
+```
+
+- Async/await with color
+
+  Since Node 8, anything written in Promise can also be written in async/await. Async/await code in the following APIs is very similar to this one, so I won't repeat it.
+
+```js
+async () => {
+	try {
+		let result = await npmSearch().raw();
+		yourFunction(result);
+	} catch (err) {
+		console.log(err);
+	}
+};
+```
+
+<br/>
+
 ### npmList
 
 > npmList()
 
 List module's dependencies - used by `npl`
 
-- With ANSI color (A better visual on terminal)
+- With ANSI color
 
 ```js
 npmList()
@@ -48,28 +102,13 @@ npmList()
 // ├── chalk@2.4.1
 ```
 
-- Without ANSI color (Clean text)
+- Without ANSI color
 
 ```js
 npmList()
 	.rawNoColor()
 	.then(i => yourFunction)
 	.catch(err => console.log(err));
-```
-
-- Async/await with color
-
-  Since Node 8, anything written in Promise can also be written in async/await. Async/await code in the following APIs is very similar to this one, so I won't repeat it.
-
-```js
-async () => {
-	try {
-		let result = await npmList().raw();
-		yourFunction(result);
-	} catch (err) {
-		console.log(err);
-	}
-};
 ```
 
 <br/>
@@ -173,7 +212,7 @@ Fetch package dependencies from npm registry - used by `npl module`
 - With ANSI color
 
 ```js
-let module = 'express';
+let module = "express";
 npmRegistry(module)
 	.then(i => i.simple().raw())
 	.then(i => yourFunction)
@@ -201,12 +240,11 @@ npmRegistry(module)
 > cleanTagName(str: string)
 
 ```js
-let str = 'surl-cli@semantically-release';
+let str = "surl-cli@semantically-release";
 StringUtil.cleanTagName(str); // 'surl-cli'
 ```
 
 <br/>
-
 
 ### getRidOfColors
 
@@ -241,6 +279,6 @@ StringUtil.getRidOfQuotationMarks(str);
 - truncateMarker: optional, default = true
 
 ```js
-let str = 'surl-cli@semantically-release';
+let str = "surl-cli@semantically-release";
 StringUtil.truncate(str, 8, false); // => 'surl-cli...'
 ```

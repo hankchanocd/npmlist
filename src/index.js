@@ -16,6 +16,8 @@ const npmDependencies = {
 
 const npmScripts = require('./npmScripts').main;
 
+const npmSearch = require('./npmSearch').main;
+
 const npmRegistry = require('./npmRegistry').main;
 
 const npmRecent = require('./npmRecent');
@@ -28,6 +30,7 @@ const stringUtil = require('./utils/stringUtil');
 module.exports = {
 	npmDependencies,
 	npmScripts,
+	npmSearch,
 	npmRegistry,
 	npmRecent,
 	npmGlobal,
