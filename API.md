@@ -34,9 +34,13 @@ const { npmList } = npmDependencies;
 
 > npmSearch(modules: [ module: String ])
 
-Search npm modules with score analysis
+Search npm modules on [npms.io](https://npms.io/) with score analysis
 
-- With ANSI color (A better visual on terminal)
+***
+
+#### raw()
+
+With ANSI color (For a better visual on terminal)
 
 ```js
 const { npmSearch } = require("@hankchanocd/npmlist");
@@ -51,7 +55,9 @@ npmSearch(module)
 // 91 path-to-regexp@2.4.0 express regexp route routing
 ```
 
-- Without ANSI color (Clean text)
+#### rawNoColor()
+
+Without ANSI color (Clean text)
 
 ```js
 const { npmSearch } = require("@hankchanocd/npmlist");
@@ -66,9 +72,9 @@ npmSearch(module)
 // 91 path-to-regexp@2.4.0 express regexp route routing
 ```
 
-- Async/await with color
+#### Async/await
 
-  Since Node 8, anything written in Promise can also be written in async/await. Async/await code in the following APIs is very similar to this one, so I won't repeat it.
+  Since Node 8, anything written in Promise can also be written in async/await. Async/await code in the rest of the APIs is very similar to this one, so I won't repeat it.
 
 ```js
 async () => {
@@ -81,15 +87,17 @@ async () => {
 };
 ```
 
-<br/>
+&nbsp;
 
 ### npmList
 
 > npmList()
 
-List module's dependencies - used by `npl`
+List module's dependencies - used by `npl -l`
 
-- With ANSI color
+***
+
+#### raw()
 
 ```js
 npmList()
@@ -102,7 +110,7 @@ npmList()
 // ├── chalk@2.4.1
 ```
 
-- Without ANSI color
+#### rawNoColor()
 
 ```js
 npmList()
@@ -111,7 +119,7 @@ npmList()
 	.catch(err => console.log(err));
 ```
 
-<br/>
+&nbsp;
 
 ### npmRecent
 
@@ -119,7 +127,9 @@ npmList()
 
 List recent global installs - used by `npl -t`
 
-- With ANSI color
+***
+
+#### raw()
 
 ```js
 npmRecent()
@@ -132,7 +142,7 @@ npmRecent()
 // npm-fzf                 11-16 2:22
 ```
 
-- Without ANSI color
+#### rawNoColor()
 
 ```js
 npmRecent()
@@ -142,7 +152,7 @@ npmRecent()
 	.catch(err => console.log(err));
 ```
 
-<br/>
+&nbsp;
 
 ### npmGlobal
 
@@ -150,7 +160,9 @@ npmRecent()
 
 List global installs - used by `npl -g`
 
-- With ANSI color
+***
+
+#### raw()
 
 ```js
 npmGlobal()
@@ -162,7 +174,7 @@ npmGlobal()
 // ├── aerobatic-cli@1.1.4
 ```
 
-- Without ANSI color
+#### rawNoColor()
 
 ```js
 npmGlobal()
@@ -171,7 +183,7 @@ npmGlobal()
 	.catch(err => console.log(err));
 ```
 
-<br/>
+&nbsp;
 
 ### npmScripts
 
@@ -179,7 +191,9 @@ npmGlobal()
 
 Return a list of scripts - used by `npl -s`
 
-- With ANSI color
+***
+
+#### raw()
 
 ```js
 npmScripts()
@@ -192,7 +206,7 @@ npmScripts()
 // commit => git-cz
 ```
 
-- Without ANSI color
+#### rawNoColor()
 
 ```js
 npmScripts()
@@ -201,7 +215,7 @@ npmScripts()
 	.catch(err => console.log(err));
 ```
 
-<br/>
+&nbsp;
 
 ### npmRegistry
 
@@ -209,7 +223,9 @@ npmScripts()
 
 Fetch package dependencies from npm registry - used by `npl module`
 
-- With ANSI color
+***
+
+#### raw()
 
 ```js
 let module = "express";
@@ -222,7 +238,7 @@ npmRegistry(module)
 // ├── array-flatten@1.1.1
 ```
 
-- Without ANSI color
+#### rawNoColor()
 
 ```js
 npmRegistry(module)
@@ -231,7 +247,7 @@ npmRegistry(module)
 	.catch(err => console.log(err));
 ```
 
-<br/>
+&nbsp;
 
 ## StringUtil
 
@@ -244,7 +260,7 @@ let str = "surl-cli@semantically-release";
 StringUtil.cleanTagName(str); // 'surl-cli'
 ```
 
-<br/>
+&nbsp;
 
 ### getRidOfColors
 
@@ -256,7 +272,7 @@ Especially useful for converting seemingly white text on terminal, which in real
 StringUtil.getRidOfColors(str);
 ```
 
-<br/>
+&nbsp;
 
 ### getRidOfQuotationMarks
 
@@ -266,7 +282,7 @@ StringUtil.getRidOfColors(str);
 StringUtil.getRidOfQuotationMarks(str);
 ```
 
-<br/>
+&nbsp;
 
 ### truncate
 
