@@ -27,7 +27,7 @@ module.exports.main = async function (modules = []) {
 		throw chalk.redBright('No module provided');
 	}
 
-	if (typeof modules[0] === 'string') {
+	if (typeof modules[0] !== 'string') {
 		throw chalk.redBright('Provided module is not in string format');
 	}
 
