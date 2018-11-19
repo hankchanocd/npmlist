@@ -7,17 +7,12 @@
 // Dependencies
 const columnify = require('columnify');
 const listToColumns = require('cli-columns');
-const iPipeTo = require('ipt');
-const {
-	spawn
-} = require('child_process');
 const StringUtil = require('./utils/stringUtil');
 const npmRoot = require('./npmRoot');
 
 
 /*
  * npmRecent.js has only one exposed export function.
- * i.e.npmRecent().recentTwenty().fuzzy();
  * i.e.npmRecent().all().default();
  * i.e.npmRecent().all().rawNoColor();
 */
@@ -38,7 +33,7 @@ module.exports = function () {
 
 
 /*
- * secondLevelChainOperations deals with default(), fuzzy(), raw(), rawNoColor()
+ * secondLevelChainOperations deals with default(), raw(), rawNoColor()
  * Increase code reuse.
  *
  */
@@ -57,37 +52,6 @@ function secondLevelChainOperation(list = []) {
 			}));
 		},
 
-		fuzzy() {
-			if (!list || list.length === 0) return;
-
-			return iPipeTo(list, {
-					size: 20,
-					autocomplete: true,
-					message: ' '
-				}).then(keys => {
-					return keys.forEach(async function (key) {
-						// Clean key
-						let cleansedKey = (function () {
-							let head = key.split(' ')[0];
-							let result = StringUtil.getRidOfColors(head);
-							result = StringUtil.getRidOfQuotationMarks(result);
-							result = StringUtil.cleanTagName(result); // surl-cli@semantically-release => surl-cli
-							return result;
-						})();
-
-						spawn(`npm info ${cleansedKey} | less -r`, {
-							stdio: 'inherit',
-							shell: true
-						});
-					});
-				})
-				.catch(err => {
-					console.log(err, "Error building interactive interface");
-				});
-		},
-
-
-		/***** For API use *****/
 		raw: async function () {
 			if (!list || list.length === 0) return;
 

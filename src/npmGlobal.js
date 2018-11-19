@@ -9,10 +9,6 @@ const pkgInfo = require('pkginfo');
 const chalk = require('chalk');
 const columnify = require('columnify');
 const listToColumns = require('cli-columns');
-const iPipeTo = require('ipt');
-const {
-	spawn
-} = require('child_process');
 const StringUtil = require('./utils/stringUtil');
 const npmRoot = require('./npmRoot');
 
@@ -21,7 +17,6 @@ const npmRoot = require('./npmRoot');
  * npmGlobal() has only one exposed function that returns chain operations.
 
  * i.e. (await npmGlobal()).simple().print();
- * i.e. (await npmGlobal()).simple().fuzzy();
  * i.e.(await npmGlobal()).simple().raw();
  * i.e. (await npmGlobal()).details()
  *
@@ -45,7 +40,7 @@ module.exports.main = async function (global = true) {
 				showHeaders: false
 			}).split('\n');
 
-			return { // Second-level chain operation returns print(), fuzzy(), raw(), rawNoColor()
+			return { // Second-level chain operation returns print(), raw(), rawNoColor()
 				print: function () {
 					if (!list || list.length === 0) return;
 
@@ -58,40 +53,7 @@ module.exports.main = async function (global = true) {
 					}));
 				},
 
-				fuzzy: async function () {
-					if (!list || list.length === 0) return;
 
-					try {
-						let keys = await iPipeTo(list, {
-							size: 20,
-							autocomplete: true,
-							message: ' '
-						});
-
-						let cleansedKeys = (function cleanKeys() {
-							return keys.map(key => {
-								let tail = key.split(' ')[1];
-								key = StringUtil.getRidOfColors(tail);
-								key = StringUtil.getRidOfQuotationMarks(key);
-								key = StringUtil.cleanTagName(key);
-								return key;
-							});
-						})();
-
-						return cleansedKeys.forEach(function (key) {
-							spawn(`npm info ${key} | less -r`, {
-								stdio: 'inherit',
-								shell: true
-							});
-						});
-
-					} catch (err) {
-						console.log(err, "Error building interactive interface");
-					}
-				},
-
-
-				/***** For API use *****/
 				raw: async function () {
 					if (!list || list.length === 0) return;
 

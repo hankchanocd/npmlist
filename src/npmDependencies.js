@@ -10,11 +10,9 @@
 
 // Dependencies
 const execChildProcess = require('child_process').exec;
-const spawn = require('child_process').spawn;
 const chalk = require('chalk');
 const pkgInfo = require('pkginfo');
 const cwd = process.cwd();
-const iPipeTo = require('ipt');
 const StringUtil = require('./utils/stringUtil');
 
 
@@ -26,37 +24,14 @@ module.exports.npmList = function () {
 	let pkg = collectDependencies();
 	let list = parseListFromPkgOutput(pkg);
 
-	// Returns default(), fuzzy(), raw(), rawNoColor() options
+	// Returns default(), raw(), rawNoColor() options
 	return {
 		default () {
 			if (!list || list.length === 0) return;
 
 			return list.forEach(i => console.log('├── ' + i));
 		},
-		fuzzy() {
-			if (!list || list.length === 0) return;
 
-			return iPipeTo(list, {
-					size: 20,
-					autocomplete: true,
-					message: ' '
-				}).then(keys => {
-					return keys.forEach(function (key) {
-						key = StringUtil.getRidOfColors(key);
-
-						spawn(`npm info ${key} | less -r`, {
-							stdio: 'inherit',
-							shell: true
-						});
-					});
-				})
-				.catch(err => {
-					console.log(err, "Error building interactive interface");
-				});
-		},
-
-
-		/***** For API use *****/
 		raw: async function () {
 			if (!list || list.length === 0) return;
 

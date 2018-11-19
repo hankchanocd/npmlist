@@ -14,10 +14,12 @@
 
 **2018-Oct-21:** The first official [API](https://github.com/hankchanocd/npmlist/wiki/API) guide released.
 
-**2018-Oct-29:** `v7` released. Add autocomplete.
+**2018-Oct-29:** `v7` released. Add autocomplete. CLI deprecated.
 
 **2018-Nov-14:** [`npm-fzf`](https://github.com/hankchanocd/npm-fzf) is now built on `npmlist`.
 
 **2018-Nov-17:** `npl`, `npmlist`'s CLI, is now deprecated. The support for library will continue.
 
 **2018-Nov-18:** feature `npmSearch()` added.
+
+**2018-Nov-19:** `v8` released. CLI removed.
