@@ -6,19 +6,15 @@
 
 // Dependencies
 const chalk = require('chalk');
-const iPipeTo = require('ipt');
 const {
 	fetch
 } = require('./utils/promiseUtil');
-const {
-	spawn
-} = require('child_process');
 const StringUtil = require('./utils/stringUtil');
 
 
 /*
  * npmSearch has only one exposed export function.
- * It has four options for output: default(), fuzzy(), raw(), rawNoColor().
+ * It has four options for output: default(), raw(), rawNoColor().
  * Chain operations are flexible for future expansion with backward compatibility
  *
  */
@@ -51,35 +47,7 @@ module.exports.main = async function (modules = []) {
 
 			return dataList.forEach(i => console.log(i));
 		},
-		fuzzy() {
-			if (!dataList || dataList.length === 0) return;
 
-			return iPipeTo(dataList, {
-					size: 20,
-					autocomplete: true,
-					message: ' '
-				}).then(keys => {
-					return keys.forEach(async function (key) {
-						let cleansedKey = (function () {
-							let tail = key.split(' ')[1];
-							let list = StringUtil.getRidOfColors(tail);
-							list = StringUtil.getRidOfQuotationMarks(list);
-							return list;
-						})();
-
-						spawn(`npm info ${cleansedKey} | less -r`, {
-							stdio: 'inherit',
-							shell: true
-						});
-					});
-				})
-				.catch(err => {
-					console.log(err, "Error building interactive interface");
-				});
-		},
-
-
-		/***** For API use *****/
 		raw: async function () {
 			if (!dataList || dataList.length === 0) return;
 

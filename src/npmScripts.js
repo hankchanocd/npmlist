@@ -7,16 +7,12 @@
 const chalk = require('chalk');
 const pkgInfo = require('pkginfo');
 const cwd = process.cwd();
-const {
-	spawn
-} = require('child_process');
-const iPipeTo = require('ipt');
 const StringUtil = require('./utils/stringUtil');
 
 
 /*
  * npmScripts' main entry to print npm scripts (the only method exposed to index.js)
- * Has four options: default(), fuzzy(), raw(), rawNoColor()
+ * Has four options: default(), raw(), rawNoColor()
  *
  */
 module.exports.main = function npmScripts() {
@@ -30,32 +26,7 @@ module.exports.main = function npmScripts() {
 			// Print
 			scripts.forEach(i => console.log(i));
 		},
-		fuzzy() {
-			if (!scripts || scripts.length === 0) return;
 
-			iPipeTo(scripts, {
-					size: 20,
-					autocomplete: true,
-					message: 'run'
-				}).then(keys => {
-					return keys.forEach(async function (key) {
-						// Clean key
-						let head = key.split(' ')[0];
-						key = StringUtil.getRidOfColors(head);
-						key = StringUtil.getRidOfQuotationMarks(key);
-
-						spawn('npm', ['run', key], {
-							stdio: [process.stdin, process.stdout, process.stderr]
-						});
-					});
-				})
-				.catch(err => {
-					console.log(err, "Error building interactive interface");
-				});
-		},
-
-
-		/***** For API use *****/
 		raw: async function () {
 			if (!scripts || scripts.length === 0) return;
 

@@ -1,11 +1,8 @@
 {
   "name": "@hankchanocd/npmlist",
   "version": "0.0.0-semantically-released",
-  "description": "A fuzzy CLI that lists everything listable from any npm package",
+  "description": "Search npm modules' dependencies.",
   "main": "./build/index.js",
-  "bin": {
-    "npl": "./bin/cli.js"
-  },
   "engines": {
     "node": ">=8"
   },
@@ -63,7 +60,6 @@
     "cliui": "^4.1.0",
     "columnify": "^1.5.4",
     "commander": "^2.19.0",
-    "ipt": "^2.1.0",
     "ls": "^0.2.1",
     "pkginfo": "^0.4.1"
   },

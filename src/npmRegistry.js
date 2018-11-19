@@ -9,19 +9,15 @@
 const chalk = require('chalk');
 const ui = require('cliui')();
 const columnify = require('columnify');
-const iPipeTo = require('ipt');
 const {
 	fetch
 } = require('./utils/promiseUtil');
-const {
-	spawn
-} = require('child_process');
 const StringUtil = require('./utils/stringUtil');
 
 
 /*
  * npmRegistry has only one exposed export function.
- * It has two dimensions of two options for output: simple() and all(), default() and fuzzy().
+ * It has two dimensions for output: simple() and all(), default().
  * Chain operations are flexible for future expansion with backward compatibility
  *
  */
@@ -43,42 +39,14 @@ module.exports.main = async function (module = '') {
 		simple() {
 			let list = parseToList(data).simple();
 
-			// Second-level chain operation has default(), fuzzy(), raw(), rawNoColor()
+			// Second-level chain operation has default(), raw(), rawNoColor()
 			return {
 				default () {
 					if (!list || list.length === 0) return;
 
 					return list.forEach(i => console.log(i));
 				},
-				fuzzy() {
-					if (!list || list.length === 0) return;
 
-					return iPipeTo(list, {
-							size: 20,
-							autocomplete: true,
-							message: ' '
-						}).then(keys => {
-							return keys.forEach(async function (key) {
-								let cleansedKey = (function () {
-									let tail = key.split(' ')[1];
-									let list = StringUtil.getRidOfColors(tail);
-									list = StringUtil.getRidOfQuotationMarks(list);
-									return list;
-								})();
-
-								spawn(`npm info ${cleansedKey} | less -r`, {
-									stdio: 'inherit',
-									shell: true
-								});
-							});
-						})
-						.catch(err => {
-							console.log(err, "Error building interactive interface");
-						});
-				},
-
-
-				/***** For API use *****/
 				raw: async function () {
 					if (!list || list.length === 0) return;
 
