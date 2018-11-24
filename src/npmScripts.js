@@ -64,6 +64,7 @@ function collectNpmScripts() {
 
 	} catch (e) {
 		console.log(chalk.redBright('package.json not found'));
+		process.exit(1); // Exit early if no package.json, since there's no point to continue
 	}
 	return pkg;
 }

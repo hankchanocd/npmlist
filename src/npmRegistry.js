@@ -32,6 +32,7 @@ module.exports.main = async function (module = '') {
 
 	} catch (err) {
 		console.log(chalk.redBright(err));
+		process.exit(1); // Abort early if fetching fails
 	}
 
 	// First-level chain operation has simple() and all()

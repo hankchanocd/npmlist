@@ -39,6 +39,7 @@ module.exports.main = async function (modules = []) {
 
 	} catch (err) {
 		console.log(chalk.redBright(err));
+		process.exit(1); // Abort early if fetching fails
 	}
 
 	return {
