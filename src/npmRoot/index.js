@@ -68,7 +68,7 @@ async function getRootPath(global = true) {
 		stderr ? console.log(chalk.redBright(stderr)) : '';
 	} catch (err) {
 		console.log(chalk.redBright(err));
-		root = '~/';
+		root = '~/'; // Default to home directory
 	}
 	return root;
 }
@@ -80,10 +80,7 @@ async function getRootPath(global = true) {
  * returns two options: all() and recentTen()
  * p.s. We plan to use recentTen() only
  */
-function getRootModulesList(root) {
-	if (!root) {
-		root = '~/';
-	}
+function getRootModulesList(root = '~/') {
 
 	// Use path to parse the given path, and attach the following string so to avoid the `/node_modules/\n ` nasty bug
 	const GLOBAL_MODULES_ALL = path.parse(root).dir + '/node_modules/*';

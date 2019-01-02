@@ -91,7 +91,8 @@ function collectDependencies() {
 		});
 
 	} catch (e) {
-		console.log(chalk.redBright("No package.json found"));
+		console.log(chalk.redBright("No package.json found. Abort"));
+		process.exit(1); // Exit early if no package.json, since there's no point to continue
 	}
 	return pkg;
 }
