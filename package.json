@@ -56,7 +56,7 @@
   "homepage": "https://github.com/hankchanocd/npmlist#readme",
   "dependencies": {
     "chalk": "^2.4.2",
-    "cli-columns": "^3.1.2",
+    "cli-columns": "^4.0.0",
     "cliui": "^4.1.0",
     "columnify": "^1.5.4",
     "commander": "^2.20.0",
